@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "lv_demos.h": "c",
+        "fbdev.h": "c",
+        "ui.h": "c",
+        "ad_touch.h": "c"
+    }
+}
