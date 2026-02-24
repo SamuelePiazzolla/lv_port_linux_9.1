@@ -10,68 +10,14 @@
 #include "../logic/communications/can/canLogic.h"
 
 /*
-=====================================
-    CAMERA
-=====================================
+======================================== 
+    MULTIMEDIA (AUDIO / CAMERA / BUZZER)
+========================================
 */
-void startVideo(lv_event_t * e)
-{
-	// Your code here
-	logic_start_video();
-}
-
-void stopVideo(lv_event_t * e)
-{
-	// Your code here
-	logic_stop_video();
-}
-
-void initImgDisplayer(lv_event_t * e)
-{
-	// Your code here
-	createImgDisplayer();
-}
-
-void resetVideo(lv_event_t * e)
-{
-	// Your code here
-	logic_reset_video();
-}
-
-void loadVideo(lv_event_t * e)
-{
-	// Your code here
-	logic_load_video();
-}
-
-void loadCamera(lv_event_t * e)
-{
-	// Your code here
-	logic_load_camera();
-}
-
-void deinitCameraScreen(lv_event_t * e)
-{
-	// Your code here
-	logic_deinit_camera_screen();
-}
-
-void recVideo(lv_event_t * e)
-{
-	// Your code here
-	logic_rec_video();
-}
-
-void stopRecVideo(lv_event_t * e)
-{
-	// Your code here
-	logic_stop_rec_video();
-}
-
 /*
-=====================================
+-------------------------------------
     AUDIO
-=====================================
+-------------------------------------
 */
 
 void recordAudio(lv_event_t * e)
@@ -130,9 +76,96 @@ void initAudioScreen(lv_event_t * e)
 }
 
 /*
+-------------------------------------
+    CAMERA
+-------------------------------------
+*/
+void startVideo(lv_event_t * e)
+{
+	// Your code here
+	logic_start_video();
+}
+
+void stopVideo(lv_event_t * e)
+{
+	// Your code here
+	logic_stop_video();
+}
+
+void initImgDisplayer(lv_event_t * e)
+{
+	// Your code here
+	createImgDisplayer();
+}
+
+void resetVideo(lv_event_t * e)
+{
+	// Your code here
+	logic_reset_video();
+}
+
+void loadVideo(lv_event_t * e)
+{
+	// Your code here
+	logic_load_video();
+}
+
+void loadCamera(lv_event_t * e)
+{
+	// Your code here
+	logic_load_camera();
+}
+
+void deinitCameraScreen(lv_event_t * e)
+{
+	// Your code here
+	logic_deinit_camera_screen();
+}
+
+void recVideo(lv_event_t * e)
+{
+	// Your code here
+	logic_rec_video();
+}
+
+void stopRecVideo(lv_event_t * e)
+{
+	// Your code here
+	logic_stop_rec_video();
+}
+
+/*
+-------------------------------------
+	BUZZER
+-------------------------------------
+*/
+
+void initBuzzerScreen(lv_event_t * e)
+{
+	// Your code here
+}
+
+void deinitBuzzerScreen(lv_event_t * e)
+{
+	// Your code here
+}
+
+void btnBuzzerClkHandler(lv_event_t * e)
+{
+	// Your code here
+}
+
+
+/*
 =====================================
     CONNECTIVITY (WIFI/BTH)
 =====================================
+*/
+
+/*
+-------------------------------------
+	GENERAL
+-------------------------------------
 */
 
 void initConnectivityScreen(lv_event_t * e)
@@ -153,6 +186,18 @@ void connectDisconnectSelected(lv_event_t * e)
 	logic_connect_disconnect_selected();
 }
 
+void scanNetwork(lv_event_t * e)
+{
+	// Your code here
+	logic_scan_network();
+}
+
+/*
+-------------------------------------
+	WIFI
+-------------------------------------
+*/
+
 void initWifiMode(lv_event_t * e)
 {
 	// Your code here
@@ -164,6 +209,12 @@ void deinitWifiMode(lv_event_t * e)
 	// Your code here
 	setConnectionMode(NONE_CONNECTIVITY_MODE);
 }
+
+/*
+-------------------------------------
+	BLUETOOTH
+-------------------------------------
+*/
 
 void initBthMode(lv_event_t * e)
 {
@@ -177,16 +228,18 @@ void deinitBthMode(lv_event_t * e)
 	setConnectionMode(NONE_CONNECTIVITY_MODE);
 }
 
-void scanNetwork(lv_event_t * e)
-{
-	// Your code here
-	logic_scan_network();
-}
+
 
 /*
 ========================================
     COMMUNICATIONS (ETH/RS-485/CAN)
 ========================================
+*/
+
+/*
+-------------------------------------
+	GENERAL
+-------------------------------------
 */
 
 void initCommsScreen(lv_event_t * e)
@@ -201,6 +254,19 @@ void deinitCommsScreen(lv_event_t * e)
 	logic_deinit_communication_screen();
 }
 
+void sendTestMessageComms(lv_event_t * e)
+{
+	// Your code here
+	logic_send_test_message_comms();
+}
+
+
+/*
+-------------------------------------
+	ETHERNET
+-------------------------------------
+*/
+
 void initEthernetMode(lv_event_t * e)
 {
 	// Your code here
@@ -212,6 +278,12 @@ void deinitEthernetMode(lv_event_t * e)
 	// Your code here
 	setCommunicationMode(NONE_COMMUNICATION_MODE);
 }
+
+/*
+-------------------------------------
+	RS-485
+-------------------------------------
+*/
 
 void initRsMode(lv_event_t * e)
 {
@@ -225,6 +297,12 @@ void deinitRsMode(lv_event_t * e)
 	setCommunicationMode(NONE_COMMUNICATION_MODE);
 }
 
+/*
+-------------------------------------
+	CAN
+-------------------------------------
+*/
+
 void initCanScreen(lv_event_t * e)
 {
 	// Your code here
@@ -235,25 +313,4 @@ void deinitCanScreen(lv_event_t * e)
 {
 	// Your code here
 	logic_deinit_can_mode();
-}
-
-void sendTestMessageComms(lv_event_t * e)
-{
-	// Your code here
-	logic_send_test_message_comms();
-}
-
-void initBuzzerScreen(lv_event_t * e)
-{
-	// Your code here
-}
-
-void deinitBuzzerScreen(lv_event_t * e)
-{
-	// Your code here
-}
-
-void btnBuzzerClkHandler(lv_event_t * e)
-{
-	// Your code here
 }
