@@ -49,6 +49,9 @@ CFLAGS += -I$(THIRD_PARTY_DIR)/libyuv/include
 CFLAGS += -I$(THIRD_PARTY_DIR)/sysroot/usr/include/glib-2.0
 CFLAGS += -I$(THIRD_PARTY_DIR)/sysroot/usr/lib64/glib-2.0/include
 
+# GPIOD headers
+CFLAGS += -I$(THIRD_PARTY_DIR)/sysroot/usr/include
+
 CFLAGS += -Wall -Wextra -Wshadow -Wundef -Wmissing-prototypes -Wno-unused-function -Wpointer-arith -fno-strict-aliasing 
 
 CFLAGS += -D_GNU_SOURCE
@@ -63,7 +66,10 @@ LDFLAGS += -L$(THIRD_PARTY_DIR)/libyuv/lib -lyuv -lstdc++
 # GLib / GIO (GDBus)
 LDFLAGS += -L$(THIRD_PARTY_DIR)/sysroot/usr/lib64 -lgio-2.0 -lgobject-2.0 -lglib-2.0
 
-LDFLAGS += -lasound -lm -pthread -lgpiod
+# GPIO
+LDFLAGS += -L$(THIRD_PARTY_DIR)/sysroot/usr/lib64 -lgpiod
+
+LDFLAGS += -lasound -lm -pthread 
 
 # =====================
 # Funzione ricorsiva per .c NON-LVGL
@@ -103,7 +109,6 @@ all: $(BIN)
 
 $(BIN): $(OBJS)
 	@echo "Linking $(BIN)"
-	# Spostiamo $(LDFLAGS) alla fine per garantire la risoluzione dei simboli
 	$(CC) -o $@ $(OBJS) $(LDFLAGS)
 
 clean:

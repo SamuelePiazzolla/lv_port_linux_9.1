@@ -23,19 +23,19 @@
 
 //*********** GESTIONE STAMPE *********** 
 #if DEBUG
-    #define DEBUG_PRINT(fmt, ...) g_print(fmt, ##__VA_ARGS__)
+    #define DEBUG_PRINT(fmt, ...) printf(fmt, ##__VA_ARGS__)
 #else
     #define DEBUG_PRINT(fmt, ...)
 #endif
 
 #if INFO
-    #define INFO_PRINT(fmt, ...) g_print(fmt, ##__VA_ARGS__)
+    #define INFO_PRINT(fmt, ...) printf(fmt, ##__VA_ARGS__)
 #else
     #define INFO_PRINT(fmt, ...)
 #endif
 
 #if ERROR
-    #define ERROR_PRINT(fmt, ...) g_printerr(fmt, ##__VA_ARGS__)
+    #define ERROR_PRINT(fmt, ...) printf(fmt, ##__VA_ARGS__)
 #else
     #define ERROR_PRINT(fmt, ...)
 #endif
