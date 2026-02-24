@@ -1,5 +1,6 @@
 #include "../../logic.h"
 #include "buzzerLogic.h"
+#include <gpiod.h>
 
 /* 
 =======================================

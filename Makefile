@@ -63,7 +63,7 @@ LDFLAGS += -L$(THIRD_PARTY_DIR)/libyuv/lib -lyuv -lstdc++
 # GLib / GIO (GDBus)
 LDFLAGS += -L$(THIRD_PARTY_DIR)/sysroot/usr/lib64 -lgio-2.0 -lgobject-2.0 -lglib-2.0
 
-LDFLAGS += -lasound -lm -pthread 
+LDFLAGS += -lasound -lm -pthread -lgpiod
 
 # =====================
 # Funzione ricorsiva per .c NON-LVGL

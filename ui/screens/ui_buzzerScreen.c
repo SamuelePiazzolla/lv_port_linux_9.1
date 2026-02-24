@@ -69,7 +69,7 @@ void ui_buzzerScreen_screen_init(void)
     ui_object_set_themeable_style_property(ui_titleBuzzerLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
                                            _ui_theme_alpha_TEXT);
     lv_obj_set_style_text_decor(ui_titleBuzzerLabel, LV_TEXT_DECOR_UNDERLINE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_titleBuzzerLabel, &lv_font_montserrat_34, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_titleBuzzerLabel, &lv_font_montserrat_38, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_buzzerBtn = lv_button_create(ui_buzzerScreen);
     lv_obj_set_width(ui_buzzerBtn, lv_pct(30));
