@@ -33,6 +33,7 @@ void logic_btn_buzzer_click_handler(void)
                 ERROR_PRINT("Errore nell'accensione del buzzer\n");
                 return;
             }
+            INFO_PRINT("--- BUZZER ACCESO ---\n");
             buzzState = ON;
             lv_label_set_text(ui_buzzerBtnLabel, "SPEGNI IL BUZZER");
             lv_obj_add_state(ui_buzzerBtn, LV_STATE_CHECKED);
@@ -45,6 +46,7 @@ void logic_btn_buzzer_click_handler(void)
                 ERROR_PRINT("Errore nello spegnimento del buzzer\n");
                 return;
             }
+            INFO_PRINT("--- BUZZER SPENTO ---\n");
             buzzState = OFF;
             lv_label_set_text(ui_buzzerBtnLabel, "ACCENDI IL BUZZER");
             lv_obj_remove_state(ui_buzzerBtn, LV_STATE_CHECKED);
@@ -83,6 +85,10 @@ void logic_deinit_buzzer_screen(void)
         buzzer_pwm_disable();
         buzzState = OFF;
     }
+
+    // Pulizia bottoni
+    lv_label_set_text(ui_buzzerBtnLabel, "ACCENDI IL BUZZER");
+    lv_obj_remove_state(ui_buzzerBtn, LV_STATE_CHECKED);
 
     INFO_PRINT("--- BUZZER SCREEN DEINIZIALIZZATO ---\n");
     INFO_PRINT("-------------------------------------\n");

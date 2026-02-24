@@ -1,11 +1,8 @@
-#include "buzzerPwm.h"
 #include "../../logic.h"
+#include "buzzerPwm.h"
 
-
-#include <fcntl.h>      // open()
-#include <errno.h>      // errno
-
-
+#include <fcntl.h>      
+#include <errno.h>      
 
 /*
 =====================================
@@ -13,23 +10,36 @@
 =====================================
 */
 
-// Period corrente in nanosecondi (aggiornato ad ogni cambio tono)
-static uint32_t current_period_ns = PWM_DEFAULT_PERIOD_NS;
+static uint32_t current_period_ns = PWM_DEFAULT_PERIOD_NS;  // Period corrente in nanosecondi (aggiornato ad ogni cambio tono)
 
 /*
 =====================================
-    FUNZIONI PRIVATE
+    PROTOTIPI
 =====================================
 */
 
 /**
  * @brief  Scrive una stringa in un file sysfs.
  *         Apre, scrive e chiude il file descriptor ad ogni chiamata
- *         (richiesto dal kernel per i file sysfs).
  * @param  path   Percorso assoluto del file sysfs
  * @param  value  Stringa da scrivere
  * @return  0 successo | -1 errore
  */
+static int sysfs_write(const char *path, const char *value);
+/**
+ * @brief  Aggiorna period e duty_cycle sul canale PWM.
+ *         Il duty_cycle viene sempre impostato al 50% del period.
+ * @param  new_period_ns  Nuovo period in nanosecondi
+ * @return  0 successo | -1 errore
+ */
+static int pwm_set_period(uint32_t new_period_ns);
+
+/*
+=====================================
+    IMPLEMENTAZIONI
+=====================================
+*/
+
 static int sysfs_write(const char *path, const char *value)
 {
     int fd = open(path, O_WRONLY);
@@ -52,16 +62,6 @@ static int sysfs_write(const char *path, const char *value)
     return 0;
 }
 
-/**
- * @brief  Aggiorna period e duty_cycle sul canale PWM.
- *         Il duty_cycle viene sempre impostato al 50% del period.
- *         ATTENZIONE: quando si abbassa il period (tono più alto) bisogna
- *         prima aggiornare il duty_cycle e poi il period, altrimenti il kernel
- *         può rifiutare la scrittura (duty_cycle > period).
- *         Viceversa quando si alza il period (tono più basso) prima il period.
- * @param  new_period_ns  Nuovo period in nanosecondi
- * @return  0 successo | -1 errore
- */
 static int pwm_set_period(uint32_t new_period_ns)
 {
     char buf_period[32];
@@ -70,7 +70,7 @@ static int pwm_set_period(uint32_t new_period_ns)
     uint32_t new_duty_ns = new_period_ns / 2;   // 50% duty cycle
 
     snprintf(buf_period, sizeof(buf_period), "%u", new_period_ns);
-    snprintf(buf_duty,   sizeof(buf_duty),   "%u", new_duty_ns);
+    snprintf(buf_duty, sizeof(buf_duty), "%u", new_duty_ns);
 
     int ret = 0;
 
@@ -78,12 +78,12 @@ static int pwm_set_period(uint32_t new_period_ns)
     {
         // Tono più alto: prima duty_cycle poi period
         ret |= sysfs_write(PWM_CHANNEL_PATH "/duty_cycle", buf_duty);
-        ret |= sysfs_write(PWM_CHANNEL_PATH "/period",     buf_period);
+        ret |= sysfs_write(PWM_CHANNEL_PATH "/period", buf_period);
     }
     else
     {
         // Tono più basso o uguale: prima period poi duty_cycle
-        ret |= sysfs_write(PWM_CHANNEL_PATH "/period",     buf_period);
+        ret |= sysfs_write(PWM_CHANNEL_PATH "/period", buf_period);
         ret |= sysfs_write(PWM_CHANNEL_PATH "/duty_cycle", buf_duty);
     }
 
@@ -103,8 +103,7 @@ static int pwm_set_period(uint32_t new_period_ns)
 
 int buzzer_pwm_setup(void)
 {
-    // Esporta il canale PWM (può già essere esportato: in quel caso il kernel
-    // restituisce EBUSY, che ignoriamo volutamente)
+    // Esporta il canale PWM (se già esportato: EBUSY, che ignoriamo volutamente)
     int fd = open(PWM_CHIP_PATH "/export", O_WRONLY);
     if (fd < 0)
     {
@@ -114,9 +113,7 @@ int buzzer_pwm_setup(void)
     write(fd, PWM_CHANNEL, strlen(PWM_CHANNEL));    // ignoriamo EBUSY deliberatamente
     close(fd);
 
-    // Imposta period e duty_cycle di default
-    // Il canale è appena esportato quindi current_period_ns != new → usiamo il ramo
-    // "tono più basso" (period cresce da 0): prima period poi duty
+    // Imposta period e duty_cycle di default, prima period e poi duty cycle 
     char buf[32];
     snprintf(buf, sizeof(buf), "%u", PWM_DEFAULT_PERIOD_NS);
     if (sysfs_write(PWM_CHANNEL_PATH "/period", buf) != 0)
@@ -148,7 +145,7 @@ int buzzer_pwm_tone_up(void)
 
     uint32_t new_period = current_period_ns - PWM_TONE_STEP_NS;
 
-    // Clamp al limite minimo
+    // Il periodo non può essere inferiore al minimo
     if (new_period < PWM_MIN_PERIOD_NS)
         new_period = PWM_MIN_PERIOD_NS;
 
@@ -162,7 +159,7 @@ int buzzer_pwm_tone_down(void)
 
     uint32_t new_period = current_period_ns + PWM_TONE_STEP_NS;
 
-    // Clamp al limite massimo
+    // Il periodo non puà essere maggiore del massimo
     if (new_period > PWM_MAX_PERIOD_NS)
         new_period = PWM_MAX_PERIOD_NS;
 
