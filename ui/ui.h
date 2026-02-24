@@ -29,6 +29,7 @@ extern "C" {
 #include "screens/ui_connectivityScreen.h"
 #include "screens/ui_mainCommsScreen.h"
 #include "screens/ui_canScreen.h"
+#include "screens/ui_buzzerScreen.h"
 
 ///////////////////// VARIABLES ////////////////////
 

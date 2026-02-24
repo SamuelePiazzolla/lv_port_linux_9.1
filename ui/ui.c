@@ -39,6 +39,7 @@ void ui_init(void)
     ui_connectivityScreen_screen_init();
     ui_mainCommsScreen_screen_init();
     ui_canScreen_screen_init();
+    ui_buzzerScreen_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_startScreen);
 }
@@ -52,4 +53,5 @@ void ui_destroy(void)
     ui_connectivityScreen_screen_destroy();
     ui_mainCommsScreen_screen_destroy();
     ui_canScreen_screen_destroy();
+    ui_buzzerScreen_screen_destroy();
 }

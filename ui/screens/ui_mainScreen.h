@@ -37,6 +37,9 @@ extern lv_obj_t * ui_labelBtnAudio;
 extern void ui_event_btnCamera(lv_event_t * e);
 extern lv_obj_t * ui_btnCamera;
 extern lv_obj_t * ui_labelBtnCamera;
+extern void ui_event_btnBuzzer(lv_event_t * e);
+extern lv_obj_t * ui_btnBuzzer;
+extern lv_obj_t * ui_labelBtnBuzzer;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

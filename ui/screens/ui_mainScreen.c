@@ -24,6 +24,8 @@ lv_obj_t * ui_btnAudio = NULL;
 lv_obj_t * ui_labelBtnAudio = NULL;
 lv_obj_t * ui_btnCamera = NULL;
 lv_obj_t * ui_labelBtnCamera = NULL;
+lv_obj_t * ui_btnBuzzer = NULL;
+lv_obj_t * ui_labelBtnBuzzer = NULL;
 // event funtions
 void ui_event_btnWiFiBth(lv_event_t * e)
 {
@@ -67,6 +69,15 @@ void ui_event_btnCamera(lv_event_t * e)
 
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_cameraScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_cameraScreen_screen_init);
+    }
+}
+
+void ui_event_btnBuzzer(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_buzzerScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_buzzerScreen_screen_init);
     }
 }
 
@@ -334,11 +345,34 @@ void ui_mainScreen_screen_init(void)
                                            _ui_theme_alpha_TEXT);
     lv_obj_set_style_text_font(ui_labelBtnCamera, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    ui_btnBuzzer = lv_button_create(ui_Multimedia);
+    lv_obj_set_width(ui_btnBuzzer, lv_pct(50));
+    lv_obj_set_height(ui_btnBuzzer, LV_SIZE_CONTENT);    /// 50
+    lv_obj_set_align(ui_btnBuzzer, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_btnBuzzer, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_btnBuzzer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_btnBuzzer, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_BTN);
+    ui_object_set_themeable_style_property(ui_btnBuzzer, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_BTN);
+
+    ui_labelBtnBuzzer = lv_label_create(ui_btnBuzzer);
+    lv_obj_set_width(ui_labelBtnBuzzer, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_labelBtnBuzzer, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_labelBtnBuzzer, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_labelBtnBuzzer, "TEST BUZZER");
+    ui_object_set_themeable_style_property(ui_labelBtnBuzzer, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
+                                           _ui_theme_color_TEXT);
+    ui_object_set_themeable_style_property(ui_labelBtnBuzzer, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
+                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_font(ui_labelBtnBuzzer, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
+
     lv_obj_add_event_cb(ui_btnWiFiBth, ui_event_btnWiFiBth, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_btnEthRs, ui_event_btnEthRs, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_btnCan, ui_event_btnCan, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_btnAudio, ui_event_btnAudio, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_btnCamera, ui_event_btnCamera, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_btnBuzzer, ui_event_btnBuzzer, LV_EVENT_ALL, NULL);
 
 }
 
@@ -366,5 +400,7 @@ void ui_mainScreen_screen_destroy(void)
     ui_labelBtnAudio = NULL;
     ui_btnCamera = NULL;
     ui_labelBtnCamera = NULL;
+    ui_btnBuzzer = NULL;
+    ui_labelBtnBuzzer = NULL;
 
 }

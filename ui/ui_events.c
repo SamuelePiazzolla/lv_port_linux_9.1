@@ -6,7 +6,8 @@
 #include "ui.h"
 #include "../logic/media/mediaLogic.h"
 #include "../logic/connectivity/connectivityLogic.h"
-#include "../logic/communications/communicationsLogic.h"
+#include "../logic/communications/mainCommsLogic.h"
+#include "../logic/communications/can/canLogic.h"
 
 /*
 =====================================
@@ -240,4 +241,19 @@ void sendTestMessageComms(lv_event_t * e)
 {
 	// Your code here
 	logic_send_test_message_comms();
+}
+
+void initBuzzerScreen(lv_event_t * e)
+{
+	// Your code here
+}
+
+void deinitBuzzerScreen(lv_event_t * e)
+{
+	// Your code here
+}
+
+void btnBuzzerClkHandler(lv_event_t * e)
+{
+	// Your code here
 }

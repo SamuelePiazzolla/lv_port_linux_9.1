@@ -7,6 +7,7 @@ SET(SOURCES components/ui_comp_header.c
     screens/ui_connectivityScreen.c
     screens/ui_mainCommsScreen.c
     screens/ui_canScreen.c
+    screens/ui_buzzerScreen.c
     ui_theme_manager.c
     ui_themes.c
     ui.c

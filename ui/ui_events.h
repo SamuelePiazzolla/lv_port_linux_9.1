@@ -45,6 +45,9 @@ void deinitRsMode(lv_event_t * e);
 void sendTestMessageComms(lv_event_t * e);
 void initCanScreen(lv_event_t * e);
 void deinitCanScreen(lv_event_t * e);
+void initBuzzerScreen(lv_event_t * e);
+void deinitBuzzerScreen(lv_event_t * e);
+void btnBuzzerClkHandler(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/
