@@ -143,16 +143,19 @@ void stopRecVideo(lv_event_t * e)
 void initBuzzerScreen(lv_event_t * e)
 {
 	// Your code here
+	logic_init_buzzer_screen();
 }
 
 void deinitBuzzerScreen(lv_event_t * e)
 {
 	// Your code here
+	logic_deinit_buzzer_screen();
 }
 
 void btnBuzzerClkHandler(lv_event_t * e)
 {
 	// Your code here
+	logic_btn_buzzer_click_handler();
 }
 
 

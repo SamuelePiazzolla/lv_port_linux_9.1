@@ -9,5 +9,6 @@
 
 #include "camera/cameraLogic.h"
 #include "audio/audioLogic.h"
+#include "buzzer/buzzerLogic.h"
 
 #endif
