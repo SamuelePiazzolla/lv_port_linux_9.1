@@ -41,8 +41,13 @@ lv_obj_t * ui_Header_create(lv_obj_t * comp_parent)
     lv_label_set_text(cui_labelHeader, "SOM LITE DEMO");
     lv_obj_set_style_text_color(cui_labelHeader, lv_color_hex(0xEDEDED), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(cui_labelHeader, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_decor(cui_labelHeader, LV_TEXT_DECOR_UNDERLINE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(cui_labelHeader, &lv_font_montserrat_24, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(cui_labelHeader, &ui_font_speedLabelFont, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_object_set_themeable_style_property(cui_labelHeader, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_COLOR,
+                                           _ui_theme_color_TEXT);
+    ui_object_set_themeable_style_property(cui_labelHeader, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_OPA,
+                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_border_width(cui_labelHeader, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(cui_labelHeader, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_homeButton;
     cui_homeButton = lv_button_create(cui_Header);
@@ -62,7 +67,7 @@ lv_obj_t * ui_Header_create(lv_obj_t * comp_parent)
     lv_obj_set_height(cui_homeLabel, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(cui_homeLabel, LV_ALIGN_CENTER);
     lv_label_set_text(cui_homeLabel, "HOME");
-    lv_obj_set_style_text_font(cui_homeLabel, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(cui_homeLabel, &ui_font_energyBatteryLabelFont, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t ** children = lv_malloc(sizeof(lv_obj_t *) * _UI_COMP_HEADER_NUM);
     children[UI_COMP_HEADER_HEADER] = cui_Header;

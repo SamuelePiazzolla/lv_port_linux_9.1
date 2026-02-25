@@ -6,7 +6,7 @@
 #include "../ui.h"
 
 lv_obj_t * ui_connectivityScreen = NULL;
-lv_obj_t * ui_Header1 = NULL;
+lv_obj_t * ui_headerConnectivityScreen = NULL;
 lv_obj_t * ui_connectivityBody = NULL;
 lv_obj_t * ui_connectivityList = NULL;
 lv_obj_t * ui_connectivitySelectorCtn = NULL;
@@ -35,6 +35,14 @@ void ui_event_connectivityScreen(lv_event_t * e)
     }
     if(event_code == LV_EVENT_SCREEN_UNLOADED) {
         deinitConnectivityScreen(e);
+    }
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT) {
+        lv_indev_wait_release(lv_indev_active());
+        _ui_screen_change(&ui_nfcScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0, &ui_nfcScreen_screen_init);
+    }
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_LEFT) {
+        lv_indev_wait_release(lv_indev_active());
+        _ui_screen_change(&ui_nfcScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0, &ui_nfcScreen_screen_init);
     }
 }
 
@@ -95,9 +103,9 @@ void ui_connectivityScreen_screen_init(void)
     ui_object_set_themeable_style_property(ui_connectivityScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
                                            _ui_theme_alpha_BACKGROUND);
 
-    ui_Header1 = ui_Header_create(ui_connectivityScreen);
-    lv_obj_set_x(ui_Header1, 0);
-    lv_obj_set_y(ui_Header1, -1);
+    ui_headerConnectivityScreen = ui_Header_create(ui_connectivityScreen);
+    lv_obj_set_x(ui_headerConnectivityScreen, 0);
+    lv_obj_set_y(ui_headerConnectivityScreen, -1);
 
     ui_connectivityBody = lv_obj_create(ui_connectivityScreen);
     lv_obj_remove_style_all(ui_connectivityBody);
@@ -306,7 +314,7 @@ void ui_connectivityScreen_screen_destroy(void)
 
     // NULL screen variables
     ui_connectivityScreen = NULL;
-    ui_Header1 = NULL;
+    ui_headerConnectivityScreen = NULL;
     ui_connectivityBody = NULL;
     ui_connectivityList = NULL;
     ui_connectivitySelectorCtn = NULL;

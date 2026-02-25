@@ -15,7 +15,7 @@ extern void ui_audioScreen_screen_init(void);
 extern void ui_audioScreen_screen_destroy(void);
 extern void ui_event_audioScreen(lv_event_t * e);
 extern lv_obj_t * ui_audioScreen;
-extern lv_obj_t * ui_Header4;
+extern lv_obj_t * ui_headerAudioScreen;
 extern lv_obj_t * ui_bodyAudio;
 extern lv_obj_t * ui_micContainer;
 extern lv_obj_t * ui_micContainerLabel;

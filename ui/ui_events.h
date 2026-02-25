@@ -48,6 +48,8 @@ void deinitCanScreen(lv_event_t * e);
 void initBuzzerScreen(lv_event_t * e);
 void deinitBuzzerScreen(lv_event_t * e);
 void btnBuzzerClkHandler(lv_event_t * e);
+void initNfcScreen(lv_event_t * e);
+void deinitNfcScreen(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

@@ -15,7 +15,7 @@ extern void ui_buzzerScreen_screen_init(void);
 extern void ui_buzzerScreen_screen_destroy(void);
 extern void ui_event_buzzerScreen(lv_event_t * e);
 extern lv_obj_t * ui_buzzerScreen;
-extern lv_obj_t * ui_Header2;
+extern lv_obj_t * ui_headerBuzzerScreen;
 extern lv_obj_t * ui_titleBuzzerLabel;
 extern void ui_event_buzzerBtn(lv_event_t * e);
 extern lv_obj_t * ui_buzzerBtn;

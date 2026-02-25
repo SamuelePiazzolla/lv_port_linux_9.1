@@ -6,12 +6,12 @@
 #include "../ui.h"
 
 lv_obj_t * ui_mainScreen = NULL;
-lv_obj_t * ui_Header = NULL;
-lv_obj_t * ui_Body = NULL;
 lv_obj_t * ui_Connectivity = NULL;
 lv_obj_t * ui_titleConnectivity = NULL;
 lv_obj_t * ui_btnWiFiBth = NULL;
 lv_obj_t * ui_labelBtnWiFiBth = NULL;
+lv_obj_t * ui_btnNfc = NULL;
+lv_obj_t * ui_labelBtnNfc = NULL;
 lv_obj_t * ui_Communication = NULL;
 lv_obj_t * ui_titleCommunication = NULL;
 lv_obj_t * ui_btnEthRs = NULL;
@@ -28,6 +28,15 @@ lv_obj_t * ui_btnBuzzer = NULL;
 lv_obj_t * ui_labelBtnBuzzer = NULL;
 // event funtions
 void ui_event_btnWiFiBth(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_connectivityScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_connectivityScreen_screen_init);
+    }
+}
+
+void ui_event_btnNfc(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
@@ -87,25 +96,14 @@ void ui_mainScreen_screen_init(void)
 {
     ui_mainScreen = lv_obj_create(NULL);
     lv_obj_remove_flag(ui_mainScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_flex_flow(ui_mainScreen, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_mainScreen, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER);
     ui_object_set_themeable_style_property(ui_mainScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
                                            _ui_theme_color_BACKGROUND);
     ui_object_set_themeable_style_property(ui_mainScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
                                            _ui_theme_alpha_BACKGROUND);
 
-    ui_Header = ui_Header_create(ui_mainScreen);
-    lv_obj_set_x(ui_Header, 0);
-    lv_obj_set_y(ui_Header, -1);
-
-    ui_Body = lv_obj_create(ui_mainScreen);
-    lv_obj_remove_style_all(ui_Body);
-    lv_obj_set_width(ui_Body, lv_pct(100));
-    lv_obj_set_height(ui_Body, lv_pct(88));
-    lv_obj_set_align(ui_Body, LV_ALIGN_BOTTOM_MID);
-    lv_obj_set_flex_flow(ui_Body, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_Body, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_Body, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_Connectivity = lv_obj_create(ui_Body);
+    ui_Connectivity = lv_obj_create(ui_mainScreen);
     lv_obj_set_height(ui_Connectivity, lv_pct(100));
     lv_obj_set_flex_grow(ui_Connectivity, 1);
     lv_obj_set_x(ui_Connectivity, -79);
@@ -172,7 +170,29 @@ void ui_mainScreen_screen_init(void)
                                            _ui_theme_alpha_TEXT);
     lv_obj_set_style_text_font(ui_labelBtnWiFiBth, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Communication = lv_obj_create(ui_Body);
+    ui_btnNfc = lv_button_create(ui_Connectivity);
+    lv_obj_set_width(ui_btnNfc, lv_pct(50));
+    lv_obj_set_height(ui_btnNfc, LV_SIZE_CONTENT);    /// 50
+    lv_obj_set_align(ui_btnNfc, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_btnNfc, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_btnNfc, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_btnNfc, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_BTN);
+    ui_object_set_themeable_style_property(ui_btnNfc, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_BTN);
+
+    ui_labelBtnNfc = lv_label_create(ui_btnNfc);
+    lv_obj_set_width(ui_labelBtnNfc, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_labelBtnNfc, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_labelBtnNfc, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_labelBtnNfc, "TEST NFC");
+    ui_object_set_themeable_style_property(ui_labelBtnNfc, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
+                                           _ui_theme_color_TEXT);
+    ui_object_set_themeable_style_property(ui_labelBtnNfc, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
+                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_font(ui_labelBtnNfc, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Communication = lv_obj_create(ui_mainScreen);
     lv_obj_set_height(ui_Communication, lv_pct(100));
     lv_obj_set_flex_grow(ui_Communication, 1);
     lv_obj_set_x(ui_Communication, -2);
@@ -256,7 +276,7 @@ void ui_mainScreen_screen_init(void)
                                            _ui_theme_alpha_TEXT);
     lv_obj_set_style_text_font(ui_labelBtnCan, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Multimedia = lv_obj_create(ui_Body);
+    ui_Multimedia = lv_obj_create(ui_mainScreen);
     lv_obj_set_height(ui_Multimedia, lv_pct(100));
     lv_obj_set_flex_grow(ui_Multimedia, 1);
     lv_obj_set_x(ui_Multimedia, -249);
@@ -368,6 +388,7 @@ void ui_mainScreen_screen_init(void)
     lv_obj_set_style_text_font(ui_labelBtnBuzzer, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_btnWiFiBth, ui_event_btnWiFiBth, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_btnNfc, ui_event_btnNfc, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_btnEthRs, ui_event_btnEthRs, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_btnCan, ui_event_btnCan, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_btnAudio, ui_event_btnAudio, LV_EVENT_ALL, NULL);
@@ -382,12 +403,12 @@ void ui_mainScreen_screen_destroy(void)
 
     // NULL screen variables
     ui_mainScreen = NULL;
-    ui_Header = NULL;
-    ui_Body = NULL;
     ui_Connectivity = NULL;
     ui_titleConnectivity = NULL;
     ui_btnWiFiBth = NULL;
     ui_labelBtnWiFiBth = NULL;
+    ui_btnNfc = NULL;
+    ui_labelBtnNfc = NULL;
     ui_Communication = NULL;
     ui_titleCommunication = NULL;
     ui_btnEthRs = NULL;

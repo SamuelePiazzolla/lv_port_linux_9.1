@@ -22,7 +22,6 @@ extern "C" {
 
 ///////////////////// SCREENS ////////////////////
 
-#include "screens/ui_startScreen.h"
 #include "screens/ui_mainScreen.h"
 #include "screens/ui_audioScreen.h"
 #include "screens/ui_cameraScreen.h"
@@ -30,6 +29,7 @@ extern "C" {
 #include "screens/ui_mainCommsScreen.h"
 #include "screens/ui_canScreen.h"
 #include "screens/ui_buzzerScreen.h"
+#include "screens/ui_nfcScreen.h"
 
 ///////////////////// VARIABLES ////////////////////
 

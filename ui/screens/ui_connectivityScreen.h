@@ -15,7 +15,7 @@ extern void ui_connectivityScreen_screen_init(void);
 extern void ui_connectivityScreen_screen_destroy(void);
 extern void ui_event_connectivityScreen(lv_event_t * e);
 extern lv_obj_t * ui_connectivityScreen;
-extern lv_obj_t * ui_Header1;
+extern lv_obj_t * ui_headerConnectivityScreen;
 extern lv_obj_t * ui_connectivityBody;
 extern lv_obj_t * ui_connectivityList;
 extern lv_obj_t * ui_connectivitySelectorCtn;

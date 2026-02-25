@@ -6,8 +6,7 @@
 #include "../ui.h"
 
 lv_obj_t * ui_mainCommsScreen = NULL;
-lv_obj_t * ui_Header3 = NULL;
-lv_obj_t * ui_bodyComms = NULL;
+lv_obj_t * ui_headerMainCommsScreen = NULL;
 lv_obj_t * ui_miniHeaderComms = NULL;
 lv_obj_t * ui_ethBtn = NULL;
 lv_obj_t * ui_ehtBtnLabel = NULL;
@@ -80,27 +79,18 @@ void ui_mainCommsScreen_screen_init(void)
 {
     ui_mainCommsScreen = lv_obj_create(NULL);
     lv_obj_remove_flag(ui_mainCommsScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_flex_flow(ui_mainCommsScreen, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(ui_mainCommsScreen, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     ui_object_set_themeable_style_property(ui_mainCommsScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
                                            _ui_theme_color_BACKGROUND);
     ui_object_set_themeable_style_property(ui_mainCommsScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
                                            _ui_theme_alpha_BACKGROUND);
 
-    ui_Header3 = ui_Header_create(ui_mainCommsScreen);
-    lv_obj_set_x(ui_Header3, 0);
-    lv_obj_set_y(ui_Header3, -1);
+    ui_headerMainCommsScreen = ui_Header_create(ui_mainCommsScreen);
+    lv_obj_set_x(ui_headerMainCommsScreen, 0);
+    lv_obj_set_y(ui_headerMainCommsScreen, -1);
 
-    ui_bodyComms = lv_obj_create(ui_mainCommsScreen);
-    lv_obj_remove_style_all(ui_bodyComms);
-    lv_obj_set_width(ui_bodyComms, lv_pct(100));
-    lv_obj_set_height(ui_bodyComms, lv_pct(88));
-    lv_obj_set_align(ui_bodyComms, LV_ALIGN_BOTTOM_MID);
-    lv_obj_set_flex_flow(ui_bodyComms, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_bodyComms, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_bodyComms, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_pad_row(ui_bodyComms, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_column(ui_bodyComms, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_miniHeaderComms = lv_obj_create(ui_bodyComms);
+    ui_miniHeaderComms = lv_obj_create(ui_mainCommsScreen);
     lv_obj_remove_style_all(ui_miniHeaderComms);
     lv_obj_set_width(ui_miniHeaderComms, lv_pct(100));
     lv_obj_set_height(ui_miniHeaderComms, lv_pct(8));
@@ -150,7 +140,7 @@ void ui_mainCommsScreen_screen_init(void)
     lv_obj_set_align(ui_rsBtnLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_rsBtnLabel, "RS-485");
 
-    ui_commsTextArea = lv_textarea_create(ui_bodyComms);
+    ui_commsTextArea = lv_textarea_create(ui_mainCommsScreen);
     lv_obj_set_width(ui_commsTextArea, lv_pct(100));
     lv_obj_set_flex_grow(ui_commsTextArea, 1);
     lv_obj_set_align(ui_commsTextArea, LV_ALIGN_CENTER);
@@ -164,7 +154,7 @@ void ui_mainCommsScreen_screen_init(void)
     lv_obj_set_style_border_color(ui_commsTextArea, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_commsTextArea, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_testCommsBtnCtn = lv_obj_create(ui_bodyComms);
+    ui_testCommsBtnCtn = lv_obj_create(ui_mainCommsScreen);
     lv_obj_remove_style_all(ui_testCommsBtnCtn);
     lv_obj_set_width(ui_testCommsBtnCtn, lv_pct(100));
     lv_obj_set_height(ui_testCommsBtnCtn, lv_pct(9));
@@ -210,8 +200,7 @@ void ui_mainCommsScreen_screen_destroy(void)
 
     // NULL screen variables
     ui_mainCommsScreen = NULL;
-    ui_Header3 = NULL;
-    ui_bodyComms = NULL;
+    ui_headerMainCommsScreen = NULL;
     ui_miniHeaderComms = NULL;
     ui_ethBtn = NULL;
     ui_ehtBtnLabel = NULL;

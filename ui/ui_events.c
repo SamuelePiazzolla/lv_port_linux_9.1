@@ -230,6 +230,22 @@ void deinitBthMode(lv_event_t * e)
 	setConnectionMode(NONE_CONNECTIVITY_MODE);
 }
 
+/*
+-------------------------------------
+	NFC
+-------------------------------------
+*/
+
+void initNfcScreen(lv_event_t * e)
+{
+	// Your code here
+}
+
+void deinitNfcScreen(lv_event_t * e)
+{
+	// Your code here
+}
+
 
 
 /*

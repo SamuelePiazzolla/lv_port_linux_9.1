@@ -15,7 +15,7 @@ extern void ui_canScreen_screen_init(void);
 extern void ui_canScreen_screen_destroy(void);
 extern void ui_event_canScreen(lv_event_t * e);
 extern lv_obj_t * ui_canScreen;
-extern lv_obj_t * ui_Header6;
+extern lv_obj_t * ui_headerCanScreen;
 extern lv_obj_t * ui_bodyCanContainer;
 extern lv_obj_t * ui_batteryContainer;
 extern lv_obj_t * ui_batteryArc;

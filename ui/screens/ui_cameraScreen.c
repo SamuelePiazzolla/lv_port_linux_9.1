@@ -6,7 +6,7 @@
 #include "../ui.h"
 
 lv_obj_t * ui_cameraScreen = NULL;
-lv_obj_t * ui_Header5 = NULL;
+lv_obj_t * ui_headerCameraScreen = NULL;
 lv_obj_t * ui_cameraContainer = NULL;
 lv_obj_t * ui_videoModeSelectorBtnContainer = NULL;
 lv_obj_t * ui_loadVideoBtn = NULL;
@@ -29,11 +29,11 @@ void ui_event_cameraScreen(lv_event_t * e)
 
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT) {
         lv_indev_wait_release(lv_indev_active());
-        _ui_screen_change(&ui_buzzerScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 300, 0, &ui_buzzerScreen_screen_init);
+        _ui_screen_change(&ui_audioScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 300, 0, &ui_audioScreen_screen_init);
     }
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_LEFT) {
         lv_indev_wait_release(lv_indev_active());
-        _ui_screen_change(&ui_audioScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 300, 0, &ui_audioScreen_screen_init);
+        _ui_screen_change(&ui_buzzerScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 300, 0, &ui_buzzerScreen_screen_init);
     }
     if(event_code == LV_EVENT_SCREEN_LOADED) {
         initImgDisplayer(e);
@@ -107,9 +107,9 @@ void ui_cameraScreen_screen_init(void)
     ui_object_set_themeable_style_property(ui_cameraScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
                                            _ui_theme_alpha_BACKGROUND);
 
-    ui_Header5 = ui_Header_create(ui_cameraScreen);
-    lv_obj_set_x(ui_Header5, 0);
-    lv_obj_set_y(ui_Header5, -1);
+    ui_headerCameraScreen = ui_Header_create(ui_cameraScreen);
+    lv_obj_set_x(ui_headerCameraScreen, 0);
+    lv_obj_set_y(ui_headerCameraScreen, -1);
 
     ui_cameraContainer = lv_obj_create(ui_cameraScreen);
     lv_obj_remove_style_all(ui_cameraContainer);
@@ -292,7 +292,7 @@ void ui_cameraScreen_screen_destroy(void)
 
     // NULL screen variables
     ui_cameraScreen = NULL;
-    ui_Header5 = NULL;
+    ui_headerCameraScreen = NULL;
     ui_cameraContainer = NULL;
     ui_videoModeSelectorBtnContainer = NULL;
     ui_loadVideoBtn = NULL;

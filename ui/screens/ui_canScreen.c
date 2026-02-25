@@ -6,7 +6,7 @@
 #include "../ui.h"
 
 lv_obj_t * ui_canScreen = NULL;
-lv_obj_t * ui_Header6 = NULL;
+lv_obj_t * ui_headerCanScreen = NULL;
 lv_obj_t * ui_bodyCanContainer = NULL;
 lv_obj_t * ui_batteryContainer = NULL;
 lv_obj_t * ui_batteryArc = NULL;
@@ -74,9 +74,9 @@ void ui_canScreen_screen_init(void)
     ui_object_set_themeable_style_property(ui_canScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
                                            _ui_theme_alpha_BACKGROUND);
 
-    ui_Header6 = ui_Header_create(ui_canScreen);
-    lv_obj_set_x(ui_Header6, 0);
-    lv_obj_set_y(ui_Header6, -1);
+    ui_headerCanScreen = ui_Header_create(ui_canScreen);
+    lv_obj_set_x(ui_headerCanScreen, 0);
+    lv_obj_set_y(ui_headerCanScreen, -1);
 
     ui_bodyCanContainer = lv_obj_create(ui_canScreen);
     lv_obj_remove_style_all(ui_bodyCanContainer);
@@ -100,6 +100,7 @@ void ui_canScreen_screen_init(void)
     lv_obj_set_x(ui_batteryArc, -208);
     lv_obj_set_y(ui_batteryArc, -68);
     lv_obj_set_align(ui_batteryArc, LV_ALIGN_CENTER);
+    lv_obj_remove_flag(ui_batteryArc, LV_OBJ_FLAG_CLICKABLE);      /// Flags
     lv_arc_set_value(ui_batteryArc, 50);
     lv_arc_set_bg_angles(ui_batteryArc, 180, 0);
     lv_arc_set_mode(ui_batteryArc, LV_ARC_MODE_REVERSE);
@@ -117,7 +118,8 @@ void ui_canScreen_screen_init(void)
     lv_obj_set_align(ui_batteryInfoContainer, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_batteryInfoContainer, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_batteryInfoContainer, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_obj_remove_flag(ui_batteryInfoContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_remove_flag(ui_batteryInfoContainer,
+                       LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_SCROLLABLE);     /// Flags
     lv_obj_set_style_pad_left(ui_batteryInfoContainer, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_batteryInfoContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_batteryInfoContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -423,7 +425,8 @@ void ui_canScreen_screen_init(void)
     lv_obj_set_align(ui_energyInfoContainer, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_energyInfoContainer, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_energyInfoContainer, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_END, LV_FLEX_ALIGN_END);
-    lv_obj_remove_flag(ui_energyInfoContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_remove_flag(ui_energyInfoContainer,
+                       LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_SCROLLABLE);     /// Flags
     lv_obj_set_style_pad_left(ui_energyInfoContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_energyInfoContainer, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_energyInfoContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -474,7 +477,7 @@ void ui_canScreen_screen_destroy(void)
 
     // NULL screen variables
     ui_canScreen = NULL;
-    ui_Header6 = NULL;
+    ui_headerCanScreen = NULL;
     ui_bodyCanContainer = NULL;
     ui_batteryContainer = NULL;
     ui_batteryArc = NULL;

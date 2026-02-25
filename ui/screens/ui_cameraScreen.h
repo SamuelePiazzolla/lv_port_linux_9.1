@@ -15,7 +15,7 @@ extern void ui_cameraScreen_screen_init(void);
 extern void ui_cameraScreen_screen_destroy(void);
 extern void ui_event_cameraScreen(lv_event_t * e);
 extern lv_obj_t * ui_cameraScreen;
-extern lv_obj_t * ui_Header5;
+extern lv_obj_t * ui_headerCameraScreen;
 extern lv_obj_t * ui_cameraContainer;
 extern lv_obj_t * ui_videoModeSelectorBtnContainer;
 extern void ui_event_loadVideoBtn(lv_event_t * e);

@@ -14,13 +14,14 @@ extern "C" {
 extern void ui_mainScreen_screen_init(void);
 extern void ui_mainScreen_screen_destroy(void);
 extern lv_obj_t * ui_mainScreen;
-extern lv_obj_t * ui_Header;
-extern lv_obj_t * ui_Body;
 extern lv_obj_t * ui_Connectivity;
 extern lv_obj_t * ui_titleConnectivity;
 extern void ui_event_btnWiFiBth(lv_event_t * e);
 extern lv_obj_t * ui_btnWiFiBth;
 extern lv_obj_t * ui_labelBtnWiFiBth;
+extern void ui_event_btnNfc(lv_event_t * e);
+extern lv_obj_t * ui_btnNfc;
+extern lv_obj_t * ui_labelBtnNfc;
 extern lv_obj_t * ui_Communication;
 extern lv_obj_t * ui_titleCommunication;
 extern void ui_event_btnEthRs(lv_event_t * e);
