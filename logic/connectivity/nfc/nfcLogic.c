@@ -25,8 +25,7 @@ typedef enum {
     NFC_STATE_COOLDOWN        /* Tag rimosso, attesa prima di nuovo discovery */
 } nfc_state_t;
 
-/* Generazione controller NFC */
-static char gNfcController_generation = 0;
+
 
 /* 
 =======================================
@@ -34,17 +33,11 @@ static char gNfcController_generation = 0;
 =======================================
 */
 
-/* Thread di polling NFC */
-static pthread_t nfc_thread;
-
-/* Flag atomico per controllare l'esecuzione del thread */
-static atomic_bool nfc_running = false;
-
-/* Handle per la comunicazione con il controller NFC */
-static int nfc_handle = -1;
-
-/* Stato corrente del sistema NFC */
-static nfc_state_t current_state = NFC_STATE_IDLE;
+static char gNfcController_generation = 0;              /* Generazione controller NFC */
+static pthread_t nfc_thread;                            /* Thread di polling NFC */
+static atomic_bool nfc_running = false;                 /* Flag atomico per controllare l'esecuzione del thread */
+static int nfc_handle = -1;                             /* Handle per la comunicazione con il controller NFC */
+static nfc_state_t current_state = NFC_STATE_IDLE;      /* Stato corrente del sistema NFC */
 
 /* 
 =======================================
