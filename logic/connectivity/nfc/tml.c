@@ -6,8 +6,8 @@
 #include <sys/time.h>
 #include <sys/ioctl.h>
 #include <poll.h>
-#include <tml.h>
 #include <linux/spi/spidev.h>
+#include "tml.h"
 
 #define SPI_BUS         "/dev/spidev0.0"
 #define SPI_MODE	SPI_MODE_0

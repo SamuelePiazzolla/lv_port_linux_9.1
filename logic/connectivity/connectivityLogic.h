@@ -19,9 +19,6 @@
 
 #include <glib.h>
 #include <gio/gio.h>
-#include "nfc/nfcLogic.h"
-#include "./bth/bthLogic.h"
-#include "./wifi/wifiLogic.h"
 
 /*
 =====================================
