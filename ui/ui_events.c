@@ -239,11 +239,13 @@ void deinitBthMode(lv_event_t * e)
 void initNfcScreen(lv_event_t * e)
 {
 	// Your code here
+	logic_init_nfc();
 }
 
 void deinitNfcScreen(lv_event_t * e)
 {
 	// Your code here
+	logic_deinit_nfc();
 }
 
 
