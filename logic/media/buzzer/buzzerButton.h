@@ -1,27 +1,13 @@
 #ifndef BUZZER_BUTTON_H
 #define BUZZER_BUTTON_H
 
-/*
-=====================================
-    DEFINIZIONI
-=====================================
-*/
+// Percorso del dispositivo di input esposto da gpio-keys-polled
+#define INPUT_DEVICE_PATH   "/dev/input/event0"
 
-// Chip e linee GPIO (da: gpioinfo)
-#define GPIO_CHIP_NAME  "gpiochip0"
-#define GPIO_LINE_BTN1  12      // "usr_btn_1" — tone up
-#define GPIO_LINE_BTN2  18      // "usr_btn_2" — tone down
+// Debounce software: tempo minimo tra due pressioni valide (ms), ne esiste già uno hardware di 50 ms
+#define BTN_DEBOUNCE_MS     200
 
-// Debounce: tempo minimo tra due pressioni valide sullo stesso tasto (ms)
-#define BTN_DEBOUNCE_MS 200
+int buzzer_buttons_start(void);     // @brief Fa partire il thread per gestire i pulsanti fisici @return -1 Fail | 0 Success
+void buzzer_buttons_stop(void);     // @brief Ferma il thread per la gestione dei pulsanti fisici
 
-/*
-=====================================
-    FUNZIONI
-=====================================
-*/
-
-int buzzer_buttons_start(void);     // @brief  Avvia il thread di ascolto dei pulsanti fisici. @return  0 successo | -1 errore
-void buzzer_buttons_stop(void);     // @brief  Ferma il thread di ascolto e libera le risorse GPIO.
-
-#endif // BUZZER_BUTTONS_H
+#endif
