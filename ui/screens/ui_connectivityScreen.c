@@ -253,6 +253,7 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_flex_grow(ui_logConnectivityArea, 1);
     lv_obj_set_align(ui_logConnectivityArea, LV_ALIGN_CENTER);
     lv_textarea_set_placeholder_text(ui_logConnectivityArea, "log...");
+    lv_obj_remove_flag(ui_logConnectivityArea, LV_OBJ_FLAG_CLICKABLE);      /// Flags
 
     ui_accessConnectivityCtn = lv_obj_create(ui_connectivityAccess);
     lv_obj_remove_style_all(ui_accessConnectivityCtn);

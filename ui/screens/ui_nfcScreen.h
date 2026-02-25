@@ -16,8 +16,9 @@ extern void ui_nfcScreen_screen_destroy(void);
 extern void ui_event_nfcScreen(lv_event_t * e);
 extern lv_obj_t * ui_nfcScreen;
 extern lv_obj_t * ui_headerNfcScreen;
-extern lv_obj_t * ui_nfcLabel;
+extern lv_obj_t * ui_nfcTitleLabel;
 extern lv_obj_t * ui_nfcLed;
+extern lv_obj_t * ui_nfcTextArea;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

@@ -7,8 +7,9 @@
 
 lv_obj_t * ui_nfcScreen = NULL;
 lv_obj_t * ui_headerNfcScreen = NULL;
-lv_obj_t * ui_nfcLabel = NULL;
+lv_obj_t * ui_nfcTitleLabel = NULL;
 lv_obj_t * ui_nfcLed = NULL;
+lv_obj_t * ui_nfcTextArea = NULL;
 // event funtions
 void ui_event_nfcScreen(lv_event_t * e)
 {
@@ -47,24 +48,24 @@ void ui_nfcScreen_screen_init(void)
     lv_obj_set_x(ui_headerNfcScreen, 0);
     lv_obj_set_y(ui_headerNfcScreen, -1);
 
-    ui_nfcLabel = lv_label_create(ui_nfcScreen);
-    lv_obj_set_width(ui_nfcLabel, lv_pct(60));
-    lv_obj_set_height(ui_nfcLabel, LV_SIZE_CONTENT);    /// 28
-    lv_obj_set_x(ui_nfcLabel, -316);
-    lv_obj_set_y(ui_nfcLabel, -281);
-    lv_obj_set_align(ui_nfcLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_nfcLabel, "NFC");
-    ui_object_set_themeable_style_property(ui_nfcLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
+    ui_nfcTitleLabel = lv_label_create(ui_nfcScreen);
+    lv_obj_set_width(ui_nfcTitleLabel, lv_pct(60));
+    lv_obj_set_height(ui_nfcTitleLabel, LV_SIZE_CONTENT);    /// 28
+    lv_obj_set_x(ui_nfcTitleLabel, -316);
+    lv_obj_set_y(ui_nfcTitleLabel, -281);
+    lv_obj_set_align(ui_nfcTitleLabel, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_nfcTitleLabel, "NFC");
+    ui_object_set_themeable_style_property(ui_nfcTitleLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
                                            _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_nfcLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
+    ui_object_set_themeable_style_property(ui_nfcTitleLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
                                            _ui_theme_alpha_TEXT);
-    lv_obj_set_style_text_align(ui_nfcLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_decor(ui_nfcLabel, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_nfcLabel, &ui_font_energyBatteryFont, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_nfcLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_nfcLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_nfcLabel, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_side(ui_nfcLabel, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui_nfcTitleLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_decor(ui_nfcTitleLabel, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_nfcTitleLabel, &ui_font_energyBatteryFont, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_nfcTitleLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_nfcTitleLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_nfcTitleLabel, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_nfcTitleLabel, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_nfcLed = lv_obj_create(ui_nfcScreen);
     lv_obj_set_width(ui_nfcLed, 150);
@@ -74,6 +75,17 @@ void ui_nfcScreen_screen_init(void)
     lv_obj_set_style_radius(ui_nfcLed, 75, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_nfcLed, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_nfcLed, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_nfcLed, lv_color_hex(0x2DA041), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_nfcLed, 255, LV_PART_MAIN | LV_STATE_CHECKED);
+
+    ui_nfcTextArea = lv_textarea_create(ui_nfcScreen);
+    lv_obj_set_width(ui_nfcTextArea, lv_pct(88));
+    lv_obj_set_height(ui_nfcTextArea, lv_pct(33));
+    lv_obj_set_x(ui_nfcTextArea, -109);
+    lv_obj_set_y(ui_nfcTextArea, 226);
+    lv_obj_set_align(ui_nfcTextArea, LV_ALIGN_CENTER);
+    lv_textarea_set_placeholder_text(ui_nfcTextArea, "Qui verranno visualizzati i dispositivi connessi...");
+    lv_obj_remove_flag(ui_nfcTextArea, LV_OBJ_FLAG_CLICKABLE);      /// Flags
 
     lv_obj_add_event_cb(ui_nfcScreen, ui_event_nfcScreen, LV_EVENT_ALL, NULL);
 
@@ -86,7 +98,8 @@ void ui_nfcScreen_screen_destroy(void)
     // NULL screen variables
     ui_nfcScreen = NULL;
     ui_headerNfcScreen = NULL;
-    ui_nfcLabel = NULL;
+    ui_nfcTitleLabel = NULL;
     ui_nfcLed = NULL;
+    ui_nfcTextArea = NULL;
 
 }
