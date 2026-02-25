@@ -1,7 +1,5 @@
 #include "../logic.h"
 #include "connectivityLogic.h"
-#include "./bth/bthLogic.h"
-#include "./wifi/wifiLogic.h"
 #include <stdarg.h>
 
 /* 
