@@ -6,8 +6,7 @@
 #include "ui.h"
 #include "../logic/media/mediaLogic.h"
 #include "../logic/connectivity/connectivityLogic.h"
-#include "../logic/communications/mainCommsLogic.h"
-#include "../logic/communications/can/canLogic.h"
+#include "../logic/communications/communicationsLogic.h"
 
 /*
 ======================================== 
