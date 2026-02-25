@@ -24,42 +24,11 @@
 =====================================
 */
 
-/**
- * @brief  Esporta il canale PWM e imposta period e duty_cycle di default.
- *         Deve essere chiamata una sola volta all'avvio.
- * @return  0 successo | -1 errore
- */
-int buzzer_pwm_setup(void);
-
-/**
- * @brief  Abilita l'uscita PWM (accende il buzzer).
- * @return  0 successo | -1 errore
- */
-int buzzer_pwm_enable(void);
-
-/**
- * @brief  Disabilita l'uscita PWM (spegne il buzzer).
- * @return  0 successo | -1 errore
- */
-int buzzer_pwm_disable(void);
-
-/**
- * @brief  Aumenta il tono (diminuisce il period) di un passo.
- *         Non supera PWM_MIN_PERIOD_NS.
- * @return  0 successo | -1 errore | 1 già al massimo
- */
-int buzzer_pwm_tone_up(void);
-
-/**
- * @brief  Abbassa il tono (aumenta il period) di un passo.
- *         Non supera PWM_MAX_PERIOD_NS.
- * @return  0 successo | -1 errore | 1 già al minimo
- */
-int buzzer_pwm_tone_down(void);
-
-/**
- * @brief  Restituisce il period attuale in nanosecondi.
- */
-uint32_t buzzer_pwm_get_period(void);
+int buzzer_pwm_setup(void);             // @brief  Esporta il canale PWM e imposta period e duty_cycle di default. @return  0 successo | -1 errore
+int buzzer_pwm_enable(void);            // @brief  Abilita l'uscita PWM (accende il buzzer). @return  0 successo | -1 errore
+int buzzer_pwm_disable(void);           // @brief  Disabilita l'uscita PWM (spegne il buzzer). @return  0 successo | -1 errore
+int buzzer_pwm_tone_up(void);           // @brief  Aumenta il tono (diminuisce il period) di un passo. Non supera PWM_MIN_PERIOD_NS @return  0 successo | -1 errore | 1 già al massimo
+int buzzer_pwm_tone_down(void);         // @brief  Abbassa il tono (aumenta il period) di un passo. Non supera PWM_MAX_PERIOD_NS. @return  0 successo | -1 errore | 1 già al minimo
+uint32_t buzzer_pwm_get_period(void);   // @brief  Restituisce il period attuale in nanosecondi.
 
 #endif // BUZZER_PWM_H

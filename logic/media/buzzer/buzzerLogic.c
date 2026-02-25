@@ -1,6 +1,6 @@
 #include "../../logic.h"
 #include "buzzerLogic.h"
-#include "buzzerPwm.h"
+#include "buzzerButton.h"
 
 /* 
 =======================================
@@ -8,14 +8,13 @@
 =======================================
 */
 
-static BuzzerState buzzState = OFF;     
+static BuzzerState buzzState = OFF;     // Variabile che conserva lo stato del buffer   
 
 /* 
 =======================================
     IMPLEMENTAZIONI
 =======================================
 */
-
 /* 
 ---------------------------------------
     ON / OFF (pulsante UI)
@@ -56,6 +55,11 @@ void logic_btn_buzzer_click_handler(void)
     }
 }
 
+int buzzer_logic_is_on(void)
+{
+    return (buzzState == ON) ? 1 : 0;
+}
+
 /* 
 ---------------------------------------
     INIT / DEINIT
@@ -65,9 +69,16 @@ void logic_init_buzzer_screen(void)
 {
     INFO_PRINT("-----------------------------------\n");
 
+    // Setup buzzer
     if (buzzer_pwm_setup() != 0)
     {
         ERROR_PRINT("Errore durante il setup del buzzer PWM\n");
+    }
+
+    // Avvio thread per pulsanti fisici
+    if (buzzer_buttons_start() != 0)
+    {
+        ERROR_PRINT("Errore durante l'avvio del thread bottoni\n");
     }
 
     INFO_PRINT("--- BUZZER SCREEN INIZIALIZZATO ---\n");
@@ -78,6 +89,9 @@ void logic_init_buzzer_screen(void)
 void logic_deinit_buzzer_screen(void)
 {
     INFO_PRINT("-------------------------------------\n");
+
+    // Prima fermiamo il thread
+    buzzer_buttons_stop();
 
     // Spegnimento di sicurezza prima di uscire
     if (buzzState == ON)
