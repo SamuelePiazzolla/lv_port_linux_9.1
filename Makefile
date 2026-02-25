@@ -33,7 +33,6 @@ CFLAGS += -O2 -g
 ifneq (,$(findstring aarch64,$(CC)))
 CFLAGS += -march=armv8-a
 CFLAGS += -mcpu=cortex-a55
-CFLAGS += -mno-outline-atomics
 endif
 # -----------------------------------------------
 

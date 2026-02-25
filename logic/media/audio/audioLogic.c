@@ -891,7 +891,9 @@ void logic_reset_file_audio(void)
 void logic_init_audio_screen(void)
 {
     audio_hw_init();
+    INFO_PRINT("----------------------------------\n");
     INFO_PRINT("--- AUDIO SCREEN INIZIALIZZATO ---\n");
+    INFO_PRINT("----------------------------------\n");
 }
 
 void logic_deinit_audio_screen(void)
@@ -937,5 +939,7 @@ void logic_deinit_audio_screen(void)
     lv_slider_set_value(ui_volumeSlider, 50, LV_ANIM_OFF);
     logic_change_volume();
 
+    INFO_PRINT("------------------------------------\n");
     INFO_PRINT("--- AUDIO SCREEN DEINIZIALIZZATO ---\n");
+    INFO_PRINT("------------------------------------\n");
 }
