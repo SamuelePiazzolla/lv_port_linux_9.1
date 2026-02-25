@@ -28,9 +28,10 @@ typedef enum {
 =====================================
 */
 
-static pthread_t    btn_thread;
-static atomic_bool  thread_running = false;
-static int          fd_input = -1;
+static pthread_t    btn_thread;                 // Thread di gestione dei pulsanti 
+static atomic_bool  thread_running = false;     // True se il thread deve essere ancora in esecuzione
+static atomic_bool  thread_started = false;     // True solo se pthread_create ha avuto successo: rende sicuro pthread_join in stop()
+static int          fd_input = -1;              // File descryptor del dispositivo di input
 
 /*
 =====================================
@@ -38,11 +39,11 @@ static int          fd_input = -1;
 =====================================
 */
 
-static int64_t now_ms(void);                        // @brief  Restituisce il timestamp corrente in millisecondi (CLOCK_MONOTONIC).
-static void btn_action_cb(void *user_data);         // @brief  Callback eseguita nel contesto LVGL: applica l'azione tone_up/tone_down al PWM. @param  user_data  Puntatore a BtnAction allocato dal thread, liberato qui.
-static void *btn_thread_fn(void *arg);              // @brief  Corpo del thread di lettura: usa poll() con timeout per attendere eventi da /dev/input, filtra EV_KEY key-down e applica debounce software.
-static int input_setup(void);                       // @brief  Apre il device /dev/input in modalità O_NONBLOCK. @return  0 successo | -1 errore
-static void input_cleanup(void);                    // @brief  Chiude il file descriptor del device di input.
+static int64_t now_ms(void);                    // @brief  Restituisce il timestamp corrente in millisecondi (CLOCK_MONOTONIC).
+static void btn_action_cb(void *user_data);     // @brief  Callback eseguita nel contesto LVGL: applica l'azione tone_up/tone_down al PWM. @param  user_data  Puntatore a BtnAction allocato dal thread, liberato qui.
+static void *btn_thread_fn(void *arg);          // @brief  Corpo del thread di lettura: usa poll() con timeout per attendere eventi da /dev/input, filtra EV_KEY key-down e applica debounce software.
+static int input_setup(void);                   // @brief  Apre il device /dev/input in modalità O_NONBLOCK. @return  0 successo | -1 errore
+static void input_cleanup(void);                // @brief  Chiude il file descriptor del device di input.
 
 /*
 =====================================
@@ -217,6 +218,7 @@ int buzzer_buttons_start(void)
         input_cleanup();
         return -1;
     }
+    atomic_store(&thread_started, true);    // Thread creato correttamente quindi imposto il flag
 
     DEBUG_PRINT("Thread bottoni avviato\n");
     return 0;
@@ -224,8 +226,15 @@ int buzzer_buttons_start(void)
 
 void buzzer_buttons_stop(void)
 {
+    // Disattivo il thread, le eventuali chiamate in coda termineranno da sole
     atomic_store(&thread_running, false);
-    pthread_join(btn_thread, NULL);
+
+    if (atomic_load(&thread_started))
+    {
+        pthread_join(btn_thread, NULL);
+        atomic_store(&thread_started, false);   // stop() può essere chiamata più volte in sicurezza
+    }
     input_cleanup();
+    
     DEBUG_PRINT("Thread bottoni fermato\n");
 }
