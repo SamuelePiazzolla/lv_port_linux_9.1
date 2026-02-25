@@ -13,10 +13,10 @@
 #define PWM_CHANNEL_PATH    PWM_CHIP_PATH "/pwm" PWM_CHANNEL
 
 // Parametri PWM di default (tono 800 Hz, duty cycle 50%)
-#define PWM_DEFAULT_PERIOD_NS   1250000UL   // 800 Hz  → period = 1/f in nanosecondi
-#define PWM_MIN_PERIOD_NS        500000UL   // 2000 Hz (tono massimo)
-#define PWM_MAX_PERIOD_NS       4000000UL   // 250 Hz  (tono minimo)
-#define PWM_TONE_STEP_NS         125000UL   // Step di variazione del tono per ogni pressione
+#define PWM_DEFAULT_PERIOD_NS   ((uint32_t)1250000)     // 800 Hz  → period = 1/f in nanosecondi
+#define PWM_MIN_PERIOD_NS       ((uint32_t)500000)      // 2000 Hz (tono massimo)
+#define PWM_MAX_PERIOD_NS       ((uint32_t)4000000UL)   // 250 Hz  (tono minimo)
+#define PWM_TONE_STEP_NS        ((uint32_t)125000UL)    // Step di variazione del tono per ogni pressione
 
 /*
 =====================================

@@ -110,7 +110,13 @@ int buzzer_pwm_setup(void)
         perror(PWM_CHIP_PATH "/export");
         return -1;
     }
-    write(fd, PWM_CHANNEL, strlen(PWM_CHANNEL));    // ignoriamo EBUSY deliberatamente
+    ssize_t w = write(fd, PWM_CHANNEL, strlen(PWM_CHANNEL));
+    if (w < 0 && errno != EBUSY) 
+    {
+        perror(PWM_CHIP_PATH "/export write");
+        close(fd);
+        return -1;
+    }    
     close(fd);
 
     // Imposta period e duty_cycle di default, prima period e poi duty cycle 

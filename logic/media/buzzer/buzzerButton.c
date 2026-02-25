@@ -123,6 +123,8 @@ static void *gpio_thread_fn(void *arg)
             ERROR_PRINT("Errore attesa evento GPIO btn1\n");
             break;
         }
+
+        bool btn1_acted = false;
         if (ret1 == 1)  // evento disponibile
         {
             struct gpiod_line_event ev1;
@@ -132,9 +134,9 @@ static void *gpio_thread_fn(void *arg)
                 if (now - last_btn1_ms >= BTN_DEBOUNCE_MS)
                 {
                     last_btn1_ms = now;
+                    btn1_acted = true;  // btn1 ha prodotto un'azione reale: btn2 verrà saltato
                     INFO_PRINT("BTN1 premuto — tone up\n");
 
-                    // Alloca l'azione: verrà liberata dalla callback LVGL
                     BtnAction *action = malloc(sizeof(BtnAction));
                     if (action)
                     {
@@ -145,7 +147,10 @@ static void *gpio_thread_fn(void *arg)
             }
         }
 
-        // --- Controllo btn2 ---
+        // --- Controllo btn2: saltato se btn1 ha già prodotto un'azione in questa iterazione ---
+        // L'eventuale evento di btn2 rimane in coda kernel e viene processato al ciclo successivo
+        if (btn1_acted) continue;
+
         int ret2 = gpiod_line_event_wait(line2, &timeout);
         if (ret2 < 0)
         {
@@ -255,7 +260,7 @@ int buzzer_buttons_start(void)
 void buzzer_buttons_stop(void)
 {
     // 1. Disattiva il thread, le eventuali callback in coda si scarteranno da sole
-    atomic_store(&thread_running, 0);
+    atomic_store(&thread_running, false);
 
     // 2. Attende che il thread termini correttamente
     pthread_join(gpio_thread, NULL);
