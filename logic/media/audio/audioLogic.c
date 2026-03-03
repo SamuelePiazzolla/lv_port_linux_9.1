@@ -40,7 +40,7 @@ typedef struct {
     uint32_t data_bytes_written;
 } AudioRecorder;
 
-AudioRecorder recorder;                     // Variabile che contiene tutti gli elementi necessari per registrare un file audio
+static AudioRecorder recorder;              // Variabile che contiene tutti gli elementi necessari per registrare un file audio
 
 // WAV HEADER
 typedef struct __attribute__((packed)) {
@@ -79,7 +79,6 @@ typedef struct {
 static AudioPlayer player;
 
 // FLAG PER THREAD
-static atomic_bool playback_thread_alive;   // Variabile per vedere se il thread di playback è attivo
 static atomic_bool record_thread_alive;     // Variabile per vedere se il thread di record è attivo
 
 
@@ -168,7 +167,6 @@ static void* playback_thread(void *arg)
     int        err;
 
     atomic_store(&player.thread_alive, true);
-    atomic_store(&playback_thread_alive, true);
 
     /* --- apri file --- */
     file = fopen(filepath, "rb");
@@ -220,7 +218,6 @@ cleanup:
     atomic_store(&player.thread_alive,   false);
     atomic_store(&player.running,        false);
     atomic_store(&player.paused,         false);
-    atomic_store(&playback_thread_alive, false);
 
     /* Notifica la GUI in modo thread-safe tramite LVGL async */
     lv_async_call(playback_finished_cb, NULL);
@@ -902,14 +899,14 @@ void logic_deinit_audio_screen(void)
     if (atomic_load(&recorder.running))
     {
         stop_recording_async();
-        wait_thread_exit(&record_thread_alive, 50);     // max 50 ms
+        wait_thread_exit(&record_thread_alive, 200);     // max 200 ms
     }
 
     /* 2. FERMO RIPRODUZIONE AUDIO */
     if (atomic_load(&player.thread_alive))
     {
         audio_reset();
-        wait_thread_exit(&playback_thread_alive, 200);  // max 200 ms (drain ALSA)
+        wait_thread_exit(&player.thread_alive, 200);  // max 200 ms (drain ALSA)
     }
 
     /* 3. CHIUDO FILE PICKER */
