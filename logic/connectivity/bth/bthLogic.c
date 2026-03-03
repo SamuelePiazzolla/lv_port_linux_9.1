@@ -219,11 +219,13 @@ gboolean find_first_adapter()
                 &error
             );
 
-            if (!adapter_proxy) {
+            if (!adapter_proxy) 
+            {
                 ERROR_PRINT("Errore creazione Adapter Proxy: %s\n", error ? error->message : "Unknown");
                 if (error) g_error_free(error);
                 g_object_unref(iface);
-                g_list_free(objects);
+                g_list_free_full(objects, g_object_unref);
+
                 return FALSE;
             }
 
@@ -270,12 +272,12 @@ gboolean find_first_adapter()
             if (discoverable_var) g_variant_unref(discoverable_var);
             g_object_unref(adapter_proxy);
             g_object_unref(iface);
-            g_list_free(objects);
+            g_list_free_full(objects, g_object_unref);
             return TRUE;
         }
     }
 
-    g_list_free(objects);
+    g_list_free_full(objects, g_object_unref);
     return FALSE;
 }
 
@@ -864,7 +866,7 @@ void scanBthNet()
     if (scanning) 
     {
         stop_scan();
-        g_usleep(100 * 1000); // 100ms per stabilità BlueZ
+        g_usleep(30 * 1000); // 30ms per stabilità BlueZ
     }
 
     /* --- 4. PROTEZIONE HANDLER (EVITA DUPLICATI SUI SEGNALI) --- */
