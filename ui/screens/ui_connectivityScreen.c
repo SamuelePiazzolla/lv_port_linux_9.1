@@ -98,10 +98,14 @@ void ui_connectivityScreen_screen_init(void)
 {
     ui_connectivityScreen = lv_obj_create(NULL);
     lv_obj_remove_flag(ui_connectivityScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_flex_flow(ui_connectivityScreen, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(ui_connectivityScreen, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     ui_object_set_themeable_style_property(ui_connectivityScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
                                            _ui_theme_color_BACKGROUND);
     ui_object_set_themeable_style_property(ui_connectivityScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
                                            _ui_theme_alpha_BACKGROUND);
+    lv_obj_set_style_pad_row(ui_connectivityScreen, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_connectivityScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_headerConnectivityScreen = ui_Header_create(ui_connectivityScreen);
     lv_obj_set_x(ui_headerConnectivityScreen, 0);
@@ -110,7 +114,7 @@ void ui_connectivityScreen_screen_init(void)
     ui_connectivityBody = lv_obj_create(ui_connectivityScreen);
     lv_obj_remove_style_all(ui_connectivityBody);
     lv_obj_set_width(ui_connectivityBody, lv_pct(100));
-    lv_obj_set_height(ui_connectivityBody, lv_pct(88));
+    lv_obj_set_flex_grow(ui_connectivityBody, 1);
     lv_obj_set_align(ui_connectivityBody, LV_ALIGN_BOTTOM_MID);
     lv_obj_set_flex_flow(ui_connectivityBody, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(ui_connectivityBody, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
@@ -188,16 +192,17 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_height(ui_scanNetButton, 50);
     lv_obj_set_width(ui_scanNetButton, lv_pct(90));
     lv_obj_set_align(ui_scanNetButton, LV_ALIGN_CENTER);
-    lv_obj_add_state(ui_scanNetButton, LV_STATE_DISABLED);       /// States
     lv_obj_add_flag(ui_scanNetButton, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_scanNetButton, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_scanNetButton, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_scanNetButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_object_set_themeable_style_property(ui_scanNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_HEADER);
+    ui_object_set_themeable_style_property(ui_scanNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_HEADER);
     ui_object_set_themeable_style_property(ui_scanNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_COLOR,
                                            _ui_theme_color_TEXT);
     ui_object_set_themeable_style_property(ui_scanNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_OPA,
                                            _ui_theme_alpha_TEXT);
-    lv_obj_set_style_border_width(ui_scanNetButton, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_scanNetButton, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_side(ui_scanNetButton, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_labelNetButton = lv_label_create(ui_scanNetButton);
@@ -294,9 +299,9 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_align(ui_labelConnectBtn, LV_ALIGN_CENTER);
     lv_label_set_text(ui_labelConnectBtn, "CONNECT");
 
-    ui_KeyboardConnectivity = lv_keyboard_create(ui_connectivityAccess);
-    lv_obj_set_width(ui_KeyboardConnectivity, lv_pct(100));
-    lv_obj_set_flex_grow(ui_KeyboardConnectivity, 1);
+    ui_KeyboardConnectivity = lv_keyboard_create(ui_connectivityScreen);
+    lv_obj_set_width(ui_KeyboardConnectivity, lv_pct(70));
+    lv_obj_set_height(ui_KeyboardConnectivity, lv_pct(30));
     lv_obj_set_align(ui_KeyboardConnectivity, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_KeyboardConnectivity, LV_OBJ_FLAG_HIDDEN);     /// Flags
 
