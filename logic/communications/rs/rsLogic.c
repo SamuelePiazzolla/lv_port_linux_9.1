@@ -28,8 +28,8 @@
 // Dimensione del buffer di lettura dalla pipe per singolo tick del timer. 
 #define RS_READ_BUF_SIZE    256
 
-// Timeout in multipli di 100ms prima di scalare da SIGINT a SIGKILL. ( 10 × 100ms = 1s )
-#define RS_SIGINT_TIMEOUT_TICKS 10
+// Timeout in multipli di 10ms prima di scalare da SIGINT a SIGKILL. ( 100 × 10ms = 1s )
+#define RS_SIGINT_TIMEOUT_TICKS 100
 
 /* 
 =======================================
@@ -60,7 +60,7 @@ static lv_timer_t *rs_poll_timer = NULL;    // Riferimento al lv_timer di pollin
  * ------------------------------------------------------------------------- */
 static void rs_poll_timer_cb(lv_timer_t *timer);
 static void rs_stop_slave(void);                    // Termina il processo slave in modo pulito
-static void rs_cleanup_resources(void);             // Rilascia tutte le risorse associate all slave (Fil descriptor e timer di poll)
+static void rs_cleanup_resources(void);             // Rilascia tutte le risorse associate all slave (File descriptor e timer di poll)
 
 /* 
 =======================================
@@ -100,7 +100,7 @@ static void rs_stop_slave(void)
     // Polling non bloccante: aspettiamo che lo slave termini dopo SIGINT.
     for (int i = 0; i < RS_SIGINT_TIMEOUT_TICKS; i++) 
     {
-        usleep(100000);     // usleep(100ms) × RS_SIGINT_TIMEOUT_TICKS = 1 secondo di timeout totale.
+        usleep(10 * 1000);     // usleep(10ms) × RS_SIGINT_TIMEOUT_TICKS = 1s di timeout totale.
         int status;
         if (waitpid(slave_pid, &status, WNOHANG) == slave_pid) 
         {
@@ -144,7 +144,7 @@ static void rs_poll_timer_cb(lv_timer_t *timer)
             buf[n - 1] = '\0';
 
         // Aggiornamento asincrono alla textarea (non necessario il fatto che sia asincrono)
-        ui_comms_log_async(buf);
+        ui_comms_log_async("%s", buf);
     }
 
     // Verifichiamo se lo slave è terminato spontaneamente.
