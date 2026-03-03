@@ -192,12 +192,13 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_height(ui_scanNetButton, 50);
     lv_obj_set_width(ui_scanNetButton, lv_pct(90));
     lv_obj_set_align(ui_scanNetButton, LV_ALIGN_CENTER);
+    lv_obj_add_state(ui_scanNetButton, LV_STATE_DISABLED);       /// States
     lv_obj_add_flag(ui_scanNetButton, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_scanNetButton, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     ui_object_set_themeable_style_property(ui_scanNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
-                                           _ui_theme_color_HEADER);
+                                           _ui_theme_color_BTN);
     ui_object_set_themeable_style_property(ui_scanNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
-                                           _ui_theme_alpha_HEADER);
+                                           _ui_theme_alpha_BTN);
     ui_object_set_themeable_style_property(ui_scanNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_COLOR,
                                            _ui_theme_color_TEXT);
     ui_object_set_themeable_style_property(ui_scanNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_OPA,
