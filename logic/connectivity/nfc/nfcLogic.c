@@ -1,5 +1,3 @@
-#define _POSIX_C_SOURCE 199309L
-
 #include "../../logic.h"
 #include "nfcLogic.h"
 #include "tml.h"

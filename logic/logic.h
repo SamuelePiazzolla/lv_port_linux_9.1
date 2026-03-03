@@ -16,6 +16,9 @@
 //********* GESTIONE UI *********
 #include "../ui/ui.h"
 
+// CLICK_MONOTIC
+#define _POSIX_C_SOURCE 199309L
+
 // Gestione print
 #define DEBUG 0     // gestisce output extra su console: 1 ON | 0 OFF 
 #define INFO 1      // gestisce output di info importanti su console: 1 ON | 0 OFF

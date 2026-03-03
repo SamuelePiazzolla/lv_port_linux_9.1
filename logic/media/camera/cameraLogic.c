@@ -1,7 +1,7 @@
 #define _POSIX_C_SOURCE 199309L
 
-#include "cameraLogic.h"
 #include "../../logic.h"
+#include "cameraLogic.h"
 
 #ifdef __cplusplus
 extern "C" {

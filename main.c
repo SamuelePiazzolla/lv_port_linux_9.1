@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 199309L
+
 #include "lvgl/lvgl.h"
 #include "lvgl/src/drivers/display/fb/lv_linux_fbdev.h"
 #include "lvgl/src/drivers/evdev/lv_evdev.h"
@@ -176,6 +178,8 @@ int main(void)
       ERROR_PRINT("Errore: impossibile creare thread GLib\n");
       return -1;
    }
+   pthread_detach(glib_thread); /* Il thread gira per tutta la vita del processo: detach evita il leak del descrittore POSIX */
+
 
    /* INIZIALIZZAZIONE TERMINATA */
    INFO_PRINT("--- LVGL + DISPLAY INIZIALIZZATI ---\n");

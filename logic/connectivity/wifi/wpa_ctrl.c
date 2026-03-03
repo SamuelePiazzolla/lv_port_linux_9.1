@@ -1,25 +1,3 @@
-/*
- * wpa_supplicant/hostapd control interface library
- * Standalone Version - Linux Embedded / LVGL Integration
- *
- * Derivato da: wpa_supplicant/src/common/wpa_ctrl.c
- * Copyright (c) 2004-2007, Jouni Malinen <j@w1.fi>
- * BSD License
- *
- * Modifiche rispetto all'originale:
- *  - Rimosso include "includes.h" e "common.h" (runtime wpa_supplicant interno)
- *  - Sostituiti os_* con equivalenti stdlib standard (malloc, free, snprintf...)
- *  - Rimossi branch UDP, Android, Windows Named Pipe (non necessari)
- *  - Mantenuta gestione EAGAIN su send() per socket O_NONBLOCK
- *  - Aggiunto check IFNAME= in wpa_ctrl_request per compatibilità global ctrl
- *  - Corretta gestione errore in wpa_ctrl_pending()
- *  - Socket impostato O_NONBLOCK: fondamentale per integrazione loop LVGL
- *    (usare wpa_ctrl_get_fd() + poll/select nel tick LVGL per eventi asincroni)
- *
- */
-
-#define _POSIX_C_SOURCE 199309L
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
