@@ -403,6 +403,11 @@ void ui_create_device_buttons_cb(void *param)
         DEBUG_PRINT("Bottone num: %i\n", i);
         lv_obj_t *btn = lv_btn_create(ui_connectivityBtnContainer);
         lv_obj_set_width(btn, lv_pct(80));
+        
+        // Se il device è connesso/paired, metto il bottone in stato checked e lo coloro di verde
+        lv_obj_set_style_bg_color(btn, lv_color_hex(0x2DA041), LV_STATE_CHECKED);
+        if (msg->devices[i].connected)
+            lv_obj_add_state(btn, LV_STATE_CHECKED);
 
         lv_obj_t *label = lv_label_create(btn);
 
