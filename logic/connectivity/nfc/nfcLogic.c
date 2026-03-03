@@ -208,9 +208,6 @@ static void* nfc_polling_thread(void* arg)
                     
                     /* Aggiorna UI tramite async call (thread-safe) */
                     lv_async_call(nfc_update_ui_detected, NULL);
-                    
-                    /* Restart discovery per essere pronti al prossimo tag */
-                    nfc_restart_discovery(nfc_handle);
                 }
             break;
                 
@@ -289,9 +286,6 @@ static int nfc_reset_controller(int handle)
     char NCICoreInit2_0[] = {0x20, 0x01, 0x02, 0x00, 0x00};
     char Answer[256];
     int NbBytes = 0;
-
-    /* Reset fisico del controller via GPIO */
-    tml_reset(handle);
     
     /* Primo reset: il controller potrebbe ancora avere notifiche in coda dal bootstrap */
     tml_transceive(handle, NCICoreReset, sizeof(NCICoreReset), Answer, sizeof(Answer));
@@ -404,7 +398,6 @@ void logic_deinit_nfc(void)
     /* Chiudi connessione NFC */
     if (nfc_handle >= 0) 
     {
-        tml_reset(nfc_handle);
         tml_close(nfc_handle);
         nfc_handle = -1;
         DEBUG_PRINT("Connessione NFC chiusa\n");

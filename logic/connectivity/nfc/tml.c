@@ -79,15 +79,6 @@ void tml_close(int handle)
     if(handle) close(handle);
 }
 
-void tml_reset(int handle)
-{
-    system("echo 1 > /sys/class/leds/nfc_enable/brightness");
-    usleep(10 * 1000);
-    system("echo 0 > /sys/class/leds/nfc_enable/brightness");
-    usleep(10 * 1000);
-    system("echo 1 > /sys/class/leds/nfc_enable/brightness");
-}
-
 int tml_send(int handle, char *pBuff, int buffLen)
 {
     struct spi_ioc_transfer spi;
