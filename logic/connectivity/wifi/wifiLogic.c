@@ -173,12 +173,14 @@ int wifi_connect_to(NetDevice device, char *password)
         return -1; 
     }
     reply[reply_len] = '\0';
-    net_id = atoi(reply);
-    if (net_id < 0)
+    char *endptr;
+    long parsed_id = strtol(reply, &endptr, 10);
+    if (endptr == reply || parsed_id < 0 || parsed_id > 65535)
     { 
         ERROR_PRINT("WiFi: ADD_NETWORK risposta non valida: '%s'\n", reply); 
         return -1; 
     }
+    net_id = (int)parsed_id;
     pending_network_id = net_id;
 
     snprintf(cmd, sizeof(cmd), "SET_NETWORK %d ssid \"%s\"", net_id, device.name);
@@ -739,10 +741,7 @@ int logic_init_wifi_mode(void)
         .tv_usec = 0
     };
     if (setsockopt(wpa_ctrl_get_fd(cmd_ctrl), SOL_SOCKET, SO_RCVTIMEO, &rcvtv, sizeof(rcvtv)) < 0)
-    {
         ERROR_PRINT("WiFi: setsockopt SO_RCVTIMEO fallito (non fatale, timeout sarà 10s)\n");
-        return -1;
-    }
     else
         DEBUG_PRINT("WiFi: SO_RCVTIMEO impostato a %ds su cmd_ctrl\n", WPA_CMD_RECV_TIMEOUT_SEC);
 
