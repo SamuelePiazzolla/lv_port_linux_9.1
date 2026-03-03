@@ -431,7 +431,7 @@ void ui_create_device_buttons_cb(void *param)
                         msg->devices[i].rssi);
                 //ui_log_async("|->Dispositivo trovato: %s [%s]", msg->devices[i].name, msg->devices[i].address); //TESTING
                 break;
-            default: INFO_PRINT("Errore nella creazione del dispositivo\n"); return;
+            default: INFO_PRINT("Errore nella creazione del dispositivo\n"); free(msg); return;
         }
 
         lv_label_set_text(label, label_text);
