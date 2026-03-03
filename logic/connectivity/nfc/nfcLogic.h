@@ -7,8 +7,8 @@
 =====================================
 */
 
-/* Tempo di cooldown dopo rimozione tag (in millisecondi) */
-#define NFC_COOLDOWN_TIME_MS 1500
+/* Tempo di visualizzazione LED dopo rilevamento tag (in millisecondi) */
+#define NFC_DISPLAY_TIME_MS 3000  /* 3 secondi */
 
 /*
 =====================================
