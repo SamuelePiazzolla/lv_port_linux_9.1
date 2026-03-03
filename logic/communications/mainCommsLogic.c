@@ -91,14 +91,13 @@ void setCommunicationMode(CommunicationMode newMode)
             logic_deinit_eth_mode();
             ui_comms_log_clear();
             lv_obj_remove_state(ui_ethBtn, LV_STATE_CHECKED);
-            break;
+        break;
         case RS_MODE:
             logic_deinit_rs_mode();
             ui_comms_log_clear();
             lv_obj_remove_state(ui_rsBtn, LV_STATE_CHECKED);
-            break;
-        default:
-            break;
+        break;
+        default:break;
     }
 
     currentMode = newMode;
@@ -119,7 +118,7 @@ void setCommunicationMode(CommunicationMode newMode)
                 currentMode = NONE_COMMUNICATION_MODE;  /* rollback */
                 lv_obj_add_state(ui_testCommsBtn, LV_STATE_DISABLED);
             }
-            break;
+        break;
 
         case RS_MODE:
             if (logic_init_rs_mode() == 0)
@@ -134,11 +133,12 @@ void setCommunicationMode(CommunicationMode newMode)
                 currentMode = NONE_COMMUNICATION_MODE;  /* rollback */
                 lv_obj_add_state(ui_testCommsBtn, LV_STATE_DISABLED);
             }
-            break;
+        break;
 
         default:
-            lv_obj_add_state(ui_testCommsBtn, LV_STATE_DISABLED);
-            break;
+            lv_label_set_text(ui_testCommsBtnLabel, "START TEST");
+            lv_obj_add_state(ui_testCommsBtn, LV_STATE_DISABLED); 
+        break;
     }
 }
 
