@@ -11,23 +11,13 @@
     VARIABILI
    ======================================= */
 
-/** Struttura condivisa con can_rx_handler: contiene socket CAN + vehicle_t. */
-static my_struct_t s_canData;
 
-/** Struttura display: inizializzata da display_init(), azzerata da display_deinit(). */
-static displayParam_t s_display;
-
-/** Handle del thread di ricezione CAN. */
-static pthread_t s_canRxThread;
-
-/** Handle del thread del loop principale. */
-static pthread_t s_canLoopThread;
-
-/** Flag atomico di stop per il thread loop. */
-static atomic_int s_stopLoop = 0;
-
-/** Indica se il modulo è stato inizializzato correttamente. */
-static bool s_initialized = false;
+static my_struct_t s_canData;           /* Struttura condivisa con can_rx_handler: contiene socket CAN + vehicle_t. */
+static displayParam_t s_display;        /* Struttura display: inizializzata da display_init(), azzerata da display_deinit(). */
+static pthread_t s_canRxThread;         /* Handle del thread di ricezione CAN. */
+static pthread_t s_canLoopThread;       /* Handle del thread del loop principale. */
+static atomic_bool s_stopLoop = false;  /* Flag atomico di stop per il thread loop. */
+static bool s_initialized = false;      /* Indica se il modulo è stato inizializzato correttamente. */
 
 /* =======================================
     PROTOTIPI
@@ -119,7 +109,7 @@ void logic_init_can_mode(void)
     memset(&s_canData, 0, sizeof(my_struct_t));
     memset(&s_display, 0, sizeof(displayParam_t));
     s_canData.canSoket = -1;
-    atomic_store(&s_stopLoop, 0);
+    atomic_store(&s_stopLoop, false);
 
     /* 2. Inizializza il mutex prima di creare i thread */
     pthread_mutex_init(&s_canData.lock, NULL);
@@ -179,7 +169,7 @@ void logic_deinit_can_mode(void)
     *    - pthread_cancel interrompe immediatamente l'eventuale usleep()
     *      o pthread_mutex_lock() in corso, senza aspettare 16ms.
     *    I due meccanismi sono complementari e non si escludono. */
-    atomic_store(&s_stopLoop, 1);
+    atomic_store(&s_stopLoop, true);
     pthread_cancel(s_canLoopThread);
 
     /* 2. Ferma il thread RX:
