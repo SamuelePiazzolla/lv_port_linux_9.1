@@ -49,14 +49,11 @@ static void update_battery(uint8_t battery, displayParam_t * p)
     lv_arc_set_value(p->batteryArc, (uint16_t)battery);
  
     if (battery > 25)
-        lv_obj_set_style_arc_color(p->batteryArc, lv_color_hex(0x00FF00),
-                                   LV_PART_INDICATOR | LV_STATE_DEFAULT);
+        lv_obj_set_style_arc_color(p->batteryArc, lv_color_hex(0x00FF00), LV_PART_INDICATOR | LV_STATE_DEFAULT);
     else if (battery > 10)
-        lv_obj_set_style_arc_color(p->batteryArc, lv_color_hex(0xFFFF00),
-                                   LV_PART_INDICATOR | LV_STATE_DEFAULT);
+        lv_obj_set_style_arc_color(p->batteryArc, lv_color_hex(0xFFFF00), LV_PART_INDICATOR | LV_STATE_DEFAULT);
     else
-        lv_obj_set_style_arc_color(p->batteryArc, lv_color_hex(0xFF0000),
-                                   LV_PART_INDICATOR | LV_STATE_DEFAULT);
+        lv_obj_set_style_arc_color(p->batteryArc, lv_color_hex(0xFF0000), LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     lv_label_set_text_fmt(p->batteryNumberLabel, "%d", battery);
 }
@@ -66,14 +63,11 @@ static void update_energy_consumption(uint8_t energy, displayParam_t * p)
     lv_arc_set_value(p->efficiencyArc, (uint16_t)energy);
 
     if (energy < 50)
-        lv_obj_set_style_arc_color(p->efficiencyArc, lv_color_hex(0x00FF00),
-                                   LV_PART_INDICATOR | LV_STATE_DEFAULT);
+        lv_obj_set_style_arc_color(p->efficiencyArc, lv_color_hex(0x00FF00), LV_PART_INDICATOR | LV_STATE_DEFAULT);
     else if (energy < 80)
-        lv_obj_set_style_arc_color(p->efficiencyArc, lv_color_hex(0xFFFF00),
-                                   LV_PART_INDICATOR | LV_STATE_DEFAULT);
+        lv_obj_set_style_arc_color(p->efficiencyArc, lv_color_hex(0xFFFF00), LV_PART_INDICATOR | LV_STATE_DEFAULT);
     else
-        lv_obj_set_style_arc_color(p->efficiencyArc, lv_color_hex(0xFF0000),
-                                   LV_PART_INDICATOR | LV_STATE_DEFAULT);
+        lv_obj_set_style_arc_color(p->efficiencyArc, lv_color_hex(0xFF0000), LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     lv_label_set_text_fmt(p->energyNumberLabel, "%d", energy);
 }
@@ -96,27 +90,19 @@ static void update_powerMap(vehicle_t * v, displayParam_t * p)
         {
         case ECO:
             lv_label_set_text(p->powerMapLabel, "E");
-            lv_obj_set_style_text_color(p->powerMapLabel,
-                                        lv_color_hex(0x00FF00),
-                                        LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(p->powerMapLabel, lv_color_hex(0x00FF00), LV_PART_MAIN | LV_STATE_DEFAULT);
             break;
         case COMFORT:
             lv_label_set_text(p->powerMapLabel, "C");
-            lv_obj_set_style_text_color(p->powerMapLabel,
-                                        lv_color_hex(0x0000FF),
-                                        LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(p->powerMapLabel, lv_color_hex(0x0000FF), LV_PART_MAIN | LV_STATE_DEFAULT);
             break;
         case TOURING:
             lv_label_set_text(p->powerMapLabel, "T");
-            lv_obj_set_style_text_color(p->powerMapLabel,
-                                        lv_color_hex(0xFFFF00),
-                                        LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(p->powerMapLabel, lv_color_hex(0xFFFF00), LV_PART_MAIN | LV_STATE_DEFAULT);
             break;
         case SPORT:
             lv_label_set_text(p->powerMapLabel, "S");
-            lv_obj_set_style_text_color(p->powerMapLabel,
-                                        lv_color_hex(0xFF0000),
-                                        LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(p->powerMapLabel, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
             break;
         default:
             break;
