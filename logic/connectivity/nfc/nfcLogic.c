@@ -319,11 +319,18 @@ static int nfc_reset_controller(int handle)
         }
 
         /* Identifica generazione controller NXP-NCI */
-        if (Answer[17 + Answer[8]] == 0x08) 
+        int fw_idx = 17 + (uint8_t)Answer[8];
+        if (fw_idx >= NbBytes || fw_idx >= (int)sizeof(Answer))
+        {
+            ERROR_PRINT("Risposta NFC malformata: fw_idx=%d fuori bounds (NbBytes=%d)\n", fw_idx, NbBytes);
+            return -1;
+        }
+
+        if (Answer[fw_idx] == 0x08)
         {
             gNfcController_generation = 1;
         }
-        else if (Answer[17 + Answer[8]] == 0x10) 
+        else if (Answer[fw_idx] == 0x10)
         {
             gNfcController_generation = 2;
         }
@@ -401,8 +408,8 @@ void logic_deinit_nfc(void)
         DEBUG_PRINT("Connessione NFC chiusa\n");
     }
     
-    /* Pulisci UI tramite async call (sempre, in qualsiasi caso) */
-    lv_async_call(nfc_update_ui_cleanup, NULL);
+    /* Pulisci UI eseguita direttamente, siamo in un evento generato da LVGL */
+    nfc_update_ui_cleanup(NULL);
 
     INFO_PRINT("----------------------------------\n");
     INFO_PRINT("--- NFC SCREEN DEINIZIALIZZATO ---\n");

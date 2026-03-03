@@ -21,7 +21,7 @@
 
 // Gestione print
 #define DEBUG 0     // gestisce output extra su console: 1 ON | 0 OFF 
-#define INFO 1      // gestisce output di info importanti su console: 1 ON | 0 OFF
+#define INFO 0      // gestisce output di info importanti su console: 1 ON | 0 OFF
 #define ERROR 1     // gestisce output di errori su console: 1 ON | 0 OFF
 
 //*********** GESTIONE STAMPE *********** 
