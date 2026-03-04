@@ -263,6 +263,7 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_align(ui_accessConnectivityCtn, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_accessConnectivityCtn, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_accessConnectivityCtn, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_add_flag(ui_accessConnectivityCtn, LV_OBJ_FLAG_HIDDEN);     /// Flags
     lv_obj_remove_flag(ui_accessConnectivityCtn, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_pad_row(ui_accessConnectivityCtn, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_accessConnectivityCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -296,6 +297,7 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_width(ui_KeyboardConnectivity, lv_pct(70));
     lv_obj_set_height(ui_KeyboardConnectivity, lv_pct(30));
     lv_obj_set_align(ui_KeyboardConnectivity, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_KeyboardConnectivity, LV_OBJ_FLAG_HIDDEN);     /// Flags
 
     lv_obj_add_event_cb(ui_wifiBtn, ui_event_wifiBtn, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_bthBtn, ui_event_bthBtn, LV_EVENT_ALL, NULL);

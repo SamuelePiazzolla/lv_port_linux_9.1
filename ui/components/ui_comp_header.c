@@ -65,7 +65,7 @@ lv_obj_t * ui_Header_create(lv_obj_t * comp_parent)
                                            _ui_theme_alpha_HEADER);
     lv_obj_set_style_border_color(cui_homeButton, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(cui_homeButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(cui_homeButton, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(cui_homeButton, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_side(cui_homeButton, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_transform_scale(cui_homeButton, 256, LV_PART_MAIN | LV_STATE_DEFAULT);
 

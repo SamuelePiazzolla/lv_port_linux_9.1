@@ -84,8 +84,10 @@ void ui_buzzerScreen_screen_init(void)
     lv_obj_set_align(ui_buzzerBtn, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_buzzerBtn, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_buzzerBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_buzzerBtn, lv_color_hex(0x2DA041), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_buzzerBtn, lv_color_hex(0x34C759), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_buzzerBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_buzzerBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_buzzerBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_buzzerBtnLabel = lv_label_create(ui_buzzerBtn);
     lv_obj_set_width(ui_buzzerBtnLabel, LV_SIZE_CONTENT);   /// 1
