@@ -72,14 +72,12 @@ struct
 }cam_buffers[CAM_BUFFERS];
 
 //VIDEO RECORDING
-// Descrizione di un frame con dimensione stabile (__attribute__(packed))
-typedef struct __attribute__((packed)){                             
+typedef struct __attribute__((packed)){                             // L'attribute serve per non far aggiungere padding e avere la dimensione sempre stabile
     uint64_t ts_ms;                 // Timestamp in ms
     uint32_t frame[CAMERA_WIDTH * CAMERA_HEIGHT];  // Frame XRGB8888
 } frame_packet_t;                                                   // Struct che rappresenta il pacchetto che scriveremo sul file
+static bool recordActive = false;                                   
 static pthread_t recordThread;                                      // Thread che si occupa della scrittura su file
-static bool recordActive = false;                                   // Flag per verificare se si sta registrando attualmente                                
-static atomic_bool recordThreadAlive = false;                       // Flag per vedere se il thread di registrazione è ancora attivo   
 static pthread_mutex_t recordMutex = PTHREAD_MUTEX_INITIALIZER;     // Mutex per protezione tra main thread e thread record
 static FILE * recordFile = NULL;                                    // File RAW di output
 static frame_packet_t recordBuffer[2][MAX_FRAMES_PER_BUFFER];       // Double buffer per frame da scrivere
@@ -94,7 +92,6 @@ static size_t framesInBuffer[2] = { 0, 0 };                         // Numero di
 */
 //generali
 static void resetDisplayer(void);                                                           // Funzione per resettare il displayer video ad uno sfondo nero
-static void wait_thread_exit(atomic_bool *alive_flag, pthread_t thread, int timeout_ms);    // Attende la terminazione della registrazione soft, se scade il timeout fa join bloccante
 
 //Gestione video da file
 static bool readFramePacket(FILE* file, frame_packet_t* packet);                            // Funzione per leggere un singolo frame_packet_t dal file RAW
@@ -113,7 +110,6 @@ static void block_event_bubble(lv_event_t * e);                                 
 //Gestione video da camera
 static void cameraHardwareInit(void);                                                       // Funzione per alimentare la camera e impostare correttamente le pipe
 static void cameraClose(void);                                                              // Funzione per chiudere correttamente la telecamera
-static void camera_setup_cb(lv_timer_t *timer);                                             // Callback one-shot per inizializzazione camera dopo stabilizzazione hardware
 static void cameraSetup(void);                                                              // Funzione per setup iniziale telecamera
 static int cameraOpen(const char *dev);                                                     // Funzione per aprire il dispositivo selezionato
 static void cameraCaptureFrame(void);                                                       // Funzione che legge un frame dalla camera e lo copia in cameraBuffer
@@ -456,12 +452,6 @@ int cameraOpen(const char *dev)
     return open(dev, O_RDWR);
 }
 
-static void camera_setup_cb(lv_timer_t *timer)
-{
-    (void)timer;
-    cameraSetup();
-}
-
 void cameraSetup()
 {
     if(cameraFd >= 0)
@@ -627,21 +617,18 @@ void cameraCaptureFrame()
     if(ioctl(cameraFd, VIDIOC_QBUF, &buf) < 0) return;
 
     // RECORDING
-    if(recordActive) 
-    {
+    if(recordActive) {
         pthread_mutex_lock(&recordMutex);
 
         size_t idx = framesInBuffer[activeBufferIndex];
-        if(idx < MAX_FRAMES_PER_BUFFER) 
-        {
+        if(idx < MAX_FRAMES_PER_BUFFER) {
             recordBuffer[activeBufferIndex][idx].ts_ms = now_ms;
             memcpy(recordBuffer[activeBufferIndex][idx].frame, cameraFrameBuffer, sizeof(cameraFrameBuffer));
             framesInBuffer[activeBufferIndex]++;
         }
 
         // Se il buffer è pieno, lo segnalo come pronto e passo all'altro buffer
-        if(framesInBuffer[activeBufferIndex] >= MAX_FRAMES_PER_BUFFER) 
-        {
+        if(framesInBuffer[activeBufferIndex] >= MAX_FRAMES_PER_BUFFER) {
             bufferReady[activeBufferIndex] = true;
             activeBufferIndex = 1 - activeBufferIndex; // Switch buffer
             framesInBuffer[activeBufferIndex] = 0;
@@ -673,6 +660,7 @@ void cameraClose()
             }
         }
         
+
         // Close device
         close(cameraFd);
         cameraFd = -1;
@@ -696,8 +684,6 @@ void cameraClose()
 //GESTIONE SALVATAGGIO DATI SU FILE
 void* recordThreadFunc(void *arg)
 {
-    atomic_store(&recordThreadAlive, true);
-
     while(recordActive)
     {
         // Ciclo sui due buffer
@@ -711,19 +697,22 @@ void* recordThreadFunc(void *arg)
             // Scrivo solo se il buffer è pieno o contiene almeno un frame
             if(ready && nFrames > 0)
             {
-                // Copia locale fuori dal mutex: fwrite non blocca la cattura dei frame
-                frame_packet_t localBuffer[MAX_FRAMES_PER_BUFFER];
-                size_t localFrames;
+                frame_packet_t *localBuffer = malloc(nFrames * sizeof(frame_packet_t));
+                if(!localBuffer)
+                {
+                    ERROR_PRINT("[CAM] malloc localBuffer failed\n");
+                    continue;
+                }
 
                 pthread_mutex_lock(&recordMutex);
                 memcpy(localBuffer, recordBuffer[i], nFrames * sizeof(frame_packet_t));
-                localFrames = nFrames;
+                size_t localFrames = nFrames;
                 bufferReady[i] = false;
                 framesInBuffer[i] = 0;
                 pthread_mutex_unlock(&recordMutex);
 
-                // Scrittura fuori dal mutex
                 fwrite(localBuffer, sizeof(frame_packet_t), localFrames, recordFile);
+                free(localBuffer);
             }
         }
 
@@ -738,28 +727,7 @@ void* recordThreadFunc(void *arg)
         recordFile = NULL;
     }
 
-    atomic_store(&recordThreadAlive, false);
-
     return NULL;
-}
-
-//UTILITY
-static void wait_thread_exit(atomic_bool *alive_flag, pthread_t thread, int timeout_ms)
-{
-    const int step_us = 500;
-    int waited = 0;
-
-    while (atomic_load(alive_flag) && waited < timeout_ms * 1000)
-    {
-        usleep(step_us);
-        waited += step_us;
-    }
-
-    if (atomic_load(alive_flag))
-    {
-        ERROR_PRINT("[CAM] Timeout thread, fallback su pthread_join\n");
-        pthread_join(thread, NULL);
-    }
 }
 
 //LOGICA PULSANTI
@@ -812,8 +780,8 @@ void logic_load_camera(void)
 
     DEBUG_PRINT("Opening the camera...\n");
     cameraHardwareInit();
-    lv_timer_t *t = lv_timer_create(camera_setup_cb, 200, NULL);    // Non bloccante
-    lv_timer_set_repeat_count(t, 1);  // one-shot
+    usleep(200000); // 200 ms per fare in modo che venga settato tutto 
+    cameraSetup();
     lv_obj_remove_state(ui_playCameraBtn, LV_STATE_DISABLED);
     lv_obj_remove_state(ui_resetCameraBtn, LV_STATE_DISABLED);
     lv_obj_remove_state(ui_recCameraBtn, LV_STATE_DISABLED);
@@ -883,16 +851,18 @@ void logic_stop_rec_video(void)
 {
     if(recordActive == true)
     {
+        DEBUG_PRINT("Stopping recording\n");
         lv_label_set_text(ui_recCameraLabel, "REC");
         recordActive = false;
+        pthread_join(recordThread, NULL); // aspetta che il thread finisca
 
-        wait_thread_exit(&recordThreadAlive, recordThread, 200);    // 200 ms di timeout
-
+        //Pulisco variabili globali
         framesInBuffer[0] = framesInBuffer[1] = 0;
         bufferReady[0] = bufferReady[1] = false;
         activeBufferIndex = 0;
-
-        if(recordFile)
+        
+        //In teoria viene già fatto nel thread ma non si sa mai
+        if (recordFile) 
         {
             fclose(recordFile);
             recordFile = NULL;
