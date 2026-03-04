@@ -35,7 +35,7 @@ extern "C" {
 #define BPP 4
 
 //VIDEO
-#define VIDEO_FOLDER_PATH "./mediaTest"             //Modifica questa define inserendo la cartella da cui caricare i video/salvare i video
+#define VIDEO_FOLDER_PATH "./videoDemo"             //Modifica questa define inserendo la cartella da cui caricare i video/salvare i video
 
 //CAMERA & MMAP
 #define CAM_BUFFERS 4
