@@ -152,10 +152,8 @@ void ui_cameraScreen_screen_init(void)
     lv_obj_set_height(ui_loadVideoLabel, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_loadVideoLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_loadVideoLabel, "SELECT VIDEO");
-    ui_object_set_themeable_style_property(ui_loadVideoLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_loadVideoLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_loadVideoLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_loadVideoLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_loadCameraBtn = lv_button_create(ui_videoModeSelectorBtnContainer);
     lv_obj_set_width(ui_loadCameraBtn, lv_pct(90));
@@ -175,10 +173,8 @@ void ui_cameraScreen_screen_init(void)
     lv_obj_set_height(ui_loadCameraLabel, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_loadCameraLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_loadCameraLabel, "OPEN CAMERA");
-    ui_object_set_themeable_style_property(ui_loadCameraLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_loadCameraLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_loadCameraLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_loadCameraLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_panelCamera = lv_obj_create(ui_cameraContainer);
     lv_obj_set_width(ui_panelCamera, LV_SIZE_CONTENT);   /// 645
@@ -222,18 +218,18 @@ void ui_cameraScreen_screen_init(void)
     lv_obj_add_state(ui_playCameraBtn, LV_STATE_DISABLED);       /// States
     lv_obj_add_flag(ui_playCameraBtn, LV_OBJ_FLAG_CHECKABLE | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_playCameraBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_playCameraBtn, lv_color_hex(0x2DA041), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_playCameraBtn, lv_color_hex(0x34C759), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_playCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_playCameraBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_playCameraBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_playCameraLabel = lv_label_create(ui_playCameraBtn);
     lv_obj_set_width(ui_playCameraLabel, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_playCameraLabel, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_playCameraLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_playCameraLabel, "PLAY");
-    ui_object_set_themeable_style_property(ui_playCameraLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_playCameraLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_playCameraLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_playCameraLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_resetCameraBtn = lv_button_create(ui_videoCommandBtnContainer);
     lv_obj_set_width(ui_resetCameraBtn, lv_pct(90));
@@ -250,10 +246,8 @@ void ui_cameraScreen_screen_init(void)
     lv_obj_set_height(ui_resetCameraLabel, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_resetCameraLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_resetCameraLabel, "RESET");
-    ui_object_set_themeable_style_property(ui_resetCameraLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_resetCameraLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_resetCameraLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_resetCameraLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_recCameraBtn = lv_button_create(ui_videoCommandBtnContainer);
     lv_obj_set_width(ui_recCameraBtn, lv_pct(90));
@@ -272,10 +266,8 @@ void ui_cameraScreen_screen_init(void)
     lv_obj_set_height(ui_recCameraLabel, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_recCameraLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_recCameraLabel, "REC");
-    ui_object_set_themeable_style_property(ui_recCameraLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_recCameraLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_recCameraLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_recCameraLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_loadVideoBtn, ui_event_loadVideoBtn, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_loadCameraBtn, ui_event_loadCameraBtn, LV_EVENT_ALL, NULL);

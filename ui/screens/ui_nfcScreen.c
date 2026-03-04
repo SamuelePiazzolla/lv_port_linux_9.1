@@ -86,6 +86,8 @@ void ui_nfcScreen_screen_init(void)
     lv_obj_set_align(ui_nfcTextArea, LV_ALIGN_CENTER);
     lv_textarea_set_placeholder_text(ui_nfcTextArea, "Qui verranno visualizzati i dispositivi connessi...");
     lv_obj_remove_flag(ui_nfcTextArea, LV_OBJ_FLAG_CLICKABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_nfcTextArea, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_nfcTextArea, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_nfcScreen, ui_event_nfcScreen, LV_EVENT_ALL, NULL);
 

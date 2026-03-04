@@ -138,7 +138,7 @@ void ui_connectivityScreen_screen_init(void)
     ui_connectivitySelectorCtn = lv_obj_create(ui_connectivityList);
     lv_obj_remove_style_all(ui_connectivitySelectorCtn);
     lv_obj_set_width(ui_connectivitySelectorCtn, lv_pct(100));
-    lv_obj_set_height(ui_connectivitySelectorCtn, lv_pct(11));
+    lv_obj_set_height(ui_connectivitySelectorCtn, lv_pct(15));
     lv_obj_set_align(ui_connectivitySelectorCtn, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_connectivitySelectorCtn, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_connectivitySelectorCtn, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
@@ -189,8 +189,8 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_remove_flag(ui_divisorLine, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_scanNetButton = lv_button_create(ui_connectivityList);
-    lv_obj_set_height(ui_scanNetButton, 50);
     lv_obj_set_width(ui_scanNetButton, lv_pct(90));
+    lv_obj_set_height(ui_scanNetButton, lv_pct(10));
     lv_obj_set_align(ui_scanNetButton, LV_ALIGN_CENTER);
     lv_obj_add_state(ui_scanNetButton, LV_STATE_DISABLED);       /// States
     lv_obj_add_flag(ui_scanNetButton, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
@@ -211,22 +211,15 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_height(ui_labelNetButton, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_labelNetButton, LV_ALIGN_CENTER);
     lv_label_set_text(ui_labelNetButton, "RICERCA RETI O DISPOSITIVI DISPONIBILI");
-    ui_object_set_themeable_style_property(ui_labelNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_labelNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_labelNetButton, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_labelNetButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_labelNetButton, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_decor(ui_labelNetButton, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_labelNetButton, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
-    ui_object_set_themeable_style_property(ui_labelNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_labelNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_OPA,
-                                           _ui_theme_alpha_TEXT);
-    lv_obj_set_style_border_width(ui_labelNetButton, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_side(ui_labelNetButton, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(ui_labelNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_labelNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_labelNetButton, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_labelNetButton, 20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_labelNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_labelNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_connectivityBtnContainer = lv_obj_create(ui_connectivityList);
     lv_obj_remove_style_all(ui_connectivityBtnContainer);
@@ -270,7 +263,6 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_align(ui_accessConnectivityCtn, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_accessConnectivityCtn, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_accessConnectivityCtn, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_add_flag(ui_accessConnectivityCtn, LV_OBJ_FLAG_HIDDEN);     /// Flags
     lv_obj_remove_flag(ui_accessConnectivityCtn, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_pad_row(ui_accessConnectivityCtn, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_accessConnectivityCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -289,10 +281,10 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_align(ui_connectBtn, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_connectBtn, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_connectBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    ui_object_set_themeable_style_property(ui_connectBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
-                                           _ui_theme_color_BTN);
-    ui_object_set_themeable_style_property(ui_connectBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
-                                           _ui_theme_alpha_BTN);
+    lv_obj_set_style_bg_color(ui_connectBtn, lv_color_hex(0x34C759), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_connectBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_connectBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_connectBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_labelConnectBtn = lv_label_create(ui_connectBtn);
     lv_obj_set_width(ui_labelConnectBtn, LV_SIZE_CONTENT);   /// 1
@@ -304,7 +296,6 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_width(ui_KeyboardConnectivity, lv_pct(70));
     lv_obj_set_height(ui_KeyboardConnectivity, lv_pct(30));
     lv_obj_set_align(ui_KeyboardConnectivity, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_KeyboardConnectivity, LV_OBJ_FLAG_HIDDEN);     /// Flags
 
     lv_obj_add_event_cb(ui_wifiBtn, ui_event_wifiBtn, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_bthBtn, ui_event_bthBtn, LV_EVENT_ALL, NULL);

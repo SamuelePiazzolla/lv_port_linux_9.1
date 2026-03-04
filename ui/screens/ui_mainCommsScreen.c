@@ -146,11 +146,11 @@ void ui_mainCommsScreen_screen_init(void)
     lv_obj_set_align(ui_commsTextArea, LV_ALIGN_CENTER);
     lv_textarea_set_placeholder_text(ui_commsTextArea,
                                      "Qui visualizzerai i messaggi in arrivo sulla linea di comunicazione desiderata");
-    lv_obj_set_style_text_color(ui_commsTextArea, lv_color_hex(0x00FF00), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_commsTextArea, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_object_set_themeable_style_property(ui_commsTextArea, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
+                                           _ui_theme_color_TEXT);
+    ui_object_set_themeable_style_property(ui_commsTextArea, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
+                                           _ui_theme_alpha_TEXT);
     lv_obj_set_style_text_font(ui_commsTextArea, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_commsTextArea, lv_color_hex(0x1E1E1E), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_commsTextArea, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_commsTextArea, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_commsTextArea, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 

@@ -194,10 +194,8 @@ void ui_audioScreen_screen_init(void)
     lv_obj_set_height(ui_recordmicBtnLabel, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_recordmicBtnLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_recordmicBtnLabel, "RECORD MESSAGE");
-    ui_object_set_themeable_style_property(ui_recordmicBtnLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_recordmicBtnLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_recordmicBtnLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_recordmicBtnLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_recordmicBtnLabel, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_outAudioContainer = lv_obj_create(ui_bodyAudio);
@@ -321,8 +319,10 @@ void ui_audioScreen_screen_init(void)
     lv_obj_add_state(ui_playStopAudioBtn, LV_STATE_DISABLED);       /// States
     lv_obj_add_flag(ui_playStopAudioBtn, LV_OBJ_FLAG_CHECKABLE | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_playStopAudioBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_playStopAudioBtn, lv_color_hex(0x31A231), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_playStopAudioBtn, lv_color_hex(0x34C759), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_playStopAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_playStopAudioBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_playStopAudioBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_playStopAudioBtnLabel = lv_label_create(ui_playStopAudioBtn);
     lv_obj_set_width(ui_playStopAudioBtnLabel, LV_SIZE_CONTENT);   /// 1

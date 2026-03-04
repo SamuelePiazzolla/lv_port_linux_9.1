@@ -6,19 +6,19 @@
 #include "ui.h"
 
 
-const ui_theme_variable_t _ui_theme_color_BACKGROUND[1] = {0x333333};
+const ui_theme_variable_t _ui_theme_color_BACKGROUND[1] = {0xF2F2F7};
 const ui_theme_variable_t _ui_theme_alpha_BACKGROUND[1] = {255};
 
-const ui_theme_variable_t _ui_theme_color_HEADER[1] = {0x14191E};
+const ui_theme_variable_t _ui_theme_color_HEADER[1] = {0x1C1C1E};
 const ui_theme_variable_t _ui_theme_alpha_HEADER[1] = {255};
 
-const ui_theme_variable_t _ui_theme_color_TEXT[1] = {0xEDEDED};
+const ui_theme_variable_t _ui_theme_color_TEXT[1] = {0x1C1C1E};
 const ui_theme_variable_t _ui_theme_alpha_TEXT[1] = {255};
 
-const ui_theme_variable_t _ui_theme_color_MAINBTN[1] = {0x242B33};
+const ui_theme_variable_t _ui_theme_color_MAINBTN[1] = {0xFFFFFF};
 const ui_theme_variable_t _ui_theme_alpha_MAINBTN[1] = {255};
 
-const ui_theme_variable_t _ui_theme_color_BTN[1] = {0x1F3A6D};
+const ui_theme_variable_t _ui_theme_color_BTN[1] = {0x007AFF};
 const ui_theme_variable_t _ui_theme_alpha_BTN[1] = {255};
 uint8_t ui_theme_idx = UI_THEME_DEFAULT;
 

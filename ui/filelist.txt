@@ -14,6 +14,7 @@ ui.c
 components/ui_comp_hook.c
 ui_helpers.c
 ui_events.c
+images/ui_img_homeicon_png.c
 images/ui_img_mil_lamp_png.c
 images/ui_img_high_beam_png.c
 images/ui_img_low_beam_png.c

@@ -164,10 +164,8 @@ void ui_mainScreen_screen_init(void)
     lv_obj_set_height(ui_labelBtnWiFiBth, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_labelBtnWiFiBth, LV_ALIGN_CENTER);
     lv_label_set_text(ui_labelBtnWiFiBth, "TEST WiFi/BTH");
-    ui_object_set_themeable_style_property(ui_labelBtnWiFiBth, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_labelBtnWiFiBth, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_labelBtnWiFiBth, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_labelBtnWiFiBth, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_labelBtnWiFiBth, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_btnNfc = lv_button_create(ui_Connectivity);
@@ -186,10 +184,8 @@ void ui_mainScreen_screen_init(void)
     lv_obj_set_height(ui_labelBtnNfc, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_labelBtnNfc, LV_ALIGN_CENTER);
     lv_label_set_text(ui_labelBtnNfc, "TEST NFC");
-    ui_object_set_themeable_style_property(ui_labelBtnNfc, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_labelBtnNfc, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_labelBtnNfc, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_labelBtnNfc, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_labelBtnNfc, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Communication = lv_obj_create(ui_mainScreen);
@@ -248,10 +244,8 @@ void ui_mainScreen_screen_init(void)
     lv_obj_set_height(ui_labelBtnEthRs, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_labelBtnEthRs, LV_ALIGN_CENTER);
     lv_label_set_text(ui_labelBtnEthRs, "TEST ETH/\nRS-485");
-    ui_object_set_themeable_style_property(ui_labelBtnEthRs, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_labelBtnEthRs, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_labelBtnEthRs, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_labelBtnEthRs, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_labelBtnEthRs, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_btnCan = lv_button_create(ui_Communication);
@@ -270,10 +264,8 @@ void ui_mainScreen_screen_init(void)
     lv_obj_set_height(ui_labelBtnCan, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_labelBtnCan, LV_ALIGN_CENTER);
     lv_label_set_text(ui_labelBtnCan, "TEST CAN");
-    ui_object_set_themeable_style_property(ui_labelBtnCan, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_labelBtnCan, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_labelBtnCan, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_labelBtnCan, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_labelBtnCan, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Multimedia = lv_obj_create(ui_mainScreen);
@@ -337,10 +329,8 @@ void ui_mainScreen_screen_init(void)
     lv_obj_set_height(ui_labelBtnAudio, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_labelBtnAudio, LV_ALIGN_CENTER);
     lv_label_set_text(ui_labelBtnAudio, "TEST AUDIO");
-    ui_object_set_themeable_style_property(ui_labelBtnAudio, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_labelBtnAudio, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_labelBtnAudio, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_labelBtnAudio, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_labelBtnAudio, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_btnCamera = lv_button_create(ui_Multimedia);
@@ -359,10 +349,8 @@ void ui_mainScreen_screen_init(void)
     lv_obj_set_height(ui_labelBtnCamera, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_labelBtnCamera, LV_ALIGN_CENTER);
     lv_label_set_text(ui_labelBtnCamera, "TEST CAMERA");
-    ui_object_set_themeable_style_property(ui_labelBtnCamera, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_labelBtnCamera, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_labelBtnCamera, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_labelBtnCamera, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_labelBtnCamera, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_btnBuzzer = lv_button_create(ui_Multimedia);
@@ -381,10 +369,8 @@ void ui_mainScreen_screen_init(void)
     lv_obj_set_height(ui_labelBtnBuzzer, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_labelBtnBuzzer, LV_ALIGN_CENTER);
     lv_label_set_text(ui_labelBtnBuzzer, "TEST BUZZER");
-    ui_object_set_themeable_style_property(ui_labelBtnBuzzer, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_labelBtnBuzzer, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_labelBtnBuzzer, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_labelBtnBuzzer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_labelBtnBuzzer, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_btnWiFiBth, ui_event_btnWiFiBth, LV_EVENT_ALL, NULL);

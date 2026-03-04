@@ -16,7 +16,7 @@ extern "C" {
 #define UI_COMP_HEADER_HEADER 0
 #define UI_COMP_HEADER_LABELHEADER 1
 #define UI_COMP_HEADER_HOMEBUTTON 2
-#define UI_COMP_HEADER_HOMEBUTTON_HOMELABEL 3
+#define UI_COMP_HEADER_HOMEBUTTON_HOMEICON 3
 #define _UI_COMP_HEADER_NUM 4
 lv_obj_t * ui_Header_create(lv_obj_t * comp_parent);
 void ui_event_comp_Header_homeButton(lv_event_t * e);
