@@ -337,12 +337,9 @@ void createFilePicker(void)
     if(filePicker != NULL && cont != NULL && title != NULL && btn_close != NULL && lbl_close != NULL)
     {
         DEBUG_PRINT("Creazione pop-up avvenuta con successo\n");
-        lv_obj_remove_state(ui_playCameraBtn, LV_STATE_DISABLED);
-        lv_obj_remove_state(ui_resetCameraBtn, LV_STATE_DISABLED);
     }
     else
     {
-        
         //Disattiva i pulsanti per gestione video
         lv_obj_add_state(ui_playCameraBtn, LV_STATE_DISABLED);
         lv_obj_add_state(ui_resetCameraBtn, LV_STATE_DISABLED);
@@ -373,6 +370,8 @@ void fileSelected(lv_event_t * e)
     DEBUG_PRINT("File selected: %s\n", selectedVideoPath);
 
     destroy_filepicker();
+    lv_obj_remove_state(ui_playCameraBtn, LV_STATE_DISABLED);
+    lv_obj_remove_state(ui_resetCameraBtn, LV_STATE_DISABLED);
 }
 
 void overlay_clicked(lv_event_t * e)
@@ -971,8 +970,9 @@ void logic_reset_video(void)
     {
         DEBUG_PRINT("Closing camera and resetting displayer\n");
 
-        // ferma thread prima di cameraClose()
-        logic_stop_rec_video(); 
+        // ferma thread prima di cameraClose(resettando il pulsante e quindi chiamando logic_stop_rec_video)
+        lv_obj_remove_state(ui_recCameraBtn, LV_STATE_CHECKED);
+        lv_label_set_text(ui_recCameraLabel, "REC");
         cameraClose();
         
         //Resetto i pulsanti 
