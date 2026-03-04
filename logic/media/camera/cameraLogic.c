@@ -94,7 +94,7 @@ static size_t framesInBuffer[2] = { 0, 0 };                         // Numero di
 */
 //generali
 static void resetDisplayer(void);                                                           // Funzione per resettare il displayer video ad uno sfondo nero
-static void wait_recording_thread_exit(int timeout_ms);                                     // Attende la terminazione della registrazione soft, se scade il timeout fa join bloccante
+static void wait_thread_exit(atomic_bool *alive_flag, pthread_t thread, int timeout_ms);    // Attende la terminazione della registrazione soft, se scade il timeout fa join bloccante
 
 //Gestione video da file
 static bool readFramePacket(FILE* file, frame_packet_t* packet);                            // Funzione per leggere un singolo frame_packet_t dal file RAW
@@ -727,21 +727,21 @@ void* recordThreadFunc(void *arg)
 }
 
 //UTILITY
-static void wait_recording_thread_exit(int timeout_ms)
+static void wait_thread_exit(atomic_bool *alive_flag, pthread_t thread, int timeout_ms)
 {
-    const int step_us = 500;
+    const int step_up = 500;
     int waited = 0;
 
-    while(atomic_load(&recordThreadAlive) && waited < timeout_ms * 1000)
+    while (atomic_load(alive_flag) && waited < timeout_ms * 1000)
     {
-        usleep(step_us);
-        waited += step_us;
+        usleep(step_up);
+        waited += step_up;
     }
 
-    if(atomic_load(&recordThreadAlive))
+    if (atomic_load(alive_flag))
     {
-        ERROR_PRINT("[CAM] Timeout recording thread, fallback su pthread_join\n");
-        pthread_join(recordThread, NULL);
+        ERROR_PRINT("[CAM] Timeout thread, fallback su pthread_join\n");
+        pthread_join(thread, NULL);
     }
 }
 
@@ -868,7 +868,9 @@ void logic_stop_rec_video(void)
     {
         lv_label_set_text(ui_recCameraLabel, "REC");
         recordActive = false;
-        wait_recording_thread_exit(200);
+
+        wait_thread_exit(&recordThreadAlive, recordThread, 200);    // 200 ms di timeout
+
         framesInBuffer[0] = framesInBuffer[1] = 0;
         bufferReady[0] = bufferReady[1] = false;
         activeBufferIndex = 0;

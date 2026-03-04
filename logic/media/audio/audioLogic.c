@@ -116,8 +116,8 @@ static void set_system_volume(int percent);                             // Funzi
 static void audio_hw_init(void);                                        // Funzione per inizializzare alcuni valori audio hardware
 
 // UTILITY
-static void wait_thread_exit(atomic_bool *alive_flag, int timeout_ms);  // Funzione per aspettare la fine dei thread senza bloccare UI, se scade il timeout fallback su join
-static void playback_finished_cb(void *arg);                            // Serve per modificare la GUI quando la riproduzione audio finisce
+static void wait_thread_exit(atomic_bool *alive_flag, pthread_t thread, int timeout_ms);    // Funzione per aspettare la fine dei thread senza bloccare UI, se scade il timeout fallback su join
+static void playback_finished_cb(void *arg);                                                // Serve per modificare la GUI quando la riproduzione audio finisce
 
 
 /* 
@@ -130,25 +130,21 @@ static void playback_finished_cb(void *arg);                            // Serve
  *  UTILITY
  *------------------------------------- */
 
-static void wait_thread_exit(atomic_bool *alive_flag, int timeout_ms)
+static void wait_thread_exit(atomic_bool *alive_flag, pthread_t thread, int timeout_ms)
 {
-    const int step_us = 500;    // 0.5 ms
+    const int step_up = 500;
     int waited = 0;
 
     while (atomic_load(alive_flag) && waited < timeout_ms * 1000)
     {
-        usleep(step_us);
-        waited += step_us;
+        usleep(step_up);
+        waited += step_up;
     }
 
-    // Se scade il timeout, fallback su join
     if (atomic_load(alive_flag))
     {
         ERROR_PRINT("[AUDIO] Timeout thread, fallback su pthread_join\n");
-        if (alive_flag == &record_thread_alive)
-            pthread_join(recorder.thread, NULL);
-        else
-            pthread_join(player.thread, NULL);
+        pthread_join(thread, NULL);
     }
 }
 
@@ -909,14 +905,14 @@ void logic_deinit_audio_screen(void)
     if (atomic_load(&recorder.running))
     {
         stop_recording_async();
-        wait_thread_exit(&record_thread_alive, 200);     // max 200 ms
+        wait_thread_exit(&record_thread_alive, recorder.thread, 200);     // max 200 ms
     }
 
     /* 2. FERMO RIPRODUZIONE AUDIO */
     if (atomic_load(&player.thread_alive))
     {
         audio_reset();
-        wait_thread_exit(&player.thread_alive, 200);  // max 200 ms (drain ALSA)
+        wait_thread_exit(&player.thread_alive, player.thread, 200);  // max 200 ms (drain ALSA)
     }
 
     /* 3. CHIUDO FILE PICKER */
