@@ -116,7 +116,7 @@ static void set_system_volume(int percent);                             // Funzi
 static void audio_hw_init(void);                                        // Funzione per inizializzare alcuni valori audio hardware
 
 // UTILITY
-static void wait_thread_exit(atomic_bool *alive_flag, int timeout_ms);  // Funzione per aspettare la fine dei thread senza bloccare UI
+static void wait_thread_exit(atomic_bool *alive_flag, int timeout_ms);  // Funzione per aspettare la fine dei thread senza bloccare UI, se scade il timeout fallback su join
 static void playback_finished_cb(void *arg);                            // Serve per modificare la GUI quando la riproduzione audio finisce
 
 
@@ -139,6 +139,16 @@ static void wait_thread_exit(atomic_bool *alive_flag, int timeout_ms)
     {
         usleep(step_us);
         waited += step_us;
+    }
+
+    // Se scade il timeout, fallback su join
+    if (atomic_load(alive_flag))
+    {
+        ERROR_PRINT("[AUDIO] Timeout thread, fallback su pthread_join\n");
+        if (alive_flag == &record_thread_alive)
+            pthread_join(recorder.thread, NULL);
+        else
+            pthread_join(player.thread, NULL);
     }
 }
 

@@ -21,6 +21,7 @@ extern "C" {
 #include <linux/videodev2.h>
 #include <sys/mman.h>
 #include <pthread.h>
+#include <stdatomic.h>
 
 /* 
 =======================================
@@ -71,12 +72,14 @@ struct
 }cam_buffers[CAM_BUFFERS];
 
 //VIDEO RECORDING
-typedef struct __attribute__((packed)){                             // L'attribute serve per non far aggiungere padding e avere la dimensione sempre stabile
+// Descrizione di un frame con dimensione stabile (__attribute__(packed))
+typedef struct __attribute__((packed)){                             
     uint64_t ts_ms;                 // Timestamp in ms
     uint32_t frame[CAMERA_WIDTH * CAMERA_HEIGHT];  // Frame XRGB8888
 } frame_packet_t;                                                   // Struct che rappresenta il pacchetto che scriveremo sul file
-static bool recordActive = false;                                   
 static pthread_t recordThread;                                      // Thread che si occupa della scrittura su file
+static bool recordActive = false;                                   // Flag per verificare se si sta registrando attualmente                                
+static atomic_bool recordThreadAlive = false;                       // Flag per vedere se il thread di registrazione è ancora attivo   
 static pthread_mutex_t recordMutex = PTHREAD_MUTEX_INITIALIZER;     // Mutex per protezione tra main thread e thread record
 static FILE * recordFile = NULL;                                    // File RAW di output
 static frame_packet_t recordBuffer[2][MAX_FRAMES_PER_BUFFER];       // Double buffer per frame da scrivere
@@ -91,6 +94,7 @@ static size_t framesInBuffer[2] = { 0, 0 };                         // Numero di
 */
 //generali
 static void resetDisplayer(void);                                                           // Funzione per resettare il displayer video ad uno sfondo nero
+static void wait_recording_thread_exit(int timeout_ms);                                     // Attende la terminazione della registrazione soft, se scade il timeout fa join bloccante
 
 //Gestione video da file
 static bool readFramePacket(FILE* file, frame_packet_t* packet);                            // Funzione per leggere un singolo frame_packet_t dal file RAW
@@ -681,6 +685,8 @@ void cameraClose()
 //GESTIONE SALVATAGGIO DATI SU FILE
 void* recordThreadFunc(void *arg)
 {
+    atomic_store(&recordThreadAlive, true);
+
     while(recordActive)
     {
         // Ciclo sui due buffer
@@ -715,7 +721,28 @@ void* recordThreadFunc(void *arg)
         recordFile = NULL;
     }
 
+    atomic_store(&recordThreadAlive, false);
+
     return NULL;
+}
+
+//UTILITY
+static void wait_recording_thread_exit(int timeout_ms)
+{
+    const int step_us = 500;
+    int waited = 0;
+
+    while(atomic_load(&recordThreadAlive) && waited < timeout_ms * 1000)
+    {
+        usleep(step_us);
+        waited += step_us;
+    }
+
+    if(atomic_load(&recordThreadAlive))
+    {
+        ERROR_PRINT("[CAM] Timeout recording thread, fallback su pthread_join\n");
+        pthread_join(recordThread, NULL);
+    }
 }
 
 //LOGICA PULSANTI
@@ -839,18 +866,14 @@ void logic_stop_rec_video(void)
 {
     if(recordActive == true)
     {
-        DEBUG_PRINT("Stopping recording\n");
         lv_label_set_text(ui_recCameraLabel, "REC");
         recordActive = false;
-        pthread_join(recordThread, NULL); // aspetta che il thread finisca
-
-        //Pulisco variabili globali
+        wait_recording_thread_exit(200);
         framesInBuffer[0] = framesInBuffer[1] = 0;
         bufferReady[0] = bufferReady[1] = false;
         activeBufferIndex = 0;
-        
-        //In teoria viene già fatto nel thread ma non si sa mai
-        if (recordFile) 
+
+        if(recordFile)
         {
             fclose(recordFile);
             recordFile = NULL;
