@@ -11,7 +11,7 @@
 =======================================
 */
 // CARTELLA FILE AUDIO
-#define AUDIO_FOLDER_PATH ".mediaDemo/audioDemo"     // Cartella in cui salvare e trovare le registrazioni
+#define AUDIO_FOLDER_PATH "mediaDemo/audioDemo/"     // Cartella in cui salvare e trovare le registrazioni
 
 // IMPOSTAZIONI MICROFONO
 #define PCM_DEVICE "default"                // Tipo di dispositivo PCM
