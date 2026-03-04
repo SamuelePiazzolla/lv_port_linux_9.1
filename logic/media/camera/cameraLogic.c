@@ -76,7 +76,8 @@ typedef struct __attribute__((packed)){                             // L'attribu
     uint64_t ts_ms;                 // Timestamp in ms
     uint32_t frame[CAMERA_WIDTH * CAMERA_HEIGHT];  // Frame XRGB8888
 } frame_packet_t;                                                   // Struct che rappresenta il pacchetto che scriveremo sul file
-static bool recordActive = false;                                   
+static bool recordActive = false;                                   // Flag che indica se la registrazione è attiva
+static atomic_bool recordThreadAlive = false;                       // Flag che indica se il thread di registrazione è vivo
 static pthread_t recordThread;                                      // Thread che si occupa della scrittura su file
 static pthread_mutex_t recordMutex = PTHREAD_MUTEX_INITIALIZER;     // Mutex per protezione tra main thread e thread record
 static FILE * recordFile = NULL;                                    // File RAW di output
@@ -92,6 +93,7 @@ static size_t framesInBuffer[2] = { 0, 0 };                         // Numero di
 */
 //generali
 static void resetDisplayer(void);                                                           // Funzione per resettare il displayer video ad uno sfondo nero
+static void wait_thread_exit(atomic_bool *alive_flag, pthread_t thread, int timeout_ms);    // Attende la fine del thread in modo non bloccante, se scade il timeout fa join bloccante
 
 //Gestione video da file
 static bool readFramePacket(FILE* file, frame_packet_t* packet);                            // Funzione per leggere un singolo frame_packet_t dal file RAW
@@ -684,6 +686,8 @@ void cameraClose()
 //GESTIONE SALVATAGGIO DATI SU FILE
 void* recordThreadFunc(void *arg)
 {
+    atomic_store(&recordThreadAlive, true);
+
     while(recordActive)
     {
         // Ciclo sui due buffer
@@ -727,7 +731,28 @@ void* recordThreadFunc(void *arg)
         recordFile = NULL;
     }
 
+    atomic_store(&recordThreadAlive, false);
+
     return NULL;
+}
+
+//UTILITY
+static void wait_thread_exit(atomic_bool *alive_flag, pthread_t thread, int timeout_ms)
+{
+    const int step_us = 500;
+    int waited = 0;
+
+    while (atomic_load(alive_flag) && waited < timeout_ms * 1000)
+    {
+        usleep(step_us);
+        waited += step_us;
+    }
+
+    if (atomic_load(alive_flag))
+    {
+        ERROR_PRINT("[CAM] Timeout thread, fallback su pthread_join\n");
+        pthread_join(thread, NULL);
+    }
 }
 
 //LOGICA PULSANTI
@@ -854,7 +879,8 @@ void logic_stop_rec_video(void)
         DEBUG_PRINT("Stopping recording\n");
         lv_label_set_text(ui_recCameraLabel, "REC");
         recordActive = false;
-        pthread_join(recordThread, NULL); // aspetta che il thread finisca
+        
+        wait_thread_exit(&recordThreadAlive, recordThread, 200);    //200ms di timeout
 
         //Pulisco variabili globali
         framesInBuffer[0] = framesInBuffer[1] = 0;
