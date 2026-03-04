@@ -76,7 +76,7 @@ typedef struct __attribute__((packed)){                             // L'attribu
     uint64_t ts_ms;                 // Timestamp in ms
     uint32_t frame[CAMERA_WIDTH * CAMERA_HEIGHT];  // Frame XRGB8888
 } frame_packet_t;                                                   // Struct che rappresenta il pacchetto che scriveremo sul file
-static bool recordActive = false;                                   // Flag che indica se la registrazione è attiva
+static atomic_bool recordActive = false;                            // Flag che indica se la registrazione è attiva
 static atomic_bool recordThreadAlive = false;                       // Flag che indica se il thread di registrazione è vivo
 static pthread_t recordThread;                                      // Thread che si occupa della scrittura su file
 static pthread_mutex_t recordMutex = PTHREAD_MUTEX_INITIALIZER;     // Mutex per protezione tra main thread e thread record
@@ -527,6 +527,8 @@ void cameraSetup()
         if(cam_buffers[i].start == MAP_FAILED)
         {
             ERROR_PRINT("Error mapping the buffer %i", i);
+            cam_buffers[i].start = NULL;   
+            cam_buffers[i].length = 0;  
             cameraClose();
             return;
         }
@@ -619,18 +621,21 @@ void cameraCaptureFrame()
     if(ioctl(cameraFd, VIDIOC_QBUF, &buf) < 0) return;
 
     // RECORDING
-    if(recordActive) {
+    if(atomic_load(&recordActive) == true) 
+    {
         pthread_mutex_lock(&recordMutex);
 
         size_t idx = framesInBuffer[activeBufferIndex];
-        if(idx < MAX_FRAMES_PER_BUFFER) {
+        if(idx < MAX_FRAMES_PER_BUFFER) 
+        {
             recordBuffer[activeBufferIndex][idx].ts_ms = now_ms;
             memcpy(recordBuffer[activeBufferIndex][idx].frame, cameraFrameBuffer, sizeof(cameraFrameBuffer));
             framesInBuffer[activeBufferIndex]++;
         }
 
         // Se il buffer è pieno, lo segnalo come pronto e passo all'altro buffer
-        if(framesInBuffer[activeBufferIndex] >= MAX_FRAMES_PER_BUFFER) {
+        if(framesInBuffer[activeBufferIndex] >= MAX_FRAMES_PER_BUFFER) 
+        {
             bufferReady[activeBufferIndex] = true;
             activeBufferIndex = 1 - activeBufferIndex; // Switch buffer
             framesInBuffer[activeBufferIndex] = 0;
@@ -688,7 +693,7 @@ void* recordThreadFunc(void *arg)
 {
     atomic_store(&recordThreadAlive, true);
 
-    while(recordActive)
+    while(atomic_load(&recordActive) == true)
     {
         // Ciclo sui due buffer
         for(int i = 0; i < 2; i++)
@@ -822,7 +827,7 @@ void logic_rec_video(void)
         lv_label_set_text(ui_recCameraLabel, "STOP REC");
         
         //Controllo inutile, non dovrebbe mai succedere
-        if(recordActive) 
+        if(atomic_load(&recordActive) == true) 
         {
             DEBUG_PRINT("Recording is already active!\n");
             return;
@@ -849,7 +854,7 @@ void logic_rec_video(void)
         }
 
         // 2. Imposta flag attivo
-        recordActive = true;
+        atomic_store(&recordActive, true);
 
         // 3. Inizializza buffer
         pthread_mutex_lock(&recordMutex);
@@ -862,7 +867,7 @@ void logic_rec_video(void)
         if(pthread_create(&recordThread, NULL, recordThreadFunc, NULL) != 0) 
         {
             ERROR_PRINT("Error: could not create record thread\n");
-            recordActive = false;
+            atomic_store(&recordActive, false);
             fclose(recordFile);
             recordFile = NULL;
             return;
@@ -874,11 +879,11 @@ void logic_rec_video(void)
 
 void logic_stop_rec_video(void)
 {
-    if(recordActive == true)
+    if(atomic_load(&recordActive) == true)
     {
         DEBUG_PRINT("Stopping recording\n");
         lv_label_set_text(ui_recCameraLabel, "REC");
-        recordActive = false;
+        atomic_store(&recordActive, false);
         
         wait_thread_exit(&recordThreadAlive, recordThread, 200);    //200ms di timeout
 
@@ -1000,21 +1005,19 @@ void logic_deinit_camera_screen(void)
 
     // Ferma video / registrazione / timer / camera
     logic_stop_rec_video();  // ferma registrazione se attiva
-    if(cameraFd >= 0 || useCamera) {
-        cameraClose();        // ferma camera e timer
-    }
+    cameraClose();        // ferma camera e timer
 
     // Reset displayer
     memset(cameraFrameBuffer, 0, sizeof(cameraFrameBuffer)); // nero puro
     resetDisplayer();  // aggiorna LVGL
 
     // Pulizia variabili globali
-    selectedVideoPath[0] = '\0';    // cancella il percorso del video selezionato
-    last_ts_ms = 0;                 // reset timestamp
-    useCamera = false;              // reset modalità
-    g_img_timer = NULL;             // il timer già eliminato in cameraClose
-    recordActive = false;           // flag registrazione
-    recordFile = NULL;              // file chiuso in logic_stop_rec_video
+    selectedVideoPath[0] = '\0';        // cancella il percorso del video selezionato
+    last_ts_ms = 0;                     // reset timestamp
+    useCamera = false;                  // reset modalità
+    g_img_timer = NULL;                 // il timer già eliminato in cameraClose
+    atomic_store(&recordActive, false); // flag registrazione
+    recordFile = NULL;                  // file chiuso in logic_stop_rec_video
     activeBufferIndex = 0;
     framesInBuffer[0] = framesInBuffer[1] = 0;
     bufferReady[0] = bufferReady[1] = false;
