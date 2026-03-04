@@ -132,13 +132,13 @@ static void playback_finished_cb(void *arg);                                    
 
 static void wait_thread_exit(atomic_bool *alive_flag, pthread_t thread, int timeout_ms)
 {
-    const int step_up = 500;
+    const int step_us = 500;
     int waited = 0;
 
     while (atomic_load(alive_flag) && waited < timeout_ms * 1000)
     {
-        usleep(step_up);
-        waited += step_up;
+        usleep(step_us);
+        waited += step_us;
     }
 
     if (atomic_load(alive_flag))
