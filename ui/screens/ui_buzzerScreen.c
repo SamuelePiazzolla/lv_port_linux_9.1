@@ -120,7 +120,6 @@ void ui_buzzerScreen_screen_init(void)
     lv_obj_set_width(ui_buzzerImg, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_buzzerImg, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_buzzerImg, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_buzzerImg, LV_OBJ_FLAG_CLICKABLE);     /// Flags
     lv_obj_remove_flag(ui_buzzerImg, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_titleBuzzerLabel = lv_label_create(ui_buzzerBodyCtn);
