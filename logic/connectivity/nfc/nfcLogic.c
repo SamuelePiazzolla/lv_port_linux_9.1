@@ -151,9 +151,8 @@ static void nfc_update_ui_cleanup(void* user_data)
     (void)user_data; /* Parametro non utilizzato */
     
     /* Spegni LED */
-    lv_obj_clear_state(ui_nfcLed, LV_STATE_CHECKED);
+    lv_obj_remove_state(ui_nfcLed, LV_STATE_CHECKED);
     
-
     /* Svuota textArea */
     lv_textarea_set_text(ui_nfcTextArea, "");
     
