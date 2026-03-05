@@ -7,7 +7,7 @@
 =====================================
 */
 
-/* Tempo di visualizzazione LED dopo rilevamento tag (in millisecondi) */
+/* Timeout dopo rilevamento tag (in millisecondi) */
 #define NFC_DISPLAY_TIME_MS 3000  /* 3 secondi */
 
 /*

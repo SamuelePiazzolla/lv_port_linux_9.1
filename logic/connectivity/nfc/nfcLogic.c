@@ -18,8 +18,8 @@
 
 /* Stati del polling NFC */
 typedef enum {
-    NFC_STATE_IDLE,           /* In attesa di rilevare un tag, LED spento */
-    NFC_STATE_DISPLAY_ACTIVE  /* Tag rilevato, LED acceso per il tempo di visualizzazione */
+    NFC_STATE_IDLE,           /* In attesa di rilevare un tag */
+    NFC_STATE_DISPLAY_ACTIVE  /* Tag rilevato, timeout di visualizzazione */
 } nfc_state_t;
 
 
@@ -210,7 +210,7 @@ static void* nfc_polling_thread(void* arg)
             break;
                 
             case NFC_STATE_DISPLAY_ACTIVE:
-                /* LED acceso, attende che scadano i NFC_DISPLAY_TIME_MS */
+                /* Dispositivo rilevato, attende che scadano i NFC_DISPLAY_TIME_MS */
                 {
                     struct timespec now;
                     clock_gettime(CLOCK_MONOTONIC, &now);
@@ -246,7 +246,7 @@ static void* nfc_polling_thread(void* arg)
                             /* RF_INTF_ACTIVATED (0x61 0x05) o RF_DISCOVER (0x61 0x03): nuovo tag, lo ignoriamo */
                             else if (temp_answer[0] == 0x61 && (temp_answer[1] == 0x05 || temp_answer[1] == 0x03)) 
                             {
-                                INFO_PRINT("Nuovo tag rilevato durante DISPLAY_ACTIVE - ignorato (LED già acceso)\n");
+                                INFO_PRINT("Nuovo tag rilevato durante DISPLAY_ACTIVE - ignorato \n");
                             }
                             /* Altre notifiche: ignorate ma logate */
                             else 
