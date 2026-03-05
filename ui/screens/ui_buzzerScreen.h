@@ -16,10 +16,11 @@ extern void ui_buzzerScreen_screen_destroy(void);
 extern void ui_event_buzzerScreen(lv_event_t * e);
 extern lv_obj_t * ui_buzzerScreen;
 extern lv_obj_t * ui_headerBuzzerScreen;
-extern lv_obj_t * ui_titleBuzzerLabel;
+extern lv_obj_t * ui_buzzerBodyCtn;
 extern void ui_event_buzzerBtn(lv_event_t * e);
 extern lv_obj_t * ui_buzzerBtn;
 extern lv_obj_t * ui_buzzerBtnLabel;
+extern lv_obj_t * ui_titleBuzzerLabel;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

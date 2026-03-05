@@ -25,7 +25,6 @@ extern lv_obj_t * ui_wifiBtnLabel;
 extern void ui_event_bthBtn(lv_event_t * e);
 extern lv_obj_t * ui_bthBtn;
 extern lv_obj_t * ui_bthBtnLabel;
-extern lv_obj_t * ui_divisorLine;
 extern void ui_event_scanNetButton(lv_event_t * e);
 extern lv_obj_t * ui_scanNetButton;
 extern lv_obj_t * ui_labelNetButton;

@@ -14,7 +14,6 @@ lv_obj_t * ui_wifiBtn = NULL;
 lv_obj_t * ui_wifiBtnLabel = NULL;
 lv_obj_t * ui_bthBtn = NULL;
 lv_obj_t * ui_bthBtnLabel = NULL;
-lv_obj_t * ui_divisorLine = NULL;
 lv_obj_t * ui_scanNetButton = NULL;
 lv_obj_t * ui_labelNetButton = NULL;
 lv_obj_t * ui_connectivityBtnContainer = NULL;
@@ -182,12 +181,6 @@ void ui_connectivityScreen_screen_init(void)
     lv_label_set_text(ui_bthBtnLabel, "Bluetooth");
     lv_obj_set_style_text_font(ui_bthBtnLabel, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_divisorLine = lv_obj_create(ui_connectivityList);
-    lv_obj_set_width(ui_divisorLine, lv_pct(100));
-    lv_obj_set_height(ui_divisorLine, lv_pct(1));
-    lv_obj_set_align(ui_divisorLine, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_divisorLine, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
     ui_scanNetButton = lv_button_create(ui_connectivityList);
     lv_obj_set_width(ui_scanNetButton, lv_pct(90));
     lv_obj_set_height(ui_scanNetButton, lv_pct(10));
@@ -322,7 +315,6 @@ void ui_connectivityScreen_screen_destroy(void)
     ui_wifiBtnLabel = NULL;
     ui_bthBtn = NULL;
     ui_bthBtnLabel = NULL;
-    ui_divisorLine = NULL;
     ui_scanNetButton = NULL;
     ui_labelNetButton = NULL;
     ui_connectivityBtnContainer = NULL;
