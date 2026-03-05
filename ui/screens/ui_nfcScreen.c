@@ -7,7 +7,8 @@
 
 lv_obj_t * ui_nfcScreen = NULL;
 lv_obj_t * ui_headerNfcScreen = NULL;
-lv_obj_t * ui_nfcTitleLabel = NULL;
+lv_obj_t * ui_nfcIcon = NULL;
+lv_obj_t * ui_nfcBody = NULL;
 lv_obj_t * ui_nfcLed = NULL;
 lv_obj_t * ui_nfcTextArea = NULL;
 // event funtions
@@ -43,51 +44,81 @@ void ui_nfcScreen_screen_init(void)
                                            _ui_theme_color_BACKGROUND);
     ui_object_set_themeable_style_property(ui_nfcScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
                                            _ui_theme_alpha_BACKGROUND);
+    lv_obj_set_style_pad_left(ui_nfcScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_nfcScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_nfcScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_nfcScreen, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_headerNfcScreen = ui_Header_create(ui_nfcScreen);
     lv_obj_set_x(ui_headerNfcScreen, 0);
     lv_obj_set_y(ui_headerNfcScreen, -1);
 
-    ui_nfcTitleLabel = lv_label_create(ui_nfcScreen);
-    lv_obj_set_width(ui_nfcTitleLabel, lv_pct(60));
-    lv_obj_set_height(ui_nfcTitleLabel, LV_SIZE_CONTENT);    /// 28
-    lv_obj_set_x(ui_nfcTitleLabel, -316);
-    lv_obj_set_y(ui_nfcTitleLabel, -281);
-    lv_obj_set_align(ui_nfcTitleLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_nfcTitleLabel, "NFC");
-    ui_object_set_themeable_style_property(ui_nfcTitleLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_nfcTitleLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
-    lv_obj_set_style_text_align(ui_nfcTitleLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_decor(ui_nfcTitleLabel, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_nfcTitleLabel, &ui_font_energyBatteryFont, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_nfcTitleLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_nfcTitleLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_nfcTitleLabel, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_side(ui_nfcTitleLabel, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_nfcIcon = lv_image_create(ui_nfcScreen);
+    lv_image_set_src(ui_nfcIcon, &ui_img_nfc_logo_png);
+    lv_obj_set_width(ui_nfcIcon, 100);
+    lv_obj_set_height(ui_nfcIcon, 100);
+    lv_obj_set_align(ui_nfcIcon, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_nfcIcon, LV_OBJ_FLAG_CLICKABLE);     /// Flags
+    lv_obj_remove_flag(ui_nfcIcon, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_image_set_scale(ui_nfcIcon, 170);
 
-    ui_nfcLed = lv_obj_create(ui_nfcScreen);
-    lv_obj_set_width(ui_nfcLed, 150);
-    lv_obj_set_height(ui_nfcLed, 150);
+    ui_nfcBody = lv_obj_create(ui_nfcScreen);
+    lv_obj_set_width(ui_nfcBody, lv_pct(90));
+    lv_obj_set_flex_grow(ui_nfcBody, 1);
+    lv_obj_set_x(ui_nfcBody, -239);
+    lv_obj_set_y(ui_nfcBody, -62);
+    lv_obj_set_align(ui_nfcBody, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_nfcBody, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(ui_nfcBody, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_remove_flag(ui_nfcBody, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_nfcBody, 12, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_nfcBody, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_nfcBody, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_nfcBody, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_nfcBody, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_nfcBody, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_nfcBody, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_nfcBody, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_nfcBody, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_nfcBody, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_nfcBody, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_nfcBody, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_nfcBody, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_nfcLed = lv_obj_create(ui_nfcBody);
+    lv_obj_set_width(ui_nfcLed, 100);
+    lv_obj_set_height(ui_nfcLed, 100);
     lv_obj_set_align(ui_nfcLed, LV_ALIGN_CENTER);
     lv_obj_remove_flag(ui_nfcLed, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_radius(ui_nfcLed, 75, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_nfcLed, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_nfcLed, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_nfcLed, lv_color_hex(0x2DA041), LV_PART_MAIN | LV_STATE_CHECKED);
-    lv_obj_set_style_bg_opa(ui_nfcLed, 255, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_radius(ui_nfcLed, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_nfcLed, &ui_img_nfc_wait_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_nfcLed, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_nfcLed, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_nfcLed, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_nfcLed, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_nfcLed, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_nfcLed, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_nfcLed, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_nfcLed, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_nfcLed, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_nfcLed, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_nfcLed, &ui_img_nfc_ok_png, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_transform_scale(ui_nfcLed, 256, LV_PART_MAIN | LV_STATE_CHECKED);
 
-    ui_nfcTextArea = lv_textarea_create(ui_nfcScreen);
+    ui_nfcTextArea = lv_textarea_create(ui_nfcBody);
     lv_obj_set_width(ui_nfcTextArea, lv_pct(88));
-    lv_obj_set_height(ui_nfcTextArea, lv_pct(33));
+    lv_obj_set_flex_grow(ui_nfcTextArea, 1);
     lv_obj_set_x(ui_nfcTextArea, -109);
     lv_obj_set_y(ui_nfcTextArea, 226);
     lv_obj_set_align(ui_nfcTextArea, LV_ALIGN_CENTER);
     lv_textarea_set_placeholder_text(ui_nfcTextArea, "Qui verranno visualizzati i dispositivi connessi...");
     lv_obj_remove_flag(ui_nfcTextArea, LV_OBJ_FLAG_CLICKABLE);      /// Flags
+    lv_obj_set_style_radius(ui_nfcTextArea, 12, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_nfcTextArea, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_nfcTextArea, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_nfcTextArea, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_nfcTextArea, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_nfcTextArea, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_nfcScreen, ui_event_nfcScreen, LV_EVENT_ALL, NULL);
 
@@ -100,7 +131,8 @@ void ui_nfcScreen_screen_destroy(void)
     // NULL screen variables
     ui_nfcScreen = NULL;
     ui_headerNfcScreen = NULL;
-    ui_nfcTitleLabel = NULL;
+    ui_nfcIcon = NULL;
+    ui_nfcBody = NULL;
     ui_nfcLed = NULL;
     ui_nfcTextArea = NULL;
 
