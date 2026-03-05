@@ -35,7 +35,6 @@ static pthread_t nfc_thread;                            /* Thread di polling NFC
 static atomic_bool nfc_running = false;                 /* Flag atomico per controllare l'esecuzione del thread */
 static int nfc_handle = -1;                             /* Handle per la comunicazione con il controller NFC */
 static nfc_state_t current_state = NFC_STATE_IDLE;      /* Stato corrente del sistema NFC */
-static lv_obj_t * ui_nfcGif = NULL;                     /* Widget in cui inseriremo la GIF */
 
 /* 
 =======================================
@@ -138,10 +137,7 @@ static void nfc_update_ui_detected(void* user_data)
     nfc_get_timestamp(timestamp, sizeof(timestamp));
     
     /* Accendi LED */
-    //lv_obj_add_state(ui_nfcLed, LV_STATE_CHECKED);
-
-    /* Imposta GIF dispositivo trovato */
-    lv_gif_set_src(ui_nfcGif, "A:nfc_ok_anim.gif");
+    lv_obj_add_state(ui_nfcLed, LV_STATE_CHECKED);
     
     /* Aggiungi messaggio con timestamp alla textArea */
     snprintf(message, sizeof(message), "---%s DISPOSITIVO RILEVATO ---\n", timestamp);
@@ -155,10 +151,8 @@ static void nfc_update_ui_cleanup(void* user_data)
     (void)user_data; /* Parametro non utilizzato */
     
     /* Spegni LED */
-    //lv_obj_clear_state(ui_nfcLed, LV_STATE_CHECKED);
+    lv_obj_clear_state(ui_nfcLed, LV_STATE_CHECKED);
     
-    /* Imposta la GIF di attesa dispositivo */
-    lv_gif_set_src(ui_nfcGif, "A:nfc_wait_anim.gif");
 
     /* Svuota textArea */
     lv_textarea_set_text(ui_nfcTextArea, "");
@@ -389,11 +383,6 @@ int logic_init_nfc(void)
         return -1;
     }
 
-    /* Creazione gif */
-    ui_nfcGif = lv_gif_create(ui_nfcLed);
-    lv_obj_align(ui_nfcGif, LV_ALIGN_CENTER, 0, 0);
-    lv_gif_set_src(ui_nfcGif, "A:nfc_wait_anim.gif");
-
     INFO_PRINT("--------------------------------\n");
     INFO_PRINT("--- NFC SCREEN INIZIALIZZATO ---\n");
     INFO_PRINT("--------------------------------\n");
@@ -422,9 +411,6 @@ void logic_deinit_nfc(void)
 
     /* Pulisci UI eseguita direttamente, siamo in un evento generato da LVGL */
     nfc_update_ui_cleanup(NULL);
-
-    /* Azzero il puntatore */
-    ui_nfcGif = NULL;
 
     INFO_PRINT("----------------------------------\n");
     INFO_PRINT("--- NFC SCREEN DEINIZIALIZZATO ---\n");
