@@ -89,7 +89,8 @@ void ui_nfcScreen_screen_init(void)
     lv_obj_set_width(ui_nfcLed, 100);
     lv_obj_set_height(ui_nfcLed, 100);
     lv_obj_set_align(ui_nfcLed, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_nfcLed, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_add_flag(ui_nfcLed, LV_OBJ_FLAG_CHECKABLE);     /// Flags
+    lv_obj_remove_flag(ui_nfcLed, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_nfcLed, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_image_src(ui_nfcLed, &ui_img_nfc_wait_png, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_nfcLed, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
