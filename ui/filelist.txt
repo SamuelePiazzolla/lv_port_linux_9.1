@@ -25,8 +25,6 @@ images/ui_img_limite_50_png.c
 images/ui_img_bell_png.c
 images/ui_img_ringing_bell_png.c
 images/ui_img_nfc_logo_png.c
-images/ui_img_nfc_wait_png.c
-images/ui_img_nfc_ok_png.c
 fonts/ui_font_energyBatteryFont.c
 fonts/ui_font_energyBatteryLabelFont.c
 fonts/ui_font_hmLabel.c

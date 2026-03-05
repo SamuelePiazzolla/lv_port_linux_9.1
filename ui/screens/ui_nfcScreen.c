@@ -91,7 +91,6 @@ void ui_nfcScreen_screen_init(void)
     lv_obj_set_align(ui_nfcLed, LV_ALIGN_CENTER);
     lv_obj_remove_flag(ui_nfcLed, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_nfcLed, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_image_src(ui_nfcLed, &ui_img_nfc_wait_png, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_nfcLed, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_nfcLed, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui_nfcLed, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -102,7 +101,6 @@ void ui_nfcScreen_screen_init(void)
     lv_obj_set_style_shadow_spread(ui_nfcLed, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_offset_x(ui_nfcLed, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_offset_y(ui_nfcLed, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_image_src(ui_nfcLed, &ui_img_nfc_ok_png, LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_transform_scale(ui_nfcLed, 256, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_nfcTextArea = lv_textarea_create(ui_nfcBody);
