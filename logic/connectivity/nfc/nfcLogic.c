@@ -391,7 +391,6 @@ int logic_init_nfc(void)
 
     /* Creazione gif */
     ui_nfcGif = lv_gif_create(ui_nfcLed);
-    lv_gif_set_color_format(ui_nfcGif, LV_COLOR_FORMAT_ARGB8888);
     lv_obj_align(ui_nfcGif, LV_ALIGN_CENTER, 0, 0);
     lv_gif_set_src(ui_nfcGif, "A:nfc_wait_anim.gif");
 
