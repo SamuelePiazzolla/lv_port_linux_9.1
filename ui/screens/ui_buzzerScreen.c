@@ -9,7 +9,7 @@ lv_obj_t * ui_buzzerScreen = NULL;
 lv_obj_t * ui_headerBuzzerScreen = NULL;
 lv_obj_t * ui_buzzerBodyCtn = NULL;
 lv_obj_t * ui_buzzerBtn = NULL;
-lv_obj_t * ui_buzzerBtnLabel = NULL;
+lv_obj_t * ui_buzzerImg = NULL;
 lv_obj_t * ui_titleBuzzerLabel = NULL;
 // event funtions
 void ui_event_buzzerScreen(lv_event_t * e)
@@ -82,8 +82,8 @@ void ui_buzzerScreen_screen_init(void)
     lv_obj_set_style_pad_column(ui_buzzerBodyCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_buzzerBtn = lv_button_create(ui_buzzerBodyCtn);
-    lv_obj_set_width(ui_buzzerBtn, LV_SIZE_CONTENT);   /// 30
-    lv_obj_set_height(ui_buzzerBtn, LV_SIZE_CONTENT);    /// 10
+    lv_obj_set_width(ui_buzzerBtn, 120);
+    lv_obj_set_height(ui_buzzerBtn, 120);
     lv_obj_set_x(ui_buzzerBtn, 19);
     lv_obj_set_y(ui_buzzerBtn, 1);
     lv_obj_set_align(ui_buzzerBtn, LV_ALIGN_CENTER);
@@ -115,14 +115,13 @@ void ui_buzzerScreen_screen_init(void)
     lv_obj_set_style_shadow_offset_x(ui_buzzerBtn, 0, LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_shadow_offset_y(ui_buzzerBtn, 4, LV_PART_MAIN | LV_STATE_CHECKED);
 
-    ui_buzzerBtnLabel = lv_label_create(ui_buzzerBtn);
-    lv_obj_set_width(ui_buzzerBtnLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_buzzerBtnLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_buzzerBtnLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_buzzerBtnLabel, "ACCENDI IL BUZZER");
-    lv_obj_set_style_text_color(ui_buzzerBtnLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_buzzerBtnLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_buzzerBtnLabel, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_buzzerImg = lv_image_create(ui_buzzerBtn);
+    lv_image_set_src(ui_buzzerImg, &ui_img_ringing_bell_png);
+    lv_obj_set_width(ui_buzzerImg, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_buzzerImg, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_buzzerImg, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_buzzerImg, LV_OBJ_FLAG_CLICKABLE);     /// Flags
+    lv_obj_remove_flag(ui_buzzerImg, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_titleBuzzerLabel = lv_label_create(ui_buzzerBodyCtn);
     lv_obj_set_width(ui_titleBuzzerLabel, LV_SIZE_CONTENT);   /// 1
@@ -150,7 +149,7 @@ void ui_buzzerScreen_screen_destroy(void)
     ui_headerBuzzerScreen = NULL;
     ui_buzzerBodyCtn = NULL;
     ui_buzzerBtn = NULL;
-    ui_buzzerBtnLabel = NULL;
+    ui_buzzerImg = NULL;
     ui_titleBuzzerLabel = NULL;
 
 }

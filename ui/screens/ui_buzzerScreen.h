@@ -19,7 +19,7 @@ extern lv_obj_t * ui_headerBuzzerScreen;
 extern lv_obj_t * ui_buzzerBodyCtn;
 extern void ui_event_buzzerBtn(lv_event_t * e);
 extern lv_obj_t * ui_buzzerBtn;
-extern lv_obj_t * ui_buzzerBtnLabel;
+extern lv_obj_t * ui_buzzerImg;
 extern lv_obj_t * ui_titleBuzzerLabel;
 // CUSTOM VARIABLES
 

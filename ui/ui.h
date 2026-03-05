@@ -47,6 +47,7 @@ LV_IMG_DECLARE(ui_img_267822735);    // assets/left_arrow (2).png
 LV_IMG_DECLARE(ui_img_1669329308);    // assets/right_arrow (2).png
 LV_IMG_DECLARE(ui_img_cruise_control_png);    // assets/cruise_control.png
 LV_IMG_DECLARE(ui_img_limite_50_png);    // assets/limite_50.png
+LV_IMG_DECLARE(ui_img_ringing_bell_png);    // assets/ringing_bell.png
 
 // FONTS
 LV_FONT_DECLARE(ui_font_energyBatteryFont);

@@ -22,6 +22,7 @@ SET(SOURCES components/ui_comp_header.c
     images/ui_img_1669329308.c
     images/ui_img_cruise_control_png.c
     images/ui_img_limite_50_png.c
+    images/ui_img_ringing_bell_png.c
     fonts/ui_font_energyBatteryFont.c
     fonts/ui_font_energyBatteryLabelFont.c
     fonts/ui_font_hmLabel.c
