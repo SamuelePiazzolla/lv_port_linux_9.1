@@ -95,7 +95,7 @@ void ui_buzzerScreen_screen_init(void)
     lv_obj_set_style_radius(ui_buzzerBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_buzzerBtn, lv_color_hex(0x34C759), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_buzzerBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_image_src(ui_buzzerBtn, &ui_img_ringing_bell_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_buzzerBtn, &ui_img_bell_png, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_buzzerBtn, lv_color_hex(0x1E8A3A), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_buzzerBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui_buzzerBtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -109,7 +109,7 @@ void ui_buzzerScreen_screen_init(void)
     lv_obj_set_style_radius(ui_buzzerBtn, 100, LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_color(ui_buzzerBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_buzzerBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
-    lv_obj_set_style_bg_image_src(ui_buzzerBtn, &ui_img_bell_png, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_image_src(ui_buzzerBtn, &ui_img_ringing_bell_png, LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_border_color(ui_buzzerBtn, lv_color_hex(0xCC1A0F), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_border_opa(ui_buzzerBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_border_width(ui_buzzerBtn, 2, LV_PART_MAIN | LV_STATE_CHECKED);
