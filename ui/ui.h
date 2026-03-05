@@ -50,6 +50,8 @@ LV_IMG_DECLARE(ui_img_limite_50_png);    // assets/limite_50.png
 LV_IMG_DECLARE(ui_img_bell_png);    // assets/bell.png
 LV_IMG_DECLARE(ui_img_ringing_bell_png);    // assets/ringing_bell.png
 LV_IMG_DECLARE(ui_img_nfc_logo_png);    // assets/nfc_logo.png
+LV_IMG_DECLARE(ui_img_nfc_wait_png);    // assets/nfc_wait.png
+LV_IMG_DECLARE(ui_img_nfc_ok_png);    // assets/nfc_ok.png
 
 // FONTS
 LV_FONT_DECLARE(ui_font_energyBatteryFont);
