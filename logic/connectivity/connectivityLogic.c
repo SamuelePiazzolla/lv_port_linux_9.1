@@ -295,9 +295,9 @@ void bt_clear_pending_invocation(const char *dbus_error, const char *message)
 
 void ui_show_pairing_popup(const char *dev_path, uint32_t passkey, GDBusMethodInvocation *invocation) 
 {
-    // 1. Gestione Mutex e Invocazione (Invariata)
+    // 1. Gestione Mutex e Invocazione
     g_mutex_lock(&pending_invocation_mutex);
-    pending_bt_invocation = invocation; // Salviamo nella variabile globale l'invocazione pendente, in modo da poterci rispondere da qualsiasi punto del codice (es. msgbox_event_cb) quando l'utente prende una decisione, o da funzioni di timeout se l'utente non risponde entro un certo tempo
+    pending_bt_invocation = invocation;
     g_mutex_unlock(&pending_invocation_mutex);
 
     // 2. Pulizia di sicurezza
@@ -307,8 +307,7 @@ void ui_show_pairing_popup(const char *dev_path, uint32_t passkey, GDBusMethodIn
         DEBUG_PRINT("GUI: Pulizia overlay precedente.\n"); 
     }
 
-    // 3. CREAZIONE OVERLAY (Sfondo scuro che blocca i click)
-    // Usiamo lv_layer_top() per essere sicuri che sia sopra a TUTTO
+    // 3. OVERLAY — sfondo scuro semitrasparente su lv_layer_top()
     active_pairing_overlay = lv_obj_create(lv_layer_top());
     lv_obj_set_size(active_pairing_overlay, LV_PCT(100), LV_PCT(100));
     lv_obj_set_style_bg_color(active_pairing_overlay, lv_color_hex(0x000000), 0);
@@ -316,46 +315,99 @@ void ui_show_pairing_popup(const char *dev_path, uint32_t passkey, GDBusMethodIn
     lv_obj_add_flag(active_pairing_overlay, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_remove_flag(active_pairing_overlay, LV_OBJ_FLAG_SCROLLABLE);
 
-    // 4. CREAZIONE PANEL (Il vero e proprio Popup)
-    lv_obj_t * panel = lv_obj_create(active_pairing_overlay);
-    lv_obj_set_size(panel, 400, 250); // Dimensioni fisse per sicurezza
+    // 4. PANEL - card coerente con la schermata
+    lv_obj_t *panel = lv_obj_create(active_pairing_overlay);
+    lv_obj_set_size(panel, 420, 280);
     lv_obj_center(panel);
+    lv_obj_remove_flag(panel, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_style_bg_color(panel, lv_color_hex(0xFFFFFF), 0);
-    lv_obj_set_style_radius(panel, 10, 0);
+    lv_obj_set_style_bg_opa(panel, 255, 0);
+    lv_obj_set_style_radius(panel, 16, 0);
+    lv_obj_set_style_border_color(panel, lv_color_hex(0x1A6FA8), 0);
+    lv_obj_set_style_border_opa(panel, 255, 0);
     lv_obj_set_style_border_width(panel, 2, 0);
+    lv_obj_set_style_shadow_color(panel, lv_color_hex(0xA0A0A8), 0);
+    lv_obj_set_style_shadow_opa(panel, 255, 0);
+    lv_obj_set_style_shadow_width(panel, 8, 0);
+    lv_obj_set_style_shadow_spread(panel, 0, 0);
+    lv_obj_set_style_shadow_offset_x(panel, 0, 0);
+    lv_obj_set_style_shadow_offset_y(panel, 4, 0);
+    lv_obj_set_style_pad_all(panel, 20, 0);
+    lv_obj_set_style_pad_row(panel, 16, 0);
     lv_obj_set_flex_flow(panel, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(panel, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
 
-    // 5. TESTO
-    lv_obj_t * title = lv_label_create(panel);
+    // 5. TITOLO
+    lv_obj_t *title = lv_label_create(panel);
     lv_label_set_text(title, "RICHIESTA PAIRING");
-    lv_obj_set_style_text_font(title, &lv_font_montserrat_18, 0); // O quella che usi
+    lv_obj_set_width(title, LV_PCT(100));
+    lv_obj_set_style_text_font(title, &lv_font_montserrat_22, 0);
+    lv_obj_set_style_text_color(title, lv_color_hex(0x1A6FA8), 0);
+    lv_obj_set_style_text_align(title, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_set_style_border_color(title, lv_color_hex(0x1A6FA8), 0);
+    lv_obj_set_style_border_opa(title, 255, 0);
+    lv_obj_set_style_border_width(title, 1, 0);
+    lv_obj_set_style_border_side(title, LV_BORDER_SIDE_BOTTOM, 0);
+    lv_obj_set_style_pad_bottom(title, 8, 0);
 
-    lv_obj_t * info = lv_label_create(panel);
-    char buf[128];
+    // 6. CODICE PASSKEY
+    lv_obj_t *info = lv_label_create(panel);
+    char buf[64];
     snprintf(buf, sizeof(buf), "Codice: %06u", passkey);
     lv_label_set_text(info, buf);
-    lv_obj_set_style_margin_top(info, 20, 0);
+    lv_obj_set_width(info, LV_PCT(100));
+    lv_obj_set_style_text_font(info, &lv_font_montserrat_20, 0);
+    lv_obj_set_style_text_color(info, lv_color_hex(0x1C1C1E), 0);
+    lv_obj_set_style_text_align(info, LV_TEXT_ALIGN_CENTER, 0);
 
-    // 6. CONTENITORE BOTTONI (Flex Row)
-    lv_obj_t * btn_cont = lv_obj_create(panel);
-    lv_obj_set_size(btn_cont, LV_PCT(100), LV_SIZE_CONTENT);
+    // 7. CONTENITORE BOTTONI
+    lv_obj_t *btn_cont = lv_obj_create(panel);
+    lv_obj_set_width(btn_cont, LV_PCT(100));
+    lv_obj_set_height(btn_cont, LV_SIZE_CONTENT);
+    lv_obj_set_style_bg_opa(btn_cont, 0, 0);
+    lv_obj_set_style_border_width(btn_cont, 0, 0);
+    lv_obj_set_style_pad_all(btn_cont, 0, 0);
+    lv_obj_remove_flag(btn_cont, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_flex_flow(btn_cont, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(btn_cont, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_set_style_bg_opa(btn_cont, 0, 0); // Trasparente
-    lv_obj_set_style_border_width(btn_cont, 0, 0);
+    lv_obj_set_style_pad_column(btn_cont, 20, 0);
 
-    // Bottone OK
-    lv_obj_t * btn_ok = lv_button_create(btn_cont);
-    lv_obj_t * lbl_ok = lv_label_create(btn_ok);
+    // 8. BOTTONE ABBINA
+    lv_obj_t *btn_ok = lv_button_create(btn_cont);
+    lv_obj_set_width(btn_ok, 150);
+    lv_obj_set_height(btn_ok, LV_SIZE_CONTENT);
+    lv_obj_set_style_radius(btn_ok, 100, 0);
+    lv_obj_set_style_bg_color(btn_ok, lv_color_hex(0x34C759), 0);
+    lv_obj_set_style_bg_opa(btn_ok, 255, 0);
+    lv_obj_set_style_shadow_color(btn_ok, lv_color_hex(0x34C759), 0);
+    lv_obj_set_style_shadow_opa(btn_ok, 255, 0);
+    lv_obj_set_style_shadow_width(btn_ok, 8, 0);
+    lv_obj_set_style_shadow_spread(btn_ok, 0, 0);
+    lv_obj_set_style_shadow_offset_x(btn_ok, 0, 0);
+    lv_obj_set_style_shadow_offset_y(btn_ok, 4, 0);
+    lv_obj_t *lbl_ok = lv_label_create(btn_ok);
     lv_label_set_text(lbl_ok, "ABBINA");
-    lv_obj_add_event_cb(btn_ok, msgbox_event_cb, LV_EVENT_CLICKED, (void*)1); // Usiamo user_data per distinguere
+    lv_obj_set_style_text_font(lbl_ok, &lv_font_montserrat_18, 0);
+    lv_obj_center(lbl_ok);
+    lv_obj_add_event_cb(btn_ok, msgbox_event_cb, LV_EVENT_CLICKED, (void*)1);
 
-    // Bottone RIFIUTA
-    lv_obj_t * btn_no = lv_button_create(btn_cont);
-    lv_obj_set_style_bg_color(btn_no, lv_palette_main(LV_PALETTE_RED), 0);
-    lv_obj_t * lbl_no = lv_label_create(btn_no);
+    // 9. BOTTONE RIFIUTA
+    lv_obj_t *btn_no = lv_button_create(btn_cont);
+    lv_obj_set_width(btn_no, 150);
+    lv_obj_set_height(btn_no, LV_SIZE_CONTENT);
+    lv_obj_set_style_radius(btn_no, 100, 0);
+    lv_obj_set_style_bg_color(btn_no, lv_color_hex(0xFF3B30), 0);
+    lv_obj_set_style_bg_opa(btn_no, 255, 0);
+    lv_obj_set_style_shadow_color(btn_no, lv_color_hex(0xFF3B30), 0);
+    lv_obj_set_style_shadow_opa(btn_no, 255, 0);
+    lv_obj_set_style_shadow_width(btn_no, 8, 0);
+    lv_obj_set_style_shadow_spread(btn_no, 0, 0);
+    lv_obj_set_style_shadow_offset_x(btn_no, 0, 0);
+    lv_obj_set_style_shadow_offset_y(btn_no, 4, 0);
+    lv_obj_t *lbl_no = lv_label_create(btn_no);
     lv_label_set_text(lbl_no, "RIFIUTA");
+    lv_obj_set_style_text_font(lbl_no, &lv_font_montserrat_18, 0);
+    lv_obj_center(lbl_no);
     lv_obj_add_event_cb(btn_no, msgbox_event_cb, LV_EVENT_CLICKED, (void*)0);
 
     DEBUG_PRINT("GUI: Popup di pairing creato.\n");
@@ -404,7 +456,7 @@ void ui_create_device_buttons_cb(void *param)
         lv_obj_set_width(btn, lv_pct(80));
         
         // Se il device è connesso/paired, metto il bottone in stato checked e lo coloro di verde
-        lv_obj_set_style_bg_color(btn, lv_color_hex(0x2DA041), LV_STATE_CHECKED);
+        lv_obj_set_style_bg_color(btn, lv_color_hex(0x34C759), LV_STATE_CHECKED);
         if (msg->devices[i].connected)
             lv_obj_add_state(btn, LV_STATE_CHECKED);
 
