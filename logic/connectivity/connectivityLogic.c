@@ -901,6 +901,7 @@ void logic_deinit_connectivity_screen()
     INFO_PRINT("--- DEINIZIALIZZAZIONE CONNECTIVITY SCREEN ---\n");
     setConnectionMode(NONE_CONNECTIVITY_MODE);
     g_mutex_clear(&pending_invocation_mutex); // Distrugge il mutex
+    ui_log_clear();
     INFO_PRINT("----------------------------------------------\n");
 }
 
