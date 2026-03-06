@@ -88,7 +88,7 @@ void setConnectionMode(ConnectionMode newMode)
             ui_log_clear();
             ui_clean_password_zone();
             lv_obj_remove_state(ui_wifiBtn, LV_STATE_CHECKED);
-            break;
+        break;
         case BTH_MODE:
             logic_deinit_bth_mode();
             net_clear_devices();
@@ -96,8 +96,7 @@ void setConnectionMode(ConnectionMode newMode)
             ui_clean_password_zone();
             lv_obj_remove_state(ui_bthBtn, LV_STATE_CHECKED);
             break;
-        default:
-            break;
+        default:break;
     }
 
     currentMode = newMode;
@@ -109,6 +108,7 @@ void setConnectionMode(ConnectionMode newMode)
             if (logic_init_wifi_mode() == 0)
             {
                 lv_obj_add_state(ui_wifiBtn, LV_STATE_CHECKED);
+                logic_scan_network();
                 lv_obj_remove_state(ui_scanNetButton, LV_STATE_DISABLED);
             }
             else
@@ -118,11 +118,12 @@ void setConnectionMode(ConnectionMode newMode)
                 currentMode = NONE_CONNECTIVITY_MODE;
             }
             
-            break;
+        break;
         case BTH_MODE:
             if ( logic_init_bth_mode() == 0)
             {
                 lv_obj_add_state(ui_bthBtn, LV_STATE_CHECKED);
+                logic_scan_network();
                 lv_obj_remove_state(ui_scanNetButton, LV_STATE_DISABLED);
             }
             else
@@ -131,10 +132,8 @@ void setConnectionMode(ConnectionMode newMode)
                 ui_log_async("ERRORE: INIZIALIZZAZIONE MODULO BLUETOOTH FALLITA, RITENTA");
                 currentMode = NONE_CONNECTIVITY_MODE;
             }
-            break;
-        default:
-            lv_obj_add_state(ui_scanNetButton, LV_STATE_DISABLED);
-            break;
+        break;
+        default: lv_obj_add_state(ui_scanNetButton, LV_STATE_DISABLED); break;
     }
 }
 
@@ -422,14 +421,12 @@ void ui_create_device_buttons_cb(void *param)
                         msg->devices[i].connected ? "CONNECTED" :
                         device_requires_password(&msg->devices[i]) ? "LOCKED" : "UNLOCKED",
                         msg->devices[i].rssi);
-                //ui_log_async("|->Rete trovata: %s [%s]", msg->devices[i].name, msg->devices[i].connected ? "CONNECTED" : "NOT CONNECTED"); //TESTING
                 break;
             case BTH_MODE:
                 snprintf(label_text, sizeof(label_text), "%s [%s], Speed: %i dBm",
                         msg->devices[i].name,
                         msg->devices[i].connected ? "PAIRED" : "NOT PAIRED",
                         msg->devices[i].rssi);
-                //ui_log_async("|->Dispositivo trovato: %s [%s]", msg->devices[i].name, msg->devices[i].address); //TESTING
                 break;
             default: INFO_PRINT("Errore nella creazione del dispositivo\n"); free(msg); return;
         }
