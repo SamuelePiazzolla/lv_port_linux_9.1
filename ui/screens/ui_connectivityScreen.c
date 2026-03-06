@@ -272,6 +272,10 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_style_shadow_spread(ui_connectivityBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_offset_x(ui_connectivityBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_offset_y(ui_connectivityBtnContainer, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_connectivityBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_connectivityBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_connectivityBtnContainer, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_connectivityBtnContainer, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_connectivityBtnContainer, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_connectivityBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
