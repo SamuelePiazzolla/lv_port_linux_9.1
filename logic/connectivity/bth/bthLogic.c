@@ -53,8 +53,9 @@ static void device_added_cb(GDBusObjectManager* manager, GDBusObject* object, gp
 static gboolean find_first_adapter(void);                                                                                       // Funzione per trovare il primo Adapter disponibile per comunicazione con DBus
 static void stop_scan(void);                                                                                                    // Funzione per fermare la scansione
 static gboolean alias_equals_addr(const char* alias, const char* addr);                                                         // Funzione per vedere se l'alias trovato è uguale al MAC address
-static void load_paired_devices(void);                                                                                              // Funzione per inserire nell'array i dispositivi con cui ho già fatto pairing
+static void load_paired_devices(void);                                                                                          // Funzione per inserire nell'array i dispositivi con cui ho già fatto pairing
 static void register_bth_agent(void);                                                                                           // Funzione per registrare l'agent bth per il pairing
+static void bt_pairing_success_cb(void *p);                                                                                     // Funzione di callback chiamata quando il pairing è effettivamente riuscito con successo per eseguire operazioni LVGL in modo thread-safe
 static void on_pairing_finished(GObject *source_object, GAsyncResult *res, gpointer user_data);                                 // Funzione di callback chiamata quando il pairing è finito (dopo click utente sulla message box)
 static void on_remove_finished(GObject *source_object, GAsyncResult *res, gpointer user_data);                                  // Funzione di callback chiamata quando RemoveDevice è terminato. Ha bisogno del MAC address del device per identificare quale device è stato unpaired, passato in user_data
 static void on_device_properties_changed(GDBusProxy *proxy, GVariant *changed, GStrv invalidated, gpointer user_data);          // Listener PropertiesChanged: aggiorna connected nell'array quando BlueZ conferma Paired. Ha bisogno del MAC address per identificare il device, passato in user_data                                
@@ -729,6 +730,14 @@ void bt_pairing_timeout_cb(lv_timer_t *timer)
     pairing_in_progress = FALSE;
 }
 
+void bt_pairing_success_cb(void *p)
+{
+    (void)p;
+    bt_stop_pairing_timer();        // Pairing confermato: il timer LVGL non deve più scattare 
+    pairing_in_progress = FALSE;    // Aggiorno la logica per indicare che il pairing è finito
+    connectionSuccess(NULL);        // Aggiorno UI
+}
+
 void on_device_properties_changed(GDBusProxy *proxy, GVariant *changed, GStrv invalidated, gpointer user_data)
 {
     // Recuperiamo l'indirizzo del device in pairing passato come user_data
@@ -758,20 +767,14 @@ void on_device_properties_changed(GDBusProxy *proxy, GVariant *changed, GStrv in
     // Paired confermato: fermiamo timer e wath | Unpaired: logghiamo la rimozione del pairing 
     if (is_paired)
     {
-        // Pairing confermato: il timer UI non deve più scattare 
-        bt_stop_pairing_timer();
-
-        // Liberiamo il watch di PropertiesChanged: il pairing è confermato, non serve più ascoltare
-        bt_stop_pairing_watch();
-        
-        // Aggiorno la UI async-safe per mostrare il device come connesso
-        lv_async_call(connectionSuccess, NULL);
-        
         // Sblocca eventuale invocation pendente senza errore, perché il pairing è andato a buon fine
         bt_clear_pending_invocation(NULL, NULL); 
 
-        // Aggiorno la logica per indicare che il pairing è finito
-        pairing_in_progress = FALSE;
+        // Liberiamo il watch di PropertiesChanged: il pairing è confermato, non serve più ascoltare
+        bt_stop_pairing_watch();        
+
+        // Effettuiamo operazioni LVGL in modo thread-safe
+        lv_async_call(bt_pairing_success_cb, NULL);
     }
 
     // Aggiorniamo la UI async-safe
