@@ -153,7 +153,6 @@ static void playback_finished_cb(void *arg)
     (void)arg;
 
     // Resetto tutti i pulsanti allo stato di default
-    lv_label_set_text(ui_playStopAudioBtnLabel, "PLAY");
     lv_obj_remove_state(ui_playStopAudioBtn, LV_STATE_CHECKED);
     lv_obj_remove_state(ui_outAudioLed, LV_STATE_CHECKED);
 }
@@ -389,8 +388,6 @@ static void overlay_clicked_audio(lv_event_t *e)
         selectedAudioPath[0] = '\0';
 
         // Resetto bottoni
-        lv_label_set_text(ui_playStopAudioBtnLabel, "PLAY");
-
         lv_obj_add_state(ui_playStopAudioBtn, LV_STATE_DISABLED);
         lv_obj_add_state(ui_resetAudioBtn,    LV_STATE_DISABLED);
 
@@ -778,12 +775,7 @@ void logic_record_audio(void)
 {
     INFO_PRINT("Inizio a registrare l'audio...\n");
 
-    /* 1. Cambio lo stato e il testo del pulsante */
-    lv_label_set_text(ui_recordmicBtnLabel, "STOP RECORDING");
-    lv_obj_add_state(ui_micLed, LV_STATE_CHECKED);
-
-
-    /* 2. Comincio la registrazione */
+    /* 1. Comincio la registrazione */
     char filename[512];
     time_t t = time(NULL);
     struct tm *tm_info = localtime(&t);
@@ -794,9 +786,7 @@ void logic_record_audio(void)
         ERROR_PRINT("Errore nella registrazione\n");
 
         // In caso di errore resetto lo stato dei bottoni
-        lv_label_set_text(ui_recordmicBtnLabel, "RECORD MESSAGE");
         lv_obj_remove_state(ui_recordMicBtn, LV_STATE_CHECKED);
-        lv_obj_remove_state(ui_micLed,       LV_STATE_CHECKED);
 
         return;
     }
@@ -809,9 +799,6 @@ void logic_stop_record_audio(void)
     if (atomic_load(&recorder.running))
     {
         INFO_PRINT("Smetto di registrare l'audio...\n");
-
-        lv_label_set_text(ui_recordmicBtnLabel, "RECORD MESSAGE");
-        lv_obj_remove_state(ui_micLed, LV_STATE_CHECKED);
 
         stop_recording_async();
     }
@@ -847,7 +834,6 @@ void logic_play_file_audio(void)
     {
         if (audio_play(selectedAudioPath) == 0)
         {
-            lv_label_set_text(ui_playStopAudioBtnLabel, "STOP");
             lv_obj_add_state(ui_outAudioLed, LV_STATE_CHECKED);
         }
         return;
@@ -859,12 +845,10 @@ void logic_play_file_audio(void)
     bool is_now_paused = atomic_load(&player.paused);
     if (is_now_paused)
     {
-        lv_label_set_text(ui_playStopAudioBtnLabel, "RESUME");
         lv_obj_remove_state(ui_outAudioLed, LV_STATE_CHECKED);
     }
     else
     {
-        lv_label_set_text(ui_playStopAudioBtnLabel, "STOP");
         lv_obj_add_state(ui_outAudioLed, LV_STATE_CHECKED);
     }
 }
@@ -873,7 +857,6 @@ void logic_stop_file_audio(void)
 {
     audio_toggle_pause();
 
-    lv_label_set_text(ui_playStopAudioBtnLabel, "RESUME");
     lv_obj_remove_state(ui_outAudioLed, LV_STATE_CHECKED);
 }
 
@@ -881,7 +864,6 @@ void logic_reset_file_audio(void)
 {
     audio_reset();
 
-    lv_label_set_text(ui_playStopAudioBtnLabel, "PLAY");
     lv_obj_remove_state(ui_playStopAudioBtn, LV_STATE_CHECKED); 
     lv_obj_remove_state(ui_outAudioLed,      LV_STATE_CHECKED);
 }
@@ -920,15 +902,12 @@ void logic_deinit_audio_screen(void)
         destroy_audio_filepicker();
 
     /* 4. RESET GUI */
-    lv_label_set_text(ui_playStopAudioBtnLabel, "PLAY");
-    lv_label_set_text(ui_recordmicBtnLabel,     "RECORD MESSAGE");
 
     lv_obj_add_state(ui_playStopAudioBtn, LV_STATE_DISABLED);
     lv_obj_add_state(ui_resetAudioBtn,    LV_STATE_DISABLED);
 
     lv_obj_remove_state(ui_recordMicBtn,     LV_STATE_CHECKED);
     lv_obj_remove_state(ui_playStopAudioBtn, LV_STATE_CHECKED);
-    lv_obj_remove_state(ui_micLed,           LV_STATE_CHECKED);
     lv_obj_remove_state(ui_outAudioLed,      LV_STATE_CHECKED);
 
     /* 5. RESET STATO LOGICO */
