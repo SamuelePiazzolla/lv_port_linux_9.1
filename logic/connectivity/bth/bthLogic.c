@@ -42,7 +42,7 @@ static gulong      bt_pairing_sig_id = 0;           // ID del segnale g-properti
 static gulong      bt_device_removed_sig_id = 0;    // ID del segnale object-removed sull'ObjectManager per rilevare rimozione device (es. dopo unpair)
 
 /* --- Timer di timeout per la UI di pairing --- */
-#define BT_PAIRING_UI_TIMEOUT_MS 10000              // 10s: feedback all'utente se RequestConfirmation non arriva
+#define BT_PAIRING_UI_TIMEOUT_MS 30000              // 30s: feedback all'utente se RequestConfirmation non arriva
 static lv_timer_t *bt_pairing_timer = NULL;         // Timer LVGL attivo durante il pairing; NULL se inattivo
 
 /* =====================
