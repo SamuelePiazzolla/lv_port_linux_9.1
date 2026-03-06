@@ -452,16 +452,44 @@ void ui_create_device_buttons_cb(void *param)
     for (int i = 0; i < msg->count; i++)
     {
         DEBUG_PRINT("Bottone num: %i\n", i);
-        lv_obj_t *btn = lv_btn_create(ui_connectivityBtnContainer);
-        lv_obj_set_width(btn, lv_pct(80));
         
-        // Se il device è connesso/paired, metto il bottone in stato checked e lo coloro di verde
-        lv_obj_set_style_bg_color(btn, lv_color_hex(0x34C759), LV_STATE_CHECKED);
-        if (msg->devices[i].connected)
-            lv_obj_add_state(btn, LV_STATE_CHECKED);
+        /* --- CREAZIONE E DIMENSIONAMENTO DEL BOTTONE */
+        lv_obj_t *btn = lv_button_create(ui_connectivityBtnContainer);
+        lv_obj_set_width(btn, lv_pct(90));
+        lv_obj_set_height(btn, LV_SIZE_CONTENT);
+        lv_obj_remove_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
 
+        /* --- STILE DEFAULT --- */
+        lv_obj_set_style_radius(btn, 12, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(btn, lv_color_hex(0xEAF4FB), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_opa(btn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_border_color(btn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_border_opa(btn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_border_width(btn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_shadow_color(btn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_shadow_opa(btn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_shadow_width(btn, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_shadow_spread(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_shadow_offset_x(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_shadow_offset_y(btn, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+        /* --- STILE CHECKED (connesso/paired) --- */
+        lv_obj_add_flag(btn, LV_OBJ_FLAG_CHECKABLE);
+        lv_obj_set_style_bg_color(btn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_CHECKED);
+        lv_obj_set_style_bg_opa(btn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
+        lv_obj_set_style_shadow_color(btn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_CHECKED);
+
+        /* Creazione label che conterrà il testo */
         lv_obj_t *label = lv_label_create(btn);
+        lv_obj_set_style_text_color(label, lv_color_hex(0x1C1C1E), LV_PART_MAIN | LV_STATE_DEFAULT);    // Default scuro
+        lv_obj_set_style_text_color(label, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_CHECKED);    // Checked bianco
 
+        // Stato checked se già connesso
+        if (msg->devices[i].connected) 
+        {
+            lv_obj_add_state(btn, LV_STATE_CHECKED);
+            lv_obj_add_state(label, LV_STATE_CHECKED);
+        }
         // Creo la stringa del label con nome + stato LOCKED/UNLOCKED
         char label_text[DEVICE_NAME_LEN + 16];
 
