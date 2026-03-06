@@ -21,13 +21,10 @@ extern lv_obj_t * ui_connectivityList;
 extern lv_obj_t * ui_connectivitySelectorCtn;
 extern void ui_event_wifiBtn(lv_event_t * e);
 extern lv_obj_t * ui_wifiBtn;
-extern lv_obj_t * ui_wifiBtnLabel;
 extern void ui_event_bthBtn(lv_event_t * e);
 extern lv_obj_t * ui_bthBtn;
-extern lv_obj_t * ui_bthBtnLabel;
 extern void ui_event_scanNetButton(lv_event_t * e);
 extern lv_obj_t * ui_scanNetButton;
-extern lv_obj_t * ui_labelNetButton;
 extern lv_obj_t * ui_connectivityBtnContainer;
 extern lv_obj_t * ui_connectivityAccess;
 extern lv_obj_t * ui_logConnectivityArea;
@@ -36,6 +33,7 @@ extern lv_obj_t * ui_passwordFieldConnectivity;
 extern void ui_event_connectBtn(lv_event_t * e);
 extern lv_obj_t * ui_connectBtn;
 extern lv_obj_t * ui_labelConnectBtn;
+extern void ui_event_KeyboardConnectivity(lv_event_t * e);
 extern lv_obj_t * ui_KeyboardConnectivity;
 // CUSTOM VARIABLES
 

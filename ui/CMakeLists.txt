@@ -15,6 +15,11 @@ SET(SOURCES components/ui_comp_header.c
     ui_helpers.c
     ui_events.c
     images/ui_img_homeicon_png.c
+    images/ui_img_wifi_blue_png.c
+    images/ui_img_wifi_white_png.c
+    images/ui_img_bth_blue_png.c
+    images/ui_img_bth_white_png.c
+    images/ui_img_restart_scan_png.c
     images/ui_img_mil_lamp_png.c
     images/ui_img_high_beam_png.c
     images/ui_img_low_beam_png.c

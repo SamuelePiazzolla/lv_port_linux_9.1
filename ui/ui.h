@@ -40,6 +40,11 @@ extern lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
 LV_IMG_DECLARE(ui_img_homeicon_png);    // assets/homeIcon.png
+LV_IMG_DECLARE(ui_img_wifi_blue_png);    // assets/wifi_blue.png
+LV_IMG_DECLARE(ui_img_wifi_white_png);    // assets/wifi_white.png
+LV_IMG_DECLARE(ui_img_bth_blue_png);    // assets/bth_blue.png
+LV_IMG_DECLARE(ui_img_bth_white_png);    // assets/bth_white.png
+LV_IMG_DECLARE(ui_img_restart_scan_png);    // assets/restart_scan.png
 LV_IMG_DECLARE(ui_img_mil_lamp_png);    // assets/MIL_lamp.png
 LV_IMG_DECLARE(ui_img_high_beam_png);    // assets/high_beam.png
 LV_IMG_DECLARE(ui_img_low_beam_png);    // assets/low_beam.png

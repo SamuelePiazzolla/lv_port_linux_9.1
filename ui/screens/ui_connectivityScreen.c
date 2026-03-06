@@ -11,11 +11,8 @@ lv_obj_t * ui_connectivityBody = NULL;
 lv_obj_t * ui_connectivityList = NULL;
 lv_obj_t * ui_connectivitySelectorCtn = NULL;
 lv_obj_t * ui_wifiBtn = NULL;
-lv_obj_t * ui_wifiBtnLabel = NULL;
 lv_obj_t * ui_bthBtn = NULL;
-lv_obj_t * ui_bthBtnLabel = NULL;
 lv_obj_t * ui_scanNetButton = NULL;
-lv_obj_t * ui_labelNetButton = NULL;
 lv_obj_t * ui_connectivityBtnContainer = NULL;
 lv_obj_t * ui_connectivityAccess = NULL;
 lv_obj_t * ui_logConnectivityArea = NULL;
@@ -91,6 +88,15 @@ void ui_event_connectBtn(lv_event_t * e)
     }
 }
 
+void ui_event_KeyboardConnectivity(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_READY) {
+        connectDisconnectSelected(e);
+    }
+}
+
 // build funtions
 
 void ui_connectivityScreen_screen_init(void)
@@ -103,6 +109,10 @@ void ui_connectivityScreen_screen_init(void)
                                            _ui_theme_color_BACKGROUND);
     ui_object_set_themeable_style_property(ui_connectivityScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
                                            _ui_theme_alpha_BACKGROUND);
+    lv_obj_set_style_pad_left(ui_connectivityScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_connectivityScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_connectivityScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_connectivityScreen, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_connectivityScreen, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_connectivityScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -118,101 +128,126 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_flex_flow(ui_connectivityBody, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(ui_connectivityBody, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
     lv_obj_remove_flag(ui_connectivityBody, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_pad_left(ui_connectivityBody, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_connectivityBody, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_connectivityBody, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_connectivityBody, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_connectivityBody, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_connectivityBody, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_connectivityList = lv_obj_create(ui_connectivityBody);
     lv_obj_remove_style_all(ui_connectivityList);
-    lv_obj_set_width(ui_connectivityList, lv_pct(69));
     lv_obj_set_height(ui_connectivityList, lv_pct(100));
+    lv_obj_set_flex_grow(ui_connectivityList, 1);
     lv_obj_set_x(ui_connectivityList, -155);
     lv_obj_set_y(ui_connectivityList, -76);
     lv_obj_set_align(ui_connectivityList, LV_ALIGN_BOTTOM_LEFT);
     lv_obj_set_flex_flow(ui_connectivityList, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_connectivityList, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_connectivityList, LV_OBJ_FLAG_CLICKABLE);      /// Flags
+    lv_obj_set_style_pad_left(ui_connectivityList, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_connectivityList, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_connectivityList, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_connectivityList, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_connectivityList, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_connectivityList, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_connectivitySelectorCtn = lv_obj_create(ui_connectivityList);
     lv_obj_remove_style_all(ui_connectivitySelectorCtn);
+    lv_obj_set_height(ui_connectivitySelectorCtn, 146);
     lv_obj_set_width(ui_connectivitySelectorCtn, lv_pct(100));
-    lv_obj_set_height(ui_connectivitySelectorCtn, lv_pct(15));
     lv_obj_set_align(ui_connectivitySelectorCtn, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_connectivitySelectorCtn, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_connectivitySelectorCtn, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_set_flex_align(ui_connectivitySelectorCtn, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER,
+                          LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_connectivitySelectorCtn, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_pad_row(ui_connectivitySelectorCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_column(ui_connectivitySelectorCtn, 30, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_connectivitySelectorCtn, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_connectivitySelectorCtn, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_connectivitySelectorCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_connectivitySelectorCtn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_connectivitySelectorCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_connectivitySelectorCtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_connectivitySelectorCtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_connectivitySelectorCtn, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_connectivitySelectorCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_connectivitySelectorCtn, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_connectivitySelectorCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_connectivitySelectorCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_connectivitySelectorCtn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_wifiBtn = lv_button_create(ui_connectivitySelectorCtn);
-    lv_obj_set_width(ui_wifiBtn, lv_pct(30));
-    lv_obj_set_height(ui_wifiBtn, LV_SIZE_CONTENT);    /// 100
+    lv_obj_set_width(ui_wifiBtn, 125);
+    lv_obj_set_height(ui_wifiBtn, 125);
     lv_obj_set_align(ui_wifiBtn, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_wifiBtn, LV_OBJ_FLAG_CHECKABLE | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_wifiBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    ui_object_set_themeable_style_property(ui_wifiBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
-                                           _ui_theme_color_BTN);
-    ui_object_set_themeable_style_property(ui_wifiBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
-                                           _ui_theme_alpha_BTN);
-
-    ui_wifiBtnLabel = lv_label_create(ui_wifiBtn);
-    lv_obj_set_width(ui_wifiBtnLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_wifiBtnLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_wifiBtnLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_wifiBtnLabel, "WiFi");
-    lv_obj_set_style_text_font(ui_wifiBtnLabel, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_wifiBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0xEAF4FB), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_wifiBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_wifiBtn, &ui_img_wifi_blue_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_wifiBtn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_wifiBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_wifiBtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_wifiBtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_wifiBtn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_wifiBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_wifiBtn, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_wifiBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_wifiBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_wifiBtn, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_wifiBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_image_src(ui_wifiBtn, &ui_img_wifi_white_png, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_bthBtn = lv_button_create(ui_connectivitySelectorCtn);
-    lv_obj_set_width(ui_bthBtn, lv_pct(30));
-    lv_obj_set_height(ui_bthBtn, LV_SIZE_CONTENT);    /// 50
+    lv_obj_set_width(ui_bthBtn, 125);
+    lv_obj_set_height(ui_bthBtn, 125);
     lv_obj_set_align(ui_bthBtn, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_bthBtn, LV_OBJ_FLAG_CHECKABLE | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_bthBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    ui_object_set_themeable_style_property(ui_bthBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
-                                           _ui_theme_color_BTN);
-    ui_object_set_themeable_style_property(ui_bthBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
-                                           _ui_theme_alpha_BTN);
+    lv_obj_set_style_radius(ui_bthBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_bthBtn, lv_color_hex(0xEAF4FB), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_bthBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_bthBtn, &ui_img_bth_blue_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_bthBtn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_bthBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_bthBtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_bthBtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_bthBtn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_bthBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_bthBtn, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_bthBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_bthBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_bthBtn, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_bthBtn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_bthBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_image_src(ui_bthBtn, &ui_img_bth_white_png, LV_PART_MAIN | LV_STATE_CHECKED);
 
-    ui_bthBtnLabel = lv_label_create(ui_bthBtn);
-    lv_obj_set_width(ui_bthBtnLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_bthBtnLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_bthBtnLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_bthBtnLabel, "Bluetooth");
-    lv_obj_set_style_text_font(ui_bthBtnLabel, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_scanNetButton = lv_button_create(ui_connectivityList);
-    lv_obj_set_width(ui_scanNetButton, lv_pct(90));
-    lv_obj_set_height(ui_scanNetButton, lv_pct(10));
+    ui_scanNetButton = lv_button_create(ui_connectivitySelectorCtn);
+    lv_obj_set_width(ui_scanNetButton, 125);
+    lv_obj_set_height(ui_scanNetButton, 125);
     lv_obj_set_align(ui_scanNetButton, LV_ALIGN_CENTER);
     lv_obj_add_state(ui_scanNetButton, LV_STATE_DISABLED);       /// States
     lv_obj_add_flag(ui_scanNetButton, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_scanNetButton, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    ui_object_set_themeable_style_property(ui_scanNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
-                                           _ui_theme_color_BTN);
-    ui_object_set_themeable_style_property(ui_scanNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
-                                           _ui_theme_alpha_BTN);
-    ui_object_set_themeable_style_property(ui_scanNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_scanNetButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_radius(ui_scanNetButton, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_scanNetButton, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_scanNetButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_scanNetButton, &ui_img_restart_scan_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_scanNetButton, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_scanNetButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui_scanNetButton, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_side(ui_scanNetButton, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_labelNetButton = lv_label_create(ui_scanNetButton);
-    lv_obj_set_width(ui_labelNetButton, lv_pct(100));
-    lv_obj_set_height(ui_labelNetButton, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_labelNetButton, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_labelNetButton, "RICERCA RETI O DISPOSITIVI DISPONIBILI");
-    lv_obj_set_style_text_color(ui_labelNetButton, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_labelNetButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui_labelNetButton, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_decor(ui_labelNetButton, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_labelNetButton, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_labelNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_labelNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_labelNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_labelNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_scanNetButton, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_scanNetButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_scanNetButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_scanNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_scanNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_scanNetButton, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_scanNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_scanNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_scanNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_scanNetButton, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_connectivityBtnContainer = lv_obj_create(ui_connectivityList);
     lv_obj_remove_style_all(ui_connectivityBtnContainer);
@@ -224,6 +259,19 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_flex_flow(ui_connectivityBtnContainer, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_connectivityBtnContainer, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_connectivityBtnContainer, LV_OBJ_FLAG_CLICKABLE);      /// Flags
+    lv_obj_set_style_radius(ui_connectivityBtnContainer, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_connectivityBtnContainer, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_connectivityBtnContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_connectivityBtnContainer, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_connectivityBtnContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_connectivityBtnContainer, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_connectivityBtnContainer, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_connectivityBtnContainer, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_connectivityBtnContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_connectivityBtnContainer, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_connectivityBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_connectivityBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_connectivityBtnContainer, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_connectivityBtnContainer, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_connectivityBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -235,22 +283,44 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_y(ui_connectivityAccess, -98);
     lv_obj_set_align(ui_connectivityAccess, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_connectivityAccess, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_connectivityAccess, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
+    lv_obj_set_flex_align(ui_connectivityAccess, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_connectivityAccess, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_pad_row(ui_connectivityAccess, 50, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_connectivityAccess, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_connectivityAccess, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_connectivityAccess, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_connectivityAccess, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_connectivityAccess, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_connectivityAccess, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_connectivityAccess, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_connectivityAccess, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_connectivityAccess, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_connectivityAccess, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_connectivityAccess, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_connectivityAccess, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_connectivityAccess, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_connectivityAccess, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_connectivityAccess, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_connectivityAccess, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_connectivityAccess, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_connectivityAccess, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_connectivityAccess, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_logConnectivityArea = lv_textarea_create(ui_connectivityAccess);
     lv_obj_set_width(ui_logConnectivityArea, lv_pct(100));
     lv_obj_set_flex_grow(ui_logConnectivityArea, 1);
     lv_obj_set_align(ui_logConnectivityArea, LV_ALIGN_CENTER);
-    lv_textarea_set_placeholder_text(ui_logConnectivityArea, "log...");
+    lv_textarea_set_placeholder_text(ui_logConnectivityArea, "Seleziona una delle opzioni per cominciare la scansione...");
     lv_obj_remove_flag(ui_logConnectivityArea, LV_OBJ_FLAG_CLICKABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_logConnectivityArea, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
+                                           _ui_theme_color_TEXT);
+    ui_object_set_themeable_style_property(ui_logConnectivityArea, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
+                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_radius(ui_logConnectivityArea, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_accessConnectivityCtn = lv_obj_create(ui_connectivityAccess);
     lv_obj_remove_style_all(ui_accessConnectivityCtn);
     lv_obj_set_width(ui_accessConnectivityCtn, lv_pct(100));
-    lv_obj_set_flex_grow(ui_accessConnectivityCtn, 1);
+    lv_obj_set_height(ui_accessConnectivityCtn, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_accessConnectivityCtn, 343);
     lv_obj_set_y(ui_accessConnectivityCtn, -190);
     lv_obj_set_align(ui_accessConnectivityCtn, LV_ALIGN_CENTER);
@@ -258,6 +328,10 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_flex_align(ui_accessConnectivityCtn, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_add_flag(ui_accessConnectivityCtn, LV_OBJ_FLAG_HIDDEN);     /// Flags
     lv_obj_remove_flag(ui_accessConnectivityCtn, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_pad_left(ui_accessConnectivityCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_accessConnectivityCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_accessConnectivityCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_accessConnectivityCtn, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_accessConnectivityCtn, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_accessConnectivityCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -268,6 +342,7 @@ void ui_connectivityScreen_screen_init(void)
     lv_textarea_set_placeholder_text(ui_passwordFieldConnectivity, "Insert the password...");
     lv_textarea_set_one_line(ui_passwordFieldConnectivity, true);
     lv_textarea_set_password_mode(ui_passwordFieldConnectivity, true);
+    lv_obj_set_style_radius(ui_passwordFieldConnectivity, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_connectBtn = lv_button_create(ui_accessConnectivityCtn);
     lv_obj_set_width(ui_connectBtn, lv_pct(50));
@@ -275,6 +350,7 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_align(ui_connectBtn, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_connectBtn, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_connectBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_connectBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_connectBtn, lv_color_hex(0x34C759), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_connectBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_connectBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_CHECKED);
@@ -291,12 +367,41 @@ void ui_connectivityScreen_screen_init(void)
     lv_obj_set_height(ui_KeyboardConnectivity, lv_pct(30));
     lv_obj_set_align(ui_KeyboardConnectivity, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_KeyboardConnectivity, LV_OBJ_FLAG_HIDDEN);     /// Flags
+    lv_obj_set_style_radius(ui_KeyboardConnectivity, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_KeyboardConnectivity, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_KeyboardConnectivity, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_KeyboardConnectivity, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_KeyboardConnectivity, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_KeyboardConnectivity, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_KeyboardConnectivity, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_KeyboardConnectivity, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_KeyboardConnectivity, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_KeyboardConnectivity, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_KeyboardConnectivity, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_KeyboardConnectivity, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_KeyboardConnectivity, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_set_style_bg_color(ui_KeyboardConnectivity, lv_color_hex(0xF2F2F7), LV_PART_ITEMS | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_KeyboardConnectivity, 255, LV_PART_ITEMS | LV_STATE_DEFAULT);
+    ui_object_set_themeable_style_property(ui_KeyboardConnectivity, LV_PART_ITEMS | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
+                                           _ui_theme_color_TEXT);
+    ui_object_set_themeable_style_property(ui_KeyboardConnectivity, LV_PART_ITEMS | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
+                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_bg_color(ui_KeyboardConnectivity, lv_color_hex(0x1A6FA8), LV_PART_ITEMS | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_KeyboardConnectivity, 255, LV_PART_ITEMS | LV_STATE_CHECKED);
+    lv_obj_set_style_text_color(ui_KeyboardConnectivity, lv_color_hex(0xFFFFFF), LV_PART_ITEMS | LV_STATE_CHECKED);
+    lv_obj_set_style_text_opa(ui_KeyboardConnectivity, 255, LV_PART_ITEMS | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_color(ui_KeyboardConnectivity, lv_color_hex(0x1A6FA8), LV_PART_ITEMS | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_opa(ui_KeyboardConnectivity, 255, LV_PART_ITEMS | LV_STATE_PRESSED);
+    lv_obj_set_style_text_color(ui_KeyboardConnectivity, lv_color_hex(0xFFFFFF), LV_PART_ITEMS | LV_STATE_PRESSED);
+    lv_obj_set_style_text_opa(ui_KeyboardConnectivity, 255, LV_PART_ITEMS | LV_STATE_PRESSED);
 
     lv_obj_add_event_cb(ui_wifiBtn, ui_event_wifiBtn, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_bthBtn, ui_event_bthBtn, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_scanNetButton, ui_event_scanNetButton, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_connectBtn, ui_event_connectBtn, LV_EVENT_ALL, NULL);
     lv_keyboard_set_textarea(ui_KeyboardConnectivity, ui_passwordFieldConnectivity);
+    lv_obj_add_event_cb(ui_KeyboardConnectivity, ui_event_KeyboardConnectivity, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_connectivityScreen, ui_event_connectivityScreen, LV_EVENT_ALL, NULL);
 
 }
@@ -312,11 +417,8 @@ void ui_connectivityScreen_screen_destroy(void)
     ui_connectivityList = NULL;
     ui_connectivitySelectorCtn = NULL;
     ui_wifiBtn = NULL;
-    ui_wifiBtnLabel = NULL;
     ui_bthBtn = NULL;
-    ui_bthBtnLabel = NULL;
     ui_scanNetButton = NULL;
-    ui_labelNetButton = NULL;
     ui_connectivityBtnContainer = NULL;
     ui_connectivityAccess = NULL;
     ui_logConnectivityArea = NULL;
