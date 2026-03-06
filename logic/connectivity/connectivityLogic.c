@@ -371,6 +371,8 @@ void ui_show_pairing_popup(const char *dev_path, uint32_t passkey, GDBusMethodIn
     lv_obj_set_flex_flow(btn_cont, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(btn_cont, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_set_style_pad_column(btn_cont, 20, 0);
+    lv_obj_set_style_pad_top(btn_cont, 3, 0);
+    lv_obj_set_style_pad_bottom(btn_cont, 3, 0);
 
     // 8. BOTTONE ABBINA
     lv_obj_t *btn_ok = lv_button_create(btn_cont);
@@ -474,7 +476,6 @@ void ui_create_device_buttons_cb(void *param)
         lv_obj_set_style_shadow_offset_y(btn, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
 
         /* --- STILE CHECKED (connesso/paired) --- */
-        lv_obj_add_flag(btn, LV_OBJ_FLAG_CHECKABLE);
         lv_obj_set_style_bg_color(btn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_CHECKED);
         lv_obj_set_style_bg_opa(btn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
         lv_obj_set_style_shadow_color(btn, lv_color_hex(0x1A6FA8), LV_PART_MAIN | LV_STATE_CHECKED);
