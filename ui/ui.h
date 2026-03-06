@@ -40,6 +40,15 @@ extern lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
 LV_IMG_DECLARE(ui_img_homeicon_png);    // assets/homeIcon.png
+LV_IMG_DECLARE(ui_img_mic_no_rec_png);    // assets/mic_no_rec.png
+LV_IMG_DECLARE(ui_img_no_audio_png);    // assets/no_audio.png
+LV_IMG_DECLARE(ui_img_audio_png);    // assets/audio.png
+LV_IMG_DECLARE(ui_img_add_file_white_png);    // assets/add_file_white.png
+LV_IMG_DECLARE(ui_img_play_white_png);    // assets/play_white.png
+LV_IMG_DECLARE(ui_img_pause_white_png);    // assets/pause_white.png
+LV_IMG_DECLARE(ui_img_reset_audio_png);    // assets/reset_audio.png
+LV_IMG_DECLARE(ui_img_volume_down_png);    // assets/volume_down.png
+LV_IMG_DECLARE(ui_img_volume_up_png);    // assets/volume_up.png
 LV_IMG_DECLARE(ui_img_wifi_blue_png);    // assets/wifi_blue.png
 LV_IMG_DECLARE(ui_img_wifi_white_png);    // assets/wifi_white.png
 LV_IMG_DECLARE(ui_img_bth_blue_png);    // assets/bth_blue.png

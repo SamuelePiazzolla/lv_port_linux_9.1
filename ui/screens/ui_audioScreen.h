@@ -19,27 +19,25 @@ extern lv_obj_t * ui_headerAudioScreen;
 extern lv_obj_t * ui_bodyAudio;
 extern lv_obj_t * ui_micContainer;
 extern lv_obj_t * ui_micContainerLabel;
-extern lv_obj_t * ui_micLed;
 extern void ui_event_recordMicBtn(lv_event_t * e);
 extern lv_obj_t * ui_recordMicBtn;
-extern lv_obj_t * ui_recordmicBtnLabel;
+extern lv_obj_t * ui_micDescriptionCtn;
+extern lv_obj_t * ui_micDescription;
 extern lv_obj_t * ui_outAudioContainer;
 extern lv_obj_t * ui_outAudioContainerLabel;
 extern lv_obj_t * ui_outAudioLed;
-extern lv_obj_t * ui_volumeContainer;
-extern lv_obj_t * ui_volumeLabel;
-extern void ui_event_volumeSlider(lv_event_t * e);
-extern lv_obj_t * ui_volumeSlider;
 extern lv_obj_t * ui_outAudioBtnCtn;
 extern void ui_event_selectFileAudioBtn(lv_event_t * e);
 extern lv_obj_t * ui_selectFileAudioBtn;
-extern lv_obj_t * ui_selectFileAudioBtnLabel;
 extern void ui_event_playStopAudioBtn(lv_event_t * e);
 extern lv_obj_t * ui_playStopAudioBtn;
-extern lv_obj_t * ui_playStopAudioBtnLabel;
 extern void ui_event_resetAudioBtn(lv_event_t * e);
 extern lv_obj_t * ui_resetAudioBtn;
-extern lv_obj_t * ui_resetAudioBtnLabel;
+extern lv_obj_t * ui_volumeContainer;
+extern lv_obj_t * ui_volumeDown;
+extern void ui_event_volumeSlider(lv_event_t * e);
+extern lv_obj_t * ui_volumeSlider;
+extern lv_obj_t * ui_volumeUp;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

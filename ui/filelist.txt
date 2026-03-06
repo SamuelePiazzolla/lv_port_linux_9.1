@@ -15,6 +15,15 @@ components/ui_comp_hook.c
 ui_helpers.c
 ui_events.c
 images/ui_img_homeicon_png.c
+images/ui_img_mic_no_rec_png.c
+images/ui_img_no_audio_png.c
+images/ui_img_audio_png.c
+images/ui_img_add_file_white_png.c
+images/ui_img_play_white_png.c
+images/ui_img_pause_white_png.c
+images/ui_img_reset_audio_png.c
+images/ui_img_volume_down_png.c
+images/ui_img_volume_up_png.c
 images/ui_img_wifi_blue_png.c
 images/ui_img_wifi_white_png.c
 images/ui_img_bth_blue_png.c

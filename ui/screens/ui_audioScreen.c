@@ -10,22 +10,20 @@ lv_obj_t * ui_headerAudioScreen = NULL;
 lv_obj_t * ui_bodyAudio = NULL;
 lv_obj_t * ui_micContainer = NULL;
 lv_obj_t * ui_micContainerLabel = NULL;
-lv_obj_t * ui_micLed = NULL;
 lv_obj_t * ui_recordMicBtn = NULL;
-lv_obj_t * ui_recordmicBtnLabel = NULL;
+lv_obj_t * ui_micDescriptionCtn = NULL;
+lv_obj_t * ui_micDescription = NULL;
 lv_obj_t * ui_outAudioContainer = NULL;
 lv_obj_t * ui_outAudioContainerLabel = NULL;
 lv_obj_t * ui_outAudioLed = NULL;
-lv_obj_t * ui_volumeContainer = NULL;
-lv_obj_t * ui_volumeLabel = NULL;
-lv_obj_t * ui_volumeSlider = NULL;
 lv_obj_t * ui_outAudioBtnCtn = NULL;
 lv_obj_t * ui_selectFileAudioBtn = NULL;
-lv_obj_t * ui_selectFileAudioBtnLabel = NULL;
 lv_obj_t * ui_playStopAudioBtn = NULL;
-lv_obj_t * ui_playStopAudioBtnLabel = NULL;
 lv_obj_t * ui_resetAudioBtn = NULL;
-lv_obj_t * ui_resetAudioBtnLabel = NULL;
+lv_obj_t * ui_volumeContainer = NULL;
+lv_obj_t * ui_volumeDown = NULL;
+lv_obj_t * ui_volumeSlider = NULL;
+lv_obj_t * ui_volumeUp = NULL;
 // event funtions
 void ui_event_audioScreen(lv_event_t * e)
 {
@@ -60,15 +58,6 @@ void ui_event_recordMicBtn(lv_event_t * e)
     }
 }
 
-void ui_event_volumeSlider(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        changeVolume(e);
-    }
-}
-
 void ui_event_selectFileAudioBtn(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -100,16 +89,29 @@ void ui_event_resetAudioBtn(lv_event_t * e)
     }
 }
 
+void ui_event_volumeSlider(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        changeVolume(e);
+    }
+}
+
 // build funtions
 
 void ui_audioScreen_screen_init(void)
 {
     ui_audioScreen = lv_obj_create(NULL);
     lv_obj_remove_flag(ui_audioScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_flex_flow(ui_audioScreen, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(ui_audioScreen, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     ui_object_set_themeable_style_property(ui_audioScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
                                            _ui_theme_color_BACKGROUND);
     ui_object_set_themeable_style_property(ui_audioScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
                                            _ui_theme_alpha_BACKGROUND);
+    lv_obj_set_style_pad_row(ui_audioScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_audioScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_headerAudioScreen = ui_Header_create(ui_audioScreen);
     lv_obj_set_x(ui_headerAudioScreen, 0);
@@ -118,17 +120,17 @@ void ui_audioScreen_screen_init(void)
     ui_bodyAudio = lv_obj_create(ui_audioScreen);
     lv_obj_remove_style_all(ui_bodyAudio);
     lv_obj_set_width(ui_bodyAudio, lv_pct(100));
-    lv_obj_set_height(ui_bodyAudio, lv_pct(88));
+    lv_obj_set_flex_grow(ui_bodyAudio, 1);
     lv_obj_set_align(ui_bodyAudio, LV_ALIGN_BOTTOM_MID);
     lv_obj_set_flex_flow(ui_bodyAudio, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_bodyAudio, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_bodyAudio, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_pad_left(ui_bodyAudio, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_bodyAudio, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_bodyAudio, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_bodyAudio, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_bodyAudio, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_bodyAudio, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_bodyAudio, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_bodyAudio, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_bodyAudio, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_column(ui_bodyAudio, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_bodyAudio, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_micContainer = lv_obj_create(ui_bodyAudio);
     lv_obj_set_height(ui_micContainer, lv_pct(100));
@@ -137,83 +139,102 @@ void ui_audioScreen_screen_init(void)
     lv_obj_set_flex_flow(ui_micContainer, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_micContainer, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_micContainer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    ui_object_set_themeable_style_property(ui_micContainer, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
-                                           _ui_theme_color_BACKGROUND);
-    ui_object_set_themeable_style_property(ui_micContainer, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
-                                           _ui_theme_alpha_BACKGROUND);
-    lv_obj_set_style_border_color(ui_micContainer, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_micContainer, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_micContainer, lv_color_hex(0xFFFDF5), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_micContainer, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_micContainer, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_micContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_micContainer, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_side(ui_micContainer, LV_BORDER_SIDE_RIGHT, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_row(ui_micContainer, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_column(ui_micContainer, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_micContainer, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_micContainer, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_micContainer, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_micContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_micContainer, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_micContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_micContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_micContainer, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_micContainer, 30, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_micContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_micContainerLabel = lv_label_create(ui_micContainer);
     lv_obj_set_width(ui_micContainerLabel, lv_pct(100));
     lv_obj_set_height(ui_micContainerLabel, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_micContainerLabel, LV_ALIGN_TOP_MID);
     lv_label_set_text(ui_micContainerLabel, "MICROPHONE");
-    ui_object_set_themeable_style_property(ui_micContainerLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_micContainerLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_micContainerLabel, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_micContainerLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_micContainerLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_micContainerLabel, &lv_font_montserrat_30, LV_PART_MAIN | LV_STATE_DEFAULT);
-    ui_object_set_themeable_style_property(ui_micContainerLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_micContainerLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_border_color(ui_micContainerLabel, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_micContainerLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui_micContainerLabel, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_side(ui_micContainerLabel, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_micLed = lv_obj_create(ui_micContainer);
-    lv_obj_set_width(ui_micLed, 100);
-    lv_obj_set_height(ui_micLed, 100);
-    lv_obj_set_align(ui_micLed, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_micLed, LV_OBJ_FLAG_CHECKABLE);     /// Flags
-    lv_obj_remove_flag(ui_micLed, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_radius(ui_micLed, 50, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_micLed, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_micLed, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_micLed, lv_color_hex(0x2DA041), LV_PART_MAIN | LV_STATE_CHECKED);
-    lv_obj_set_style_bg_opa(ui_micLed, 255, LV_PART_MAIN | LV_STATE_CHECKED);
-
     ui_recordMicBtn = lv_button_create(ui_micContainer);
-    lv_obj_set_width(ui_recordMicBtn, LV_SIZE_CONTENT);   /// 19
-    lv_obj_set_height(ui_recordMicBtn, LV_SIZE_CONTENT);    /// 50
+    lv_obj_set_width(ui_recordMicBtn, 150);
+    lv_obj_set_height(ui_recordMicBtn, 150);
     lv_obj_set_align(ui_recordMicBtn, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_recordMicBtn, LV_OBJ_FLAG_CHECKABLE | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_recordMicBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    ui_object_set_themeable_style_property(ui_recordMicBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
-                                           _ui_theme_color_BTN);
-    ui_object_set_themeable_style_property(ui_recordMicBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
-                                           _ui_theme_alpha_BTN);
+    lv_obj_set_style_radius(ui_recordMicBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_recordMicBtn, lv_color_hex(0xFDF3E7), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_recordMicBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_recordMicBtn, &ui_img_mic_no_rec_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor(ui_recordMicBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor_opa(ui_recordMicBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_recordMicBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_recordMicBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_recordMicBtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_recordMicBtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_recordMicBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_recordMicBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_recordMicBtn, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_recordMicBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_recordMicBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_recordMicBtn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_recordMicBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_recordMicBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_image_src(ui_recordMicBtn, &ui_img_mic_no_rec_png, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_image_recolor(ui_recordMicBtn, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_image_recolor_opa(ui_recordMicBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
-    ui_recordmicBtnLabel = lv_label_create(ui_recordMicBtn);
-    lv_obj_set_width(ui_recordmicBtnLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_recordmicBtnLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_recordmicBtnLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_recordmicBtnLabel, "RECORD MESSAGE");
-    lv_obj_set_style_text_color(ui_recordmicBtnLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_recordmicBtnLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_recordmicBtnLabel, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_micDescriptionCtn = lv_obj_create(ui_micContainer);
+    lv_obj_set_height(ui_micDescriptionCtn, 50);
+    lv_obj_set_width(ui_micDescriptionCtn, lv_pct(100));
+    lv_obj_set_align(ui_micDescriptionCtn, LV_ALIGN_CENTER);
+    lv_obj_remove_flag(ui_micDescriptionCtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_micDescriptionCtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_micDescriptionCtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_micDescriptionCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_micDescriptionCtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_micDescriptionCtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_micDescription = lv_label_create(ui_micDescriptionCtn);
+    lv_obj_set_width(ui_micDescription, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_micDescription, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_micDescription, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_micDescription, "Premi sul pulsante per cominciare/fermare la registrazione");
 
     ui_outAudioContainer = lv_obj_create(ui_bodyAudio);
+    lv_obj_set_width(ui_outAudioContainer, lv_pct(50));
     lv_obj_set_height(ui_outAudioContainer, lv_pct(100));
-    lv_obj_set_flex_grow(ui_outAudioContainer, 1);
     lv_obj_set_align(ui_outAudioContainer, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_outAudioContainer, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_outAudioContainer, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_outAudioContainer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    ui_object_set_themeable_style_property(ui_outAudioContainer, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
-                                           _ui_theme_color_BACKGROUND);
-    ui_object_set_themeable_style_property(ui_outAudioContainer, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
-                                           _ui_theme_alpha_BACKGROUND);
-    lv_obj_set_style_border_color(ui_outAudioContainer, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_outAudioContainer, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_outAudioContainer, lv_color_hex(0xFFFDF5), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_outAudioContainer, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_outAudioContainer, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_outAudioContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_outAudioContainer, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_side(ui_outAudioContainer, LV_BORDER_SIDE_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_row(ui_outAudioContainer, 70, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_outAudioContainer, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_outAudioContainer, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_outAudioContainer, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_outAudioContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_outAudioContainer, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_outAudioContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_outAudioContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_outAudioContainer, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_outAudioContainer, 30, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_outAudioContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_outAudioContainerLabel = lv_label_create(ui_outAudioContainer);
@@ -221,30 +242,136 @@ void ui_audioScreen_screen_init(void)
     lv_obj_set_height(ui_outAudioContainerLabel, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_outAudioContainerLabel, LV_ALIGN_TOP_MID);
     lv_label_set_text(ui_outAudioContainerLabel, "OUT AUDIO");
-    ui_object_set_themeable_style_property(ui_outAudioContainerLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_outAudioContainerLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_text_color(ui_outAudioContainerLabel, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_outAudioContainerLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_outAudioContainerLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_outAudioContainerLabel, &lv_font_montserrat_30, LV_PART_MAIN | LV_STATE_DEFAULT);
-    ui_object_set_themeable_style_property(ui_outAudioContainerLabel, LV_PART_MAIN | LV_STATE_DEFAULT,
-                                           LV_STYLE_BORDER_COLOR, _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_outAudioContainerLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_OPA,
-                                           _ui_theme_alpha_TEXT);
+    lv_obj_set_style_border_color(ui_outAudioContainerLabel, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_outAudioContainerLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui_outAudioContainerLabel, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_side(ui_outAudioContainerLabel, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_outAudioLed = lv_obj_create(ui_outAudioContainer);
-    lv_obj_set_width(ui_outAudioLed, 100);
-    lv_obj_set_height(ui_outAudioLed, 100);
+    lv_obj_set_width(ui_outAudioLed, 150);
+    lv_obj_set_height(ui_outAudioLed, 150);
     lv_obj_set_align(ui_outAudioLed, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_outAudioLed, LV_OBJ_FLAG_CHECKABLE);     /// Flags
     lv_obj_remove_flag(ui_outAudioLed, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_radius(ui_outAudioLed, 50, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_outAudioLed, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_outAudioLed, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_outAudioLed, lv_color_hex(0x2DA041), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_radius(ui_outAudioLed, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_outAudioLed, &ui_img_no_audio_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor(ui_outAudioLed, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor_opa(ui_outAudioLed, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_outAudioLed, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_outAudioLed, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_outAudioLed, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_outAudioLed, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_outAudioLed, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_outAudioLed, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_outAudioLed, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_outAudioLed, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_outAudioLed, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_outAudioLed, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_outAudioLed, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_outAudioLed, 255, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_image_src(ui_outAudioLed, &ui_img_audio_png, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_image_recolor(ui_outAudioLed, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_image_recolor_opa(ui_outAudioLed, 255, LV_PART_MAIN | LV_STATE_CHECKED);
+
+    ui_outAudioBtnCtn = lv_obj_create(ui_outAudioContainer);
+    lv_obj_remove_style_all(ui_outAudioBtnCtn);
+    lv_obj_set_width(ui_outAudioBtnCtn, lv_pct(100));
+    lv_obj_set_height(ui_outAudioBtnCtn, lv_pct(25));
+    lv_obj_set_align(ui_outAudioBtnCtn, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_outAudioBtnCtn, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_outAudioBtnCtn, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_remove_flag(ui_outAudioBtnCtn, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_outAudioBtnCtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_outAudioBtnCtn, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_outAudioBtnCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_outAudioBtnCtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_outAudioBtnCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_outAudioBtnCtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_outAudioBtnCtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_outAudioBtnCtn, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_outAudioBtnCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_outAudioBtnCtn, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_outAudioBtnCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_outAudioBtnCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_outAudioBtnCtn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_outAudioBtnCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_outAudioBtnCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_outAudioBtnCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_outAudioBtnCtn, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_outAudioBtnCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_outAudioBtnCtn, 20, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_selectFileAudioBtn = lv_button_create(ui_outAudioBtnCtn);
+    lv_obj_set_width(ui_selectFileAudioBtn, 100);
+    lv_obj_set_height(ui_selectFileAudioBtn, 100);
+    lv_obj_set_align(ui_selectFileAudioBtn, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_selectFileAudioBtn, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_selectFileAudioBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_selectFileAudioBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_selectFileAudioBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_selectFileAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_selectFileAudioBtn, &ui_img_add_file_white_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_selectFileAudioBtn, lv_color_hex(0x1C1C1E), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_selectFileAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_selectFileAudioBtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_selectFileAudioBtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_selectFileAudioBtn, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_selectFileAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_selectFileAudioBtn, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_selectFileAudioBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_selectFileAudioBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_selectFileAudioBtn, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_playStopAudioBtn = lv_button_create(ui_outAudioBtnCtn);
+    lv_obj_set_width(ui_playStopAudioBtn, 100);
+    lv_obj_set_height(ui_playStopAudioBtn, 100);
+    lv_obj_set_align(ui_playStopAudioBtn, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_playStopAudioBtn, LV_OBJ_FLAG_CHECKABLE | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_playStopAudioBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_playStopAudioBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_playStopAudioBtn, lv_color_hex(0x34C759), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_playStopAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_playStopAudioBtn, &ui_img_play_white_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_playStopAudioBtn, lv_color_hex(0x1C1C1E), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_playStopAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_playStopAudioBtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_playStopAudioBtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_playStopAudioBtn, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_playStopAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_playStopAudioBtn, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_playStopAudioBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_playStopAudioBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_playStopAudioBtn, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_playStopAudioBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_playStopAudioBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_image_src(ui_playStopAudioBtn, &ui_img_pause_white_png, LV_PART_MAIN | LV_STATE_CHECKED);
+
+    ui_resetAudioBtn = lv_button_create(ui_outAudioBtnCtn);
+    lv_obj_set_width(ui_resetAudioBtn, 100);
+    lv_obj_set_height(ui_resetAudioBtn, 100);
+    lv_obj_set_align(ui_resetAudioBtn, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_resetAudioBtn, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_resetAudioBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_resetAudioBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_resetAudioBtn, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_resetAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_resetAudioBtn, &ui_img_reset_audio_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor(ui_resetAudioBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor_opa(ui_resetAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_resetAudioBtn, lv_color_hex(0x1C1C1E), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_resetAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_resetAudioBtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_resetAudioBtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_resetAudioBtn, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_resetAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_resetAudioBtn, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_resetAudioBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_resetAudioBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_resetAudioBtn, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_volumeContainer = lv_obj_create(ui_outAudioContainer);
     lv_obj_remove_style_all(ui_volumeContainer);
@@ -253,24 +380,37 @@ void ui_audioScreen_screen_init(void)
     lv_obj_set_x(ui_volumeContainer, 173);
     lv_obj_set_y(ui_volumeContainer, -2);
     lv_obj_set_align(ui_volumeContainer, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_volumeContainer, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_volumeContainer, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_volumeContainer, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_volumeContainer, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_volumeContainer,
                        LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_pad_row(ui_volumeContainer, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_volumeContainer, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_volumeContainer, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_volumeContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_volumeContainer, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_volumeContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_volumeContainer, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_volumeContainer, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_volumeContainer, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_volumeContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_volumeContainer, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_volumeContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_volumeContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_volumeContainer, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_volumeContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_volumeContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_volumeContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_volumeContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_volumeContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_volumeContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_volumeLabel = lv_label_create(ui_volumeContainer);
-    lv_obj_set_width(ui_volumeLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_volumeLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_volumeLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_volumeLabel, "VOLUME");
-    ui_object_set_themeable_style_property(ui_volumeLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_TEXT);
-    ui_object_set_themeable_style_property(ui_volumeLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_TEXT);
-    lv_obj_set_style_text_decor(ui_volumeLabel, LV_TEXT_DECOR_UNDERLINE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_volumeLabel, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_volumeDown = lv_image_create(ui_volumeContainer);
+    lv_image_set_src(ui_volumeDown, &ui_img_volume_down_png);
+    lv_obj_set_width(ui_volumeDown, LV_SIZE_CONTENT);   /// 50
+    lv_obj_set_height(ui_volumeDown, LV_SIZE_CONTENT);    /// 50
+    lv_obj_set_align(ui_volumeDown, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_volumeDown, LV_OBJ_FLAG_CLICKABLE);     /// Flags
+    lv_obj_remove_flag(ui_volumeDown, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_volumeSlider = lv_slider_create(ui_volumeContainer);
     lv_slider_set_value(ui_volumeSlider, 50, LV_ANIM_OFF);
@@ -280,77 +420,31 @@ void ui_audioScreen_screen_init(void)
     lv_obj_set_width(ui_volumeSlider, lv_pct(50));
     lv_obj_set_align(ui_volumeSlider, LV_ALIGN_CENTER);
     lv_obj_remove_flag(ui_volumeSlider, LV_OBJ_FLAG_GESTURE_BUBBLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_volumeSlider, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_volumeSlider, 180, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_set_style_bg_color(ui_volumeSlider, lv_color_hex(0xB8580A), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_volumeSlider, 255, LV_PART_INDICATOR | LV_STATE_DEFAULT);
+
+    lv_obj_set_style_bg_color(ui_volumeSlider, lv_color_hex(0xB8580A), LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_volumeSlider, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
 
     //Compensating for LVGL9.1 draw crash with bar/slider max value when top-padding is nonzero and right-padding is 0
     if(lv_obj_get_style_pad_top(ui_volumeSlider, LV_PART_MAIN) > 0) lv_obj_set_style_pad_right(ui_volumeSlider,
                                                                                                    lv_obj_get_style_pad_right(ui_volumeSlider, LV_PART_MAIN) + 1, LV_PART_MAIN);
-    ui_outAudioBtnCtn = lv_obj_create(ui_outAudioContainer);
-    lv_obj_remove_style_all(ui_outAudioBtnCtn);
-    lv_obj_set_width(ui_outAudioBtnCtn, lv_pct(100));
-    lv_obj_set_flex_grow(ui_outAudioBtnCtn, 1);
-    lv_obj_set_align(ui_outAudioBtnCtn, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_outAudioBtnCtn, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_outAudioBtnCtn, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_outAudioBtnCtn, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_pad_row(ui_outAudioBtnCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_column(ui_outAudioBtnCtn, 20, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_selectFileAudioBtn = lv_button_create(ui_outAudioBtnCtn);
-    lv_obj_set_height(ui_selectFileAudioBtn, 50);
-    lv_obj_set_width(ui_selectFileAudioBtn, lv_pct(30));
-    lv_obj_set_align(ui_selectFileAudioBtn, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_selectFileAudioBtn, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_remove_flag(ui_selectFileAudioBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    ui_object_set_themeable_style_property(ui_selectFileAudioBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
-                                           _ui_theme_color_BTN);
-    ui_object_set_themeable_style_property(ui_selectFileAudioBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
-                                           _ui_theme_alpha_BTN);
-
-    ui_selectFileAudioBtnLabel = lv_label_create(ui_selectFileAudioBtn);
-    lv_obj_set_width(ui_selectFileAudioBtnLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_selectFileAudioBtnLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_selectFileAudioBtnLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_selectFileAudioBtnLabel, "SELECT FILE");
-
-    ui_playStopAudioBtn = lv_button_create(ui_outAudioBtnCtn);
-    lv_obj_set_height(ui_playStopAudioBtn, 50);
-    lv_obj_set_width(ui_playStopAudioBtn, lv_pct(30));
-    lv_obj_set_align(ui_playStopAudioBtn, LV_ALIGN_CENTER);
-    lv_obj_add_state(ui_playStopAudioBtn, LV_STATE_DISABLED);       /// States
-    lv_obj_add_flag(ui_playStopAudioBtn, LV_OBJ_FLAG_CHECKABLE | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_remove_flag(ui_playStopAudioBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_playStopAudioBtn, lv_color_hex(0x34C759), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_playStopAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_playStopAudioBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_CHECKED);
-    lv_obj_set_style_bg_opa(ui_playStopAudioBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
-
-    ui_playStopAudioBtnLabel = lv_label_create(ui_playStopAudioBtn);
-    lv_obj_set_width(ui_playStopAudioBtnLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_playStopAudioBtnLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_playStopAudioBtnLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_playStopAudioBtnLabel, "PLAY");
-
-    ui_resetAudioBtn = lv_button_create(ui_outAudioBtnCtn);
-    lv_obj_set_height(ui_resetAudioBtn, 50);
-    lv_obj_set_width(ui_resetAudioBtn, lv_pct(30));
-    lv_obj_set_align(ui_resetAudioBtn, LV_ALIGN_CENTER);
-    lv_obj_add_state(ui_resetAudioBtn, LV_STATE_DISABLED);       /// States
-    lv_obj_add_flag(ui_resetAudioBtn, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_remove_flag(ui_resetAudioBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_resetAudioBtn, lv_color_hex(0xF57305), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_resetAudioBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_resetAudioBtnLabel = lv_label_create(ui_resetAudioBtn);
-    lv_obj_set_width(ui_resetAudioBtnLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_resetAudioBtnLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_resetAudioBtnLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_resetAudioBtnLabel, "RESET");
+    ui_volumeUp = lv_image_create(ui_volumeContainer);
+    lv_image_set_src(ui_volumeUp, &ui_img_volume_up_png);
+    lv_obj_set_width(ui_volumeUp, LV_SIZE_CONTENT);   /// 50
+    lv_obj_set_height(ui_volumeUp, LV_SIZE_CONTENT);    /// 50
+    lv_obj_set_align(ui_volumeUp, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_volumeUp, LV_OBJ_FLAG_CLICKABLE);     /// Flags
+    lv_obj_remove_flag(ui_volumeUp, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     lv_obj_add_event_cb(ui_recordMicBtn, ui_event_recordMicBtn, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_volumeSlider, ui_event_volumeSlider, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_selectFileAudioBtn, ui_event_selectFileAudioBtn, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_playStopAudioBtn, ui_event_playStopAudioBtn, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_resetAudioBtn, ui_event_resetAudioBtn, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_volumeSlider, ui_event_volumeSlider, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_audioScreen, ui_event_audioScreen, LV_EVENT_ALL, NULL);
 
 }
@@ -365,21 +459,19 @@ void ui_audioScreen_screen_destroy(void)
     ui_bodyAudio = NULL;
     ui_micContainer = NULL;
     ui_micContainerLabel = NULL;
-    ui_micLed = NULL;
     ui_recordMicBtn = NULL;
-    ui_recordmicBtnLabel = NULL;
+    ui_micDescriptionCtn = NULL;
+    ui_micDescription = NULL;
     ui_outAudioContainer = NULL;
     ui_outAudioContainerLabel = NULL;
     ui_outAudioLed = NULL;
-    ui_volumeContainer = NULL;
-    ui_volumeLabel = NULL;
-    ui_volumeSlider = NULL;
     ui_outAudioBtnCtn = NULL;
     ui_selectFileAudioBtn = NULL;
-    ui_selectFileAudioBtnLabel = NULL;
     ui_playStopAudioBtn = NULL;
-    ui_playStopAudioBtnLabel = NULL;
     ui_resetAudioBtn = NULL;
-    ui_resetAudioBtnLabel = NULL;
+    ui_volumeContainer = NULL;
+    ui_volumeDown = NULL;
+    ui_volumeSlider = NULL;
+    ui_volumeUp = NULL;
 
 }
