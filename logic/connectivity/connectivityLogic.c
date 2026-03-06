@@ -233,6 +233,7 @@ void msgbox_event_cb(lv_event_t *e)
             g_dbus_method_invocation_return_value(pending_bt_invocation, NULL);
             ui_log_async("Pairing ACCETTATO.");
             INFO_PRINT("Pairing ACCETTATO.\n");
+            bth_user_confirmed_pairing();   // Informo che l'utente ha accettato il pairing
         } 
         else 
         {

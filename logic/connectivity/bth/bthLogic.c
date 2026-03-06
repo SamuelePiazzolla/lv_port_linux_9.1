@@ -282,6 +282,11 @@ gboolean find_first_adapter()
     return FALSE;
 }
 
+void bth_user_confirmed_pairing(void)
+{
+    bt_stop_pairing_timer();
+}
+
 /* -------------------------------------------------------------------------
  * CONNECT / DISCONNECT 
  * ------------------------------------------------------------------------- */
@@ -302,6 +307,11 @@ void handle_agent_method_call(GDBusConnection *conn, const gchar *sender, const 
 
         // La funzione di creazione della MessageBox è async-safe, quindi possiamo chiamarla direttamente da qui passando i dati necessari tramite la struct
         lv_async_call(ui_show_pairing_popup_wrapper, data);
+
+        // Faccio partire il timer entro il quale sui entrambi i dispositivi bisogna confermare il pairing
+        bt_stop_pairing_timer();  // sicurezza: ferma eventuale timer precedente
+        bt_pairing_timer = lv_timer_create(bt_pairing_timeout_cb, BT_PAIRING_UI_TIMEOUT_MS, NULL);
+        lv_timer_set_repeat_count(bt_pairing_timer, 1);
     } 
     else if (g_strcmp0(method, "AuthorizeService") == 0) 
     {
@@ -548,8 +558,8 @@ int bth_connect_to(NetDevice device)
         );
 
         // Avviamo il timer UI, il tempo max in cui ci aspettiamo che BlueZ chiami RequestConfirmation dopo Pair()
-        bt_pairing_timer = lv_timer_create(bt_pairing_timeout_cb, BT_PAIRING_UI_TIMEOUT_MS, NULL);
-        lv_timer_set_repeat_count(bt_pairing_timer, 1);
+        // bt_pairing_timer = lv_timer_create(bt_pairing_timeout_cb, BT_PAIRING_UI_TIMEOUT_MS, NULL);
+        // lv_timer_set_repeat_count(bt_pairing_timer, 1);
 
         // Aggiorno la logica per indicare che siamo in pairing 
         pairing_in_progress = TRUE;

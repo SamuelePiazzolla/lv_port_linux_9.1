@@ -16,5 +16,6 @@ void bth_clear_devices();                       // Pulisce l'array device bth
 int bth_get_device_count();                     // Restituisce il numero di device bth trovati
 int bth_connect_to(NetDevice device);           // (-1 Fail | 0 Success) Tenta di connettersi al dispositivo selezionato
 int bth_disconnect(NetDevice device);           // (-1 Fail | 0 Success | 1 Already Unpair) Disconnette dal dispositivo selezionato (se esisteva una connesisone)
+void bth_user_confirmed_pairing(void);          // Funzione chiamata quando l'utente ha confermato il pairing nella msgbox creata
 
 #endif
