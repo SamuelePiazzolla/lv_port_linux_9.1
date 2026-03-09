@@ -386,7 +386,7 @@ void createFilePicker(void)
     lv_obj_add_event_cb(btn_close, closeFilePicker, LV_EVENT_CLICKED, NULL);
     
     lv_obj_set_style_radius(btn_close, 100, 0); 
-    lv_obj_set_style_bg_color(btn_close, lv_color_hex(0xB8580A), 0); 
+    lv_obj_set_style_bg_color(btn_close, lv_color_white(), 0); 
     lv_obj_set_style_border_color(btn_close, lv_color_hex(0xB8580A), 0);
     lv_obj_set_style_border_width(btn_close, 2, 0);
     lv_obj_set_style_shadow_color(btn_close, lv_color_hex(0xB8580A), 0); 
