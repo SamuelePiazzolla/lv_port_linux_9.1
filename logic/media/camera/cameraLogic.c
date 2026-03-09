@@ -365,14 +365,14 @@ void createFilePicker(void)
                 lv_obj_set_user_data(btn, strdup(entry->d_name));
                 lv_obj_add_event_cb(btn, fileSelected, LV_EVENT_CLICKED, NULL);
                 lv_obj_set_style_radius(btn, 100, 0); 
-                lv_obj_set_style_bg_color(btn, lv_color_hex(0xB8580A), 0);
-                lv_obj_set_style_bg_opa(btn, 255, 0);
+                //lv_obj_set_style_bg_color(btn, lv_color_hex(0xB8580A), 0);
+                //lv_obj_set_style_bg_opa(btn, 255, 0);
                 lv_obj_set_style_border_color(btn, lv_color_hex(0xB8580A), 0);
                 lv_obj_set_style_border_width(btn, 2, 0);
-                lv_obj_set_style_border_side(btn, LV_BORDER_SIDE_FULL, 0);
+                lv_obj_set_style_border_side(btn, LV_BORDER_SIDE_BOTTOM, 0);
                 lv_obj_set_style_shadow_color(btn, lv_color_hex(0xB8580A), 0);
-                lv_obj_set_style_shadow_width(btn, 6, 0);
-                lv_obj_set_style_shadow_offset_y(btn, 3, 0);
+                //lv_obj_set_style_shadow_width(btn, 6, 0);
+                //lv_obj_set_style_shadow_offset_y(btn, 3, 0);
                 lv_obj_set_style_text_color(btn, lv_color_white(), 0);
                 lv_obj_set_style_text_font(btn, &lv_font_montserrat_18, 0);
             }
@@ -381,6 +381,7 @@ void createFilePicker(void)
     }
 
     // 4. Bottone Close
+    /*
     lv_obj_t * btn_close = lv_btn_create(cont);
     lv_obj_set_size(btn_close, 140, 45);
     lv_obj_add_event_cb(btn_close, closeFilePicker, LV_EVENT_CLICKED, NULL);
@@ -398,6 +399,8 @@ void createFilePicker(void)
     lv_obj_center(lbl_close);
     lv_obj_set_style_text_color(lbl_close, lv_color_hex(0x1C1C1E), 0);
     lv_obj_set_style_text_font(lbl_close, &lv_font_montserrat_18, 0);
+    */
+    
 }
 
 void closeFilePicker(lv_event_t * e)
