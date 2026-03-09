@@ -293,6 +293,10 @@ void ui_cameraScreen_screen_init(void)
     lv_obj_set_align(ui_videoModeSelectorDescriptionLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_videoModeSelectorDescriptionLabel,
                       "Premi su uno dei \ndue pulsanti per \nselezionare la sorgente");
+    ui_object_set_themeable_style_property(ui_videoModeSelectorDescriptionLabel, LV_PART_MAIN | LV_STATE_DEFAULT,
+                                           LV_STYLE_TEXT_COLOR, _ui_theme_color_TEXT);
+    ui_object_set_themeable_style_property(ui_videoModeSelectorDescriptionLabel, LV_PART_MAIN | LV_STATE_DEFAULT,
+                                           LV_STYLE_TEXT_OPA, _ui_theme_alpha_TEXT);
 
     ui_panelCamera = lv_obj_create(ui_cameraContainer);
     lv_obj_set_height(ui_panelCamera, lv_pct(100));

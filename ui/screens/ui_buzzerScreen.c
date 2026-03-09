@@ -157,6 +157,10 @@ void ui_buzzerScreen_screen_init(void)
     lv_obj_set_height(ui_descriptionBuzzerLabel, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_descriptionBuzzerLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_descriptionBuzzerLabel, "Premi i pulsanti fisici per cambiare il tono del buzzer");
+    ui_object_set_themeable_style_property(ui_descriptionBuzzerLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
+                                           _ui_theme_color_TEXT);
+    ui_object_set_themeable_style_property(ui_descriptionBuzzerLabel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
+                                           _ui_theme_alpha_TEXT);
 
     lv_obj_add_event_cb(ui_buzzerBtn, ui_event_buzzerBtn, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_buzzerScreen, ui_event_buzzerScreen, LV_EVENT_ALL, NULL);

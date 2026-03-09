@@ -213,6 +213,10 @@ void ui_audioScreen_screen_init(void)
     lv_obj_set_height(ui_micDescription, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_micDescription, LV_ALIGN_CENTER);
     lv_label_set_text(ui_micDescription, "Premi sul pulsante per cominciare/fermare la registrazione");
+    ui_object_set_themeable_style_property(ui_micDescription, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
+                                           _ui_theme_color_TEXT);
+    ui_object_set_themeable_style_property(ui_micDescription, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
+                                           _ui_theme_alpha_TEXT);
 
     ui_outAudioContainer = lv_obj_create(ui_bodyAudio);
     lv_obj_set_width(ui_outAudioContainer, lv_pct(50));
