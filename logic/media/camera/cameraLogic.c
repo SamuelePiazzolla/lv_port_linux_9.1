@@ -280,7 +280,7 @@ void createFilePicker(void)
     lv_obj_set_style_pad_row(cont, 15, 0); // Distanza tra gli elementi
     lv_obj_set_style_pad_all(cont, 20, 0); // Padding interno dai bordi
     
-    // --- STILE CONTAINER POP-UP (Invariato) ---
+    // --- STILE CONTAINER POP-UP ---
     lv_obj_set_style_radius(cont, 16, 0);
     lv_obj_set_style_bg_color(cont, lv_color_hex(0xFDF3E7), 0);
     lv_obj_set_style_border_color(cont, lv_color_hex(0xB8580A), 0);
