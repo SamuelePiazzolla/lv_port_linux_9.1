@@ -319,7 +319,7 @@ void createFilePicker(void)
     lv_obj_set_style_border_color(desc_ctn, lv_color_hex(0xB8580A), 0);
     lv_obj_set_style_border_width(2, 0);
     lv_obj_set_style_shadow_color(desc_ctn, lv_color_hex(0xA0A0A8), 0);
-    lv_obj_set_style_shadow_width(8, 0);
+    lv_obj_set_style_shadow_width(desc_ctn, 8, 0);
     lv_obj_set_style_shadow_offset_y(desc_ctn, 4, 0);
     lv_obj_set_style_pad_all(desc_ctn, 0, 0);
 
@@ -358,6 +358,9 @@ void createFilePicker(void)
                 lv_obj_set_style_bg_color(btn, lv_color_white(), 0);
                 lv_obj_set_style_border_color(btn, lv_color_hex(0xB8580A), 0);
                 lv_obj_set_style_border_width(btn, 2, 0);
+                lv_obj_set_style_shadow_color(btn, lv_color_hex(0xB8580A), 0);
+                lv_obj_set_style_shadow_width(btn, 8, 0);
+                lv_obj_set_style_shadow_offset_y(btn, 4, 0);
                 lv_obj_set_style_text_color(btn, lv_color_hex(0x1C1C1E), 0); 
                 lv_obj_set_style_margin_bottom(btn, 8, 0);
             }
