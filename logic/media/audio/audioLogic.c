@@ -279,6 +279,7 @@ static void audio_reset(void)
 
 static void createAudioFilePicker(void)
 {
+    // Overlay scuro fullscreen
     audioFilePicker = lv_obj_create(lv_layer_top());
     lv_obj_set_size(audioFilePicker, lv_pct(100), lv_pct(100));
     lv_obj_set_style_bg_color(audioFilePicker, lv_color_black(), 0);
@@ -286,23 +287,91 @@ static void createAudioFilePicker(void)
     lv_obj_remove_flag(audioFilePicker, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_add_event_cb(audioFilePicker, overlay_clicked_audio, LV_EVENT_CLICKED, NULL);
 
-    lv_obj_t *cont = lv_obj_create(audioFilePicker);
+    // Container centrale pop-up
+    lv_obj_t * cont = lv_obj_create(audioFilePicker);
     lv_obj_set_size(cont, 640, 480);
     lv_obj_center(cont);
-    lv_obj_set_style_radius(cont, 10, 0);
-    lv_obj_set_style_bg_color(cont, lv_color_white(), 0);
-    lv_obj_set_style_pad_all(cont, 10, 0);
+    
+    // --- ATTIVAZIONE FLEX ---
+    lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_COLUMN); 
+    lv_obj_set_flex_align(cont, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_set_style_pad_row(cont, 15, 0); // Distanza tra gli elementi
+    lv_obj_set_style_pad_all(cont, 20, 0); // Padding interno dai bordi
+    
+    // --- STILE CONTAINER POP-UP ---
+    lv_obj_set_style_radius(cont, 16, 0);
+    lv_obj_set_style_bg_color(cont, lv_color_hex(0xF2F2F7), 0);
+    lv_obj_set_style_border_color(cont, lv_color_hex(0xB8580A), 0);
+    lv_obj_set_style_border_width(cont, 2, 0);
+    lv_obj_set_style_shadow_color(cont, lv_color_hex(0xA0A0A8), 0);
+    lv_obj_set_style_shadow_width(cont, 8, 0);
+    lv_obj_set_style_shadow_offset_y(cont, 4, 0);
+    
+    lv_obj_set_scrollbar_mode(cont, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_remove_flag(cont, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_add_event_cb(cont, block_event_bubble_audio, LV_EVENT_ALL, NULL);
 
-    lv_obj_t *title = lv_label_create(cont);
+    // 1. Header
+    lv_obj_t * header = lv_obj_create(cont);
+    lv_obj_set_size(header, lv_pct(100), 50);
+    lv_obj_set_style_bg_opa(header, 0, 0); 
+    lv_obj_set_style_border_width(header, 0, 0);
+    lv_obj_set_style_pad_all(header, 0, 0);
+    lv_obj_remove_flag(header, LV_OBJ_FLAG_SCROLLABLE);
+
+    lv_obj_t * title = lv_label_create(header);
     lv_label_set_text(title, "LOAD AUDIO");
+    lv_obj_set_style_text_align(title, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_set_size(title, lv_pct(80), LV_SIZE_CONTENT);
+    lv_obj_align(title, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_text_color(title, lv_color_hex(0xB8580A), 0);
     lv_obj_set_style_text_font(title, &lv_font_montserrat_30, 0);
-    lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 10);
+    lv_obj_set_style_border_color(title, lv_color_hex(0xB8580A), 0);
+    lv_obj_set_style_border_width(title, 1, 0); 
+    lv_obj_set_style_border_side(title, LV_BORDER_SIDE_BOTTOM, 0);
+    lv_obj_set_style_pad_bottom(title, 5, 0);
 
-    lv_obj_t *list = lv_list_create(cont);
-    lv_obj_set_size(list, 620, 380);
-    lv_obj_align(list, LV_ALIGN_BOTTOM_MID, 0, -10);
+    // 2. Pannello Descrizione Pill
+    lv_obj_t * desc_ctn = lv_obj_create(cont);
+    lv_obj_set_size(desc_ctn, lv_pct(90), 45); 
+    lv_obj_remove_flag(desc_ctn, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_radius(desc_ctn, 100, 0);
+    lv_obj_set_style_bg_color(desc_ctn, lv_color_white(), 0);
+    lv_obj_set_style_border_color(desc_ctn, lv_color_hex(0xB8580A), 0);
+    lv_obj_set_style_border_width(desc_ctn, 2, 0);
+    lv_obj_set_style_shadow_color(desc_ctn, lv_color_hex(0xA0A0A8), 0);
+    lv_obj_set_style_shadow_width(desc_ctn, 8, 0);
+    lv_obj_set_style_shadow_offset_y(desc_ctn, 4, 0);
+    lv_obj_set_style_pad_all(desc_ctn, 0, 0);
 
+    lv_obj_t * desc_label = lv_label_create(desc_ctn);
+    lv_label_set_text(desc_label, "Seleziona il file da caricare");
+    lv_obj_center(desc_label);
+    lv_obj_set_style_text_color(desc_label, lv_color_hex(0x1C1C1E), 0);
+    lv_obj_set_style_text_font(desc_label, &lv_font_montserrat_18, 0);
+
+    // 3. Lista scrollabile dei file
+    lv_obj_t * list = lv_list_create(cont);
+    lv_obj_set_width(list, lv_pct(90)); 
+    lv_obj_set_flex_grow(list, 1);
+    
+    lv_obj_set_style_bg_color(list, lv_color_white(), 0);
+    lv_obj_set_style_border_color(list, lv_color_hex(0xB8580A), 0);
+    lv_obj_set_style_border_width(list, 2, 0);
+    lv_obj_set_style_shadow_color(list, lv_color_hex(0xA0A0A8), 0);
+    lv_obj_set_style_shadow_width(list, 8, 0);
+    lv_obj_set_style_shadow_offset_y(list, 4, 0);
+
+    // Distanza tra bordo superiore e inferiore
+    lv_obj_set_style_pad_top(list, 3, 0);    
+    lv_obj_set_style_pad_bottom(list, 3, 0);
+
+    // Scrollbar
+    lv_obj_set_scroll_dir(list, LV_DIR_VER);
+    lv_obj_set_scrollbar_mode(list, LV_SCROLLBAR_MODE_AUTO);
+    lv_obj_set_style_pad_row(list, 10, 0);
+
+    // Lettura file
     DIR *dir = opendir(AUDIO_FOLDER_PATH);
     if (dir)
     {
@@ -323,10 +392,18 @@ static void createAudioFilePicker(void)
                 lv_obj_t *btn = lv_list_add_button(list, NULL, entry->d_name);
                 lv_obj_set_user_data(btn, name_copy);
                 lv_obj_add_event_cb(btn, audioFileSelected, LV_EVENT_CLICKED, NULL);
+                // Stile pulsanti
+                lv_obj_set_style_radius(btn, 0, 0);
+                lv_obj_set_style_border_color(btn, lv_color_hex(0xB8580A), 0);
+                lv_obj_set_style_border_width(btn, 2, 0);
+                lv_obj_set_style_border_side(btn, LV_BORDER_SIDE_BOTTOM, 0);
+                lv_obj_set_style_shadow_color(btn, lv_color_hex(0xB8580A), 0);
+                lv_obj_set_style_text_color(btn, lv_color_hex(0x1C1C1E), 0);
+                lv_obj_set_style_text_font(btn, &lv_font_montserrat_18, 0);
             }
         }
         closedir(dir);
-    }
+    }    
 }
 
 static void audioFileSelected(lv_event_t *e)
@@ -686,10 +763,6 @@ cleanup:
 
 static void audio_hw_init(void)
 {
-    // Tabella controlli da inizializzare
-    // { nome, valore, is_percent }
-    //   is_percent = 1  → il valore è percentuale del range del controllo
-    //   is_percent = 0  → il valore è assoluto (es. indice enum o switch)
     static const struct {
         const char *name;
         long        value;
