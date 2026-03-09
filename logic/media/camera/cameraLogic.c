@@ -303,6 +303,7 @@ void createFilePicker(void)
 
     lv_obj_t * title = lv_label_create(header);
     lv_label_set_text(title, "LOAD VIDEO");
+    lv_obj_set_style_text_align(title, LV_TEXT_ALIGN_CENTER, 0);
     lv_obj_set_size(title, lv_pct(80), LV_SIZE_CONTENT);
     lv_obj_align(title, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_text_color(title, lv_color_hex(0xB8580A), 0);
