@@ -276,14 +276,18 @@ void createFilePicker(void)
     
     // --- STILE CONTAINER POP-UP ---
     lv_obj_set_style_radius(cont, 16, 0);
-    lv_obj_set_style_bg_color(cont, lv_color_hex(0xFFFDF5), 0);
-    lv_obj_set_style_bg_opa(cont, 100, 0);
+    lv_obj_set_style_bg_color(cont, lv_color_hex(0xFDF3E7), 0);
     lv_obj_set_style_border_color(cont, lv_color_hex(0xB8580A), 0);
     lv_obj_set_style_border_width(cont, 2, 0);
     lv_obj_set_style_shadow_color(cont, lv_color_hex(0xA0A0A8), 0);
     lv_obj_set_style_shadow_width(cont, 8, 0);
     lv_obj_set_style_shadow_offset_y(cont, 4, 0);
     lv_obj_set_style_pad_all(cont, 10, 0);
+    
+    // BLOCCO SCROLL ORIZZONTALE SUL CONTAINER
+    lv_obj_set_scrollbar_mode(cont, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_remove_flag(cont, LV_OBJ_FLAG_SCROLLABLE);
+    
     lv_obj_add_event_cb(cont, block_event_bubble, LV_EVENT_ALL, NULL);  
 
     // Header
@@ -294,32 +298,28 @@ void createFilePicker(void)
     lv_obj_set_style_pad_all(header, 10, 0);
     lv_obj_remove_flag(header, LV_OBJ_FLAG_SCROLLABLE);
 
-    // Titolo (Arancione con bordo inferiore)
+    // Titolo
     lv_obj_t * title = lv_label_create(header);
     lv_label_set_text(title, "LOAD VIDEO");
     lv_obj_center(title);
-    
-    // --- STILE TITOLO ---
-    lv_obj_set_style_text_color(title, lv_color_hex(0xB8580A), 0); // Testo arancione
+    lv_obj_set_style_text_color(title, lv_color_hex(0xB8580A), 0);
     lv_obj_set_style_text_font(title, &lv_font_montserrat_30, 0);
-    lv_obj_set_style_border_color(title, lv_color_hex(0xB8580A), 0); // Bordo arancione
+    lv_obj_set_style_border_color(title, lv_color_hex(0xB8580A), 0);
     lv_obj_set_style_border_width(title, 1, 0);
-    lv_obj_set_style_border_side(title, LV_BORDER_SIDE_BOTTOM, 0); // Solo sotto
-    lv_obj_set_style_pad_bottom(title, 5, 0); // Spazio tra testo e bordo
+    lv_obj_set_style_border_side(title, LV_BORDER_SIDE_BOTTOM, 0);
+    lv_obj_set_style_pad_bottom(title, 5, 0);
 
-    // Pannello Descrizione Pill nel Pop-up
+    // Pannello Descrizione Pill
     lv_obj_t * desc_ctn = lv_obj_create(cont);
     lv_obj_set_size(desc_ctn, lv_pct(80), 40);
-    lv_obj_align(desc_ctn, LV_ALIGN_TOP_MID, 0, 60); // Sotto l'header
+    lv_obj_align(desc_ctn, LV_ALIGN_TOP_MID, 0, 60); 
     lv_obj_remove_flag(desc_ctn, LV_OBJ_FLAG_SCROLLABLE);
-
-    // Stile descrizione
-    lv_obj_set_style_radius(desc_ctn, 100, 0); // Forma Pill
+    lv_obj_set_style_radius(desc_ctn, 100, 0);
     lv_obj_set_style_bg_color(desc_ctn, lv_color_white(), 0);
     lv_obj_set_style_border_color(desc_ctn, lv_color_hex(0xB8580A), 0);
-    lv_obj_set_style_border_width(desc_ctn, 2, 0);
+    lv_obj_set_style_border_width(2, 0);
     lv_obj_set_style_shadow_color(desc_ctn, lv_color_hex(0xA0A0A8), 0);
-    lv_obj_set_style_shadow_width(desc_ctn, 8, 0);
+    lv_obj_set_style_shadow_width(8, 0);
     lv_obj_set_style_shadow_offset_y(desc_ctn, 4, 0);
     lv_obj_set_style_pad_all(desc_ctn, 0, 0);
 
@@ -331,62 +331,47 @@ void createFilePicker(void)
 
     // Lista scrollabile dei file
     lv_obj_t * list = lv_list_create(cont);
-    lv_obj_set_size(list, 620, 360); 
-    lv_obj_align(list, LV_ALIGN_BOTTOM_MID, 0, -40); // Faccio spazio al tasto close
-    lv_obj_set_style_pad_all(list, 5, 0);
+    lv_obj_set_size(list, 620, 310);
+    lv_obj_align(list, LV_ALIGN_BOTTOM_MID, 0, -50); 
+    lv_obj_set_style_pad_all(list, 10, 0);
     lv_obj_set_style_bg_color(list, lv_color_white(), 0);
     lv_obj_set_style_border_color(list, lv_color_hex(0xB8580A), 0);
     lv_obj_set_style_border_width(list, 2, 0);
-    lv_obj_set_style_shadow_color(list, lv_color_hex(0xA0A0A8), 0);
-    lv_obj_set_style_shadow_width(list, 8, 0);
-    lv_obj_set_style_shadow_offset_y(list, 4, 0);
+    
+    // GESTIONE SCROLL LISTA: Solo verticale
+    lv_obj_set_scroll_dir(list, LV_DIR_VER);
+    lv_obj_set_scrollbar_mode(list, LV_SCROLLBAR_MODE_AUTO);
 
-    // Leggi i file dalla cartella
+    // Lettura file (Logica invariata)
     DIR *dir = opendir(VIDEO_FOLDER_PATH);
-    if(dir) 
-    {
+    if(dir) {
         struct dirent *entry;
-        while((entry = readdir(dir)) != NULL) 
-        {
-            if(strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
-                continue;
-
+        while((entry = readdir(dir)) != NULL) {
+            if(strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) continue;
             const char * ext = strrchr(entry->d_name, '.');
-            if(ext && strcmp(ext, ".raw") == 0)
-            {
+            if(ext && strcmp(ext, ".raw") == 0) {
                 lv_obj_t * btn = lv_list_add_button(list, NULL, entry->d_name);
                 lv_obj_set_user_data(btn, strdup(entry->d_name));
                 lv_obj_add_event_cb(btn, fileSelected, LV_EVENT_CLICKED, NULL);
                 
-                // --- STILE PULSANTI FILE ---
                 lv_obj_set_style_radius(btn, 100, 0); 
                 lv_obj_set_style_bg_color(btn, lv_color_white(), 0);
                 lv_obj_set_style_border_color(btn, lv_color_hex(0xB8580A), 0);
                 lv_obj_set_style_border_width(btn, 2, 0);
-                lv_obj_set_style_shadow_color(btn, lv_color_hex(0xB8580A), 0); 
-                lv_obj_set_style_shadow_width(btn, 6, 0);
-                lv_obj_set_style_shadow_offset_y(btn, 2, 0);
                 lv_obj_set_style_text_color(btn, lv_color_hex(0x1C1C1E), 0); 
-                lv_obj_set_style_margin_bottom(btn, 10, 0); // Spazio tra un pulsante e l'altro
+                lv_obj_set_style_margin_bottom(btn, 8, 0);
             }
         }
         closedir(dir);
-    } else 
-    {
-        ERROR_PRINT("Error: unable to open directory %s\n", VIDEO_FOLDER_PATH);
     }
 
     // Bottone Close
     lv_obj_t * btn_close = lv_btn_create(cont);
     lv_obj_set_size(btn_close, 120, 40);
-    lv_obj_align(btn_close, LV_ALIGN_BOTTOM_MID, 0, 0); // Centrato in basso
+    lv_obj_align(btn_close, LV_ALIGN_BOTTOM_MID, 0, 0); 
     lv_obj_add_event_cb(btn_close, closeFilePicker, LV_EVENT_CLICKED, NULL);
-
-    // --- STILE PULSANTE CLOSE ---
     lv_obj_set_style_radius(btn_close, 100, 0); 
     lv_obj_set_style_bg_color(btn_close, lv_color_hex(0xB8580A), 0); 
-    lv_obj_set_style_border_color(btn_close, lv_color_hex(0xB8580A), 0); 
-    lv_obj_set_style_border_width(btn_close, 2, 0);
     lv_obj_set_style_shadow_color(btn_close, lv_color_hex(0xB8580A), 0); 
     lv_obj_set_style_shadow_width(btn_close, 8, 0);
     lv_obj_set_style_shadow_offset_y(btn_close, 4, 0);
@@ -394,19 +379,7 @@ void createFilePicker(void)
     lv_obj_t * lbl_close = lv_label_create(btn_close);
     lv_label_set_text(lbl_close, "Close");
     lv_obj_center(lbl_close);
-    lv_obj_set_style_text_color(lbl_close, lv_color_hex(0xFFFFFF), 0); // Testo bianco
-
-    // Check di sicurezza
-    if(filePicker != NULL && cont != NULL && title != NULL && btn_close != NULL && lbl_close != NULL)
-    {
-        DEBUG_PRINT("Creazione pop-up avvenuta con successo\n");
-    }
-    else
-    {
-        lv_obj_add_state(ui_playCameraBtn, LV_STATE_DISABLED);
-        lv_obj_add_state(ui_resetCameraBtn, LV_STATE_DISABLED);
-        ERROR_PRINT("Error: errore nella creazione del pop-up\n");
-    }
+    lv_obj_set_style_text_color(lbl_close, lv_color_hex(0xFFFFFF), 0);
 }
 void closeFilePicker(lv_event_t * e)
 {
