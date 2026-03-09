@@ -364,7 +364,7 @@ void createFilePicker(void)
                 lv_obj_set_user_data(btn, strdup(entry->d_name));
                 lv_obj_add_event_cb(btn, fileSelected, LV_EVENT_CLICKED, NULL);
                 lv_obj_set_style_radius(btn, 100, 0); 
-                lv_obj_set_style_bg_color(btn, lv_color_hex(0xFDF3E7), 0);
+                lv_obj_set_style_bg_color(btn, lv_color_hex(0xB8580A), 0);
                 lv_obj_set_style_bg_opa(btn, 255, 0);
                 lv_obj_set_style_border_color(btn, lv_color_hex(0xB8580A), 0);
                 lv_obj_set_style_border_width(btn, 2, 0);
@@ -372,7 +372,7 @@ void createFilePicker(void)
                 lv_obj_set_style_shadow_color(btn, lv_color_hex(0xB8580A), 0);
                 lv_obj_set_style_shadow_width(btn, 6, 0);
                 lv_obj_set_style_shadow_offset_y(btn, 3, 0);
-                lv_obj_set_style_text_color(btn, lv_color_hex(0x1C1C1E), 0);
+                lv_obj_set_style_text_color(btn, lv_color_white(), 0);
                 lv_obj_set_style_text_font(btn, &lv_font_montserrat_18, 0);
             }
         }
