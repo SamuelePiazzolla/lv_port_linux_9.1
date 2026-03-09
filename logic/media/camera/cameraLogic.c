@@ -396,7 +396,7 @@ void createFilePicker(void)
     lv_obj_t * lbl_close = lv_label_create(btn_close);
     lv_label_set_text(lbl_close, "CLOSE");
     lv_obj_center(lbl_close);
-    lv_obj_set_style_text_color(lbl_close, lv_color_white(), 0);
+    lv_obj_set_style_text_color(lbl_close, lv_color_hex(0x1C1C1E), 0);
     lv_obj_set_style_text_font(lbl_close, &lv_font_montserrat_18, 0);
 }
 
