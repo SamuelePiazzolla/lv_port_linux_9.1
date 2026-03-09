@@ -261,40 +261,85 @@ void readVideoFile(const char * videoPath, int delayMs)
 //GESTIONE FILE PICKER
 void createFilePicker(void)
 {
-    //Overlay scuro fullscreen
-    filePicker = lv_obj_create(lv_layer_top());             //Creo il layer scuro in cui andrò ad inserire il popup
+    // Overlay scuro fullscreen
+    filePicker = lv_obj_create(lv_layer_top());             
     lv_obj_set_size(filePicker, lv_pct(100), lv_pct(100));  
     lv_obj_set_style_bg_color(filePicker, lv_color_black(), 0);
-    lv_obj_set_style_bg_opa(filePicker, LV_OPA_70, 0);      //Semi trasparente
+    lv_obj_set_style_bg_opa(filePicker, LV_OPA_70, 0);      
     lv_obj_remove_flag(filePicker, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_add_event_cb(filePicker, overlay_clicked, LV_EVENT_CLICKED, NULL);   //Se premo sul layout sotto al pop chiudo il popup
+    lv_obj_add_event_cb(filePicker, overlay_clicked, LV_EVENT_CLICKED, NULL);   
 
-    //Container centrale
-    lv_obj_t * cont = lv_obj_create(filePicker);        //Creo il contenitore che rappresenterà il mio file picker all'interno del layer scurp
+    // Container centrale pop-up
+    lv_obj_t * cont = lv_obj_create(filePicker);        
     lv_obj_set_size(cont, 640, 480);
     lv_obj_center(cont);
-    lv_obj_set_style_radius(cont, 10, 0);
-    lv_obj_set_style_bg_color(cont, lv_color_white(), 0);
+    
+    // --- STILE CONTAINER POP-UP ---
+    lv_obj_set_style_radius(cont, 16, 0);
+    lv_obj_set_style_bg_color(cont, lv_color_hex(0xFFFDF5), 0);
+    lv_obj_set_style_bg_opa(cont, 100, 0);
+    lv_obj_set_style_border_color(cont, lv_color_hex(0xB8580A), 0);
+    lv_obj_set_style_border_width(cont, 2, 0);
+    lv_obj_set_style_shadow_color(cont, lv_color_hex(0xA0A0A8), 0);
+    lv_obj_set_style_shadow_width(cont, 8, 0);
+    lv_obj_set_style_shadow_offset_y(cont, 4, 0);
     lv_obj_set_style_pad_all(cont, 10, 0);
-    lv_obj_add_event_cb(cont, block_event_bubble, LV_EVENT_ALL, NULL);  //Evito che i clicchi effettuati sul pop-up si propaghino ai genitori
+    lv_obj_add_event_cb(cont, block_event_bubble, LV_EVENT_ALL, NULL);  
 
+    // Header
     lv_obj_t * header = lv_obj_create(cont);
     lv_obj_set_size(header, lv_pct(100), 50);
-    lv_obj_set_style_bg_color(header, lv_color_hex(0x14191E), 0);
+    lv_obj_set_style_bg_opa(header, 0, 0); 
+    lv_obj_set_style_border_width(header, 0, 0);
     lv_obj_set_style_pad_all(header, 10, 0);
     lv_obj_remove_flag(header, LV_OBJ_FLAG_SCROLLABLE);
 
+    // Titolo (Arancione con bordo inferiore)
     lv_obj_t * title = lv_label_create(header);
     lv_label_set_text(title, "LOAD VIDEO");
-    lv_obj_set_style_text_color(title, lv_color_hex3(0xEDEDED), 0);
-    lv_obj_set_style_text_font(title, &lv_font_montserrat_30, 0);
     lv_obj_center(title);
+    
+    // --- STILE TITOLO ---
+    lv_obj_set_style_text_color(title, lv_color_hex(0xB8580A), 0); // Testo arancione
+    lv_obj_set_style_text_font(title, &lv_font_montserrat_30, 0);
+    lv_obj_set_style_border_color(title, lv_color_hex(0xB8580A), 0); // Bordo arancione
+    lv_obj_set_style_border_width(title, 1, 0);
+    lv_obj_set_style_border_side(title, LV_BORDER_SIDE_BOTTOM, 0); // Solo sotto
+    lv_obj_set_style_pad_bottom(title, 5, 0); // Spazio tra testo e bordo
+
+    // Pannello Descrizione Pill nel Pop-up
+    lv_obj_t * desc_ctn = lv_obj_create(cont);
+    lv_obj_set_size(desc_ctn, lv_pct(80), 40);
+    lv_obj_align(desc_ctn, LV_ALIGN_TOP_MID, 0, 60); // Sotto l'header
+    lv_obj_remove_flag(desc_ctn, LV_OBJ_FLAG_SCROLLABLE);
+
+    // Stile descrizione
+    lv_obj_set_style_radius(desc_ctn, 100, 0); // Forma Pill
+    lv_obj_set_style_bg_color(desc_ctn, lv_color_white(), 0);
+    lv_obj_set_style_border_color(desc_ctn, lv_color_hex(0xB8580A), 0);
+    lv_obj_set_style_border_width(desc_ctn, 2, 0);
+    lv_obj_set_style_shadow_color(desc_ctn, lv_color_hex(0xA0A0A8), 0);
+    lv_obj_set_style_shadow_width(desc_ctn, 8, 0);
+    lv_obj_set_style_shadow_offset_y(desc_ctn, 4, 0);
+    lv_obj_set_style_pad_all(desc_ctn, 0, 0);
+
+    lv_obj_t * desc_label = lv_label_create(desc_ctn);
+    lv_label_set_text(desc_label, "Seleziona il file da caricare");
+    lv_obj_center(desc_label);
+    lv_obj_set_style_text_color(desc_label, lv_color_hex(0xB8580A), 0);
+    lv_obj_set_style_text_font(desc_label, &lv_font_montserrat_18, 0);
 
     // Lista scrollabile dei file
     lv_obj_t * list = lv_list_create(cont);
-    lv_obj_set_size(list, 620, 380);
-    lv_obj_align(list, LV_ALIGN_BOTTOM_MID, 0, 10);
+    lv_obj_set_size(list, 620, 360); 
+    lv_obj_align(list, LV_ALIGN_BOTTOM_MID, 0, -40); // Faccio spazio al tasto close
     lv_obj_set_style_pad_all(list, 5, 0);
+    lv_obj_set_style_bg_color(list, lv_color_white(), 0);
+    lv_obj_set_style_border_color(list, lv_color_hex(0xB8580A), 0);
+    lv_obj_set_style_border_width(list, 2, 0);
+    lv_obj_set_style_shadow_color(list, lv_color_hex(0xA0A0A8), 0);
+    lv_obj_set_style_shadow_width(list, 8, 0);
+    lv_obj_set_style_shadow_offset_y(list, 4, 0);
 
     // Leggi i file dalla cartella
     DIR *dir = opendir(VIDEO_FOLDER_PATH);
@@ -303,17 +348,26 @@ void createFilePicker(void)
         struct dirent *entry;
         while((entry = readdir(dir)) != NULL) 
         {
-            //Escludo . e .. 
             if(strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
                 continue;
 
-            // Solo file RAW
             const char * ext = strrchr(entry->d_name, '.');
             if(ext && strcmp(ext, ".raw") == 0)
             {
                 lv_obj_t * btn = lv_list_add_button(list, NULL, entry->d_name);
                 lv_obj_set_user_data(btn, strdup(entry->d_name));
                 lv_obj_add_event_cb(btn, fileSelected, LV_EVENT_CLICKED, NULL);
+                
+                // --- STILE PULSANTI FILE ---
+                lv_obj_set_style_radius(btn, 100, 0); 
+                lv_obj_set_style_bg_color(btn, lv_color_white(), 0);
+                lv_obj_set_style_border_color(btn, lv_color_hex(0xB8580A), 0);
+                lv_obj_set_style_border_width(btn, 2, 0);
+                lv_obj_set_style_shadow_color(btn, lv_color_hex(0xB8580A), 0); 
+                lv_obj_set_style_shadow_width(btn, 6, 0);
+                lv_obj_set_style_shadow_offset_y(btn, 2, 0);
+                lv_obj_set_style_text_color(btn, lv_color_hex(0x1C1C1E), 0); 
+                lv_obj_set_style_margin_bottom(btn, 10, 0); // Spazio tra un pulsante e l'altro
             }
         }
         closedir(dir);
@@ -322,32 +376,38 @@ void createFilePicker(void)
         ERROR_PRINT("Error: unable to open directory %s\n", VIDEO_FOLDER_PATH);
     }
 
-    // Bottone Close (temporaneo)
+    // Bottone Close
     lv_obj_t * btn_close = lv_btn_create(cont);
-    lv_obj_set_size(btn_close, 100, 40);
-    lv_obj_align(btn_close, LV_ALIGN_BOTTOM_RIGHT, -10, -10);
+    lv_obj_set_size(btn_close, 120, 40);
+    lv_obj_align(btn_close, LV_ALIGN_BOTTOM_MID, 0, 0); // Centrato in basso
     lv_obj_add_event_cb(btn_close, closeFilePicker, LV_EVENT_CLICKED, NULL);
+
+    // --- STILE PULSANTE CLOSE ---
+    lv_obj_set_style_radius(btn_close, 100, 0); 
+    lv_obj_set_style_bg_color(btn_close, lv_color_hex(0xB8580A), 0); 
+    lv_obj_set_style_border_color(btn_close, lv_color_hex(0xB8580A), 0); 
+    lv_obj_set_style_border_width(btn_close, 2, 0);
+    lv_obj_set_style_shadow_color(btn_close, lv_color_hex(0xB8580A), 0); 
+    lv_obj_set_style_shadow_width(btn_close, 8, 0);
+    lv_obj_set_style_shadow_offset_y(btn_close, 4, 0);
 
     lv_obj_t * lbl_close = lv_label_create(btn_close);
     lv_label_set_text(lbl_close, "Close");
     lv_obj_center(lbl_close);
+    lv_obj_set_style_text_color(lbl_close, lv_color_hex(0xFFFFFF), 0); // Testo bianco
 
-    //Se è andato tutto bene attivo i bottoni altrimenti il tengo disattivati
+    // Check di sicurezza
     if(filePicker != NULL && cont != NULL && title != NULL && btn_close != NULL && lbl_close != NULL)
     {
         DEBUG_PRINT("Creazione pop-up avvenuta con successo\n");
     }
     else
     {
-        //Disattiva i pulsanti per gestione video
         lv_obj_add_state(ui_playCameraBtn, LV_STATE_DISABLED);
         lv_obj_add_state(ui_resetCameraBtn, LV_STATE_DISABLED);
         ERROR_PRINT("Error: errore nella creazione del pop-up\n");
     }
-
-    
 }
-
 void closeFilePicker(lv_event_t * e)
 {
     destroy_filepicker();

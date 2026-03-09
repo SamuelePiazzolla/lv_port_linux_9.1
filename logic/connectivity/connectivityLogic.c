@@ -308,7 +308,7 @@ void ui_show_pairing_popup(const char *dev_path, uint32_t passkey, GDBusMethodIn
         DEBUG_PRINT("GUI: Pulizia overlay precedente.\n"); 
     }
 
-    // 3. OVERLAY — sfondo scuro semitrasparente su lv_layer_top()
+    // 3. OVERLAY - sfondo scuro semitrasparente
     active_pairing_overlay = lv_obj_create(lv_layer_top());
     lv_obj_set_size(active_pairing_overlay, LV_PCT(100), LV_PCT(100));
     lv_obj_set_style_bg_color(active_pairing_overlay, lv_color_hex(0x000000), 0);
@@ -316,7 +316,7 @@ void ui_show_pairing_popup(const char *dev_path, uint32_t passkey, GDBusMethodIn
     lv_obj_add_flag(active_pairing_overlay, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_remove_flag(active_pairing_overlay, LV_OBJ_FLAG_SCROLLABLE);
 
-    // 4. PANEL - card coerente con la schermata
+    // 4. PANEL - pop-up
     lv_obj_t *panel = lv_obj_create(active_pairing_overlay);
     lv_obj_set_size(panel, 420, 280);
     lv_obj_center(panel);
