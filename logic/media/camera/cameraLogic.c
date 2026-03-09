@@ -282,7 +282,7 @@ void createFilePicker(void)
     
     // --- STILE CONTAINER POP-UP ---
     lv_obj_set_style_radius(cont, 16, 0);
-    lv_obj_set_style_bg_color(cont, lv_color_hex(0xFDF3E7), 0);
+    lv_obj_set_style_bg_color(cont, lv_color_hex(0xFAF3EB), 0);
     lv_obj_set_style_border_color(cont, lv_color_hex(0xB8580A), 0);
     lv_obj_set_style_border_width(cont, 2, 0);
     lv_obj_set_style_shadow_color(cont, lv_color_hex(0xA0A0A8), 0);
