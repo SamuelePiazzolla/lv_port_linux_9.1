@@ -317,7 +317,7 @@ void createFilePicker(void)
     lv_obj_set_style_radius(desc_ctn, 100, 0);
     lv_obj_set_style_bg_color(desc_ctn, lv_color_white(), 0);
     lv_obj_set_style_border_color(desc_ctn, lv_color_hex(0xB8580A), 0);
-    lv_obj_set_style_border_width(2, 0);
+    lv_obj_set_style_border_width(desc_ctn, 2, 0);
     lv_obj_set_style_shadow_color(desc_ctn, lv_color_hex(0xA0A0A8), 0);
     lv_obj_set_style_shadow_width(desc_ctn, 8, 0);
     lv_obj_set_style_shadow_offset_y(desc_ctn, 4, 0);
@@ -375,6 +375,9 @@ void createFilePicker(void)
     lv_obj_add_event_cb(btn_close, closeFilePicker, LV_EVENT_CLICKED, NULL);
     lv_obj_set_style_radius(btn_close, 100, 0); 
     lv_obj_set_style_bg_color(btn_close, lv_color_hex(0xB8580A), 0); 
+    lv_obj_set_style_border_color(btn_close, lv_color_hex(0xB8580A), 0);
+    lv_obj_set_style_border_width(btn_close, 2, 0);
+    lv_obj_set_style_shadow_color(btn_close, lv_color_hex(0xB8580A), 0);
     lv_obj_set_style_shadow_color(btn_close, lv_color_hex(0xB8580A), 0); 
     lv_obj_set_style_shadow_width(btn_close, 8, 0);
     lv_obj_set_style_shadow_offset_y(btn_close, 4, 0);
