@@ -205,7 +205,6 @@ void timerCallbackVideo(lv_timer_t * timer)
         g_img_timer = NULL;
 
         resetDisplayer();
-        lv_label_set_text(ui_playCameraLabel, "PLAY");
         lv_obj_remove_state(ui_playCameraBtn, LV_STATE_CHECKED);
 
         last_ts_ms = 0;
@@ -814,7 +813,6 @@ void logic_load_camera(void)
     lv_obj_remove_state(ui_playCameraBtn, LV_STATE_DISABLED);
     lv_obj_remove_state(ui_resetCameraBtn, LV_STATE_DISABLED);
     lv_obj_remove_state(ui_recCameraBtn, LV_STATE_DISABLED);
-    lv_label_set_text(ui_playCameraLabel, "PAUSE");
     lv_obj_add_state(ui_playCameraBtn, LV_STATE_CHECKED);
 }
 
@@ -823,7 +821,6 @@ void logic_rec_video(void)
     if(useCamera == true && cameraFd >= 0)
     {
         INFO_PRINT("Start recording the camera video...\n");
-        lv_label_set_text(ui_recCameraLabel, "STOP REC");
         
         //Controllo inutile, non dovrebbe mai succedere
         if(atomic_load(&recordActive) == true) 
@@ -873,6 +870,7 @@ void logic_rec_video(void)
         }
 
         INFO_PRINT("Recording started: %s\n", filename);
+        lv_obj_add_state(ui_recCameraBtn, LV_STATE_CHECKED);
     }
 }
 
@@ -881,7 +879,6 @@ void logic_stop_rec_video(void)
     if(atomic_load(&recordActive) == true)
     {
         DEBUG_PRINT("Stopping recording\n");
-        lv_label_set_text(ui_recCameraLabel, "REC");
         atomic_store(&recordActive, false);
         
         wait_thread_exit(&recordThreadAlive, recordThread, 200);    //200ms di timeout
@@ -898,6 +895,7 @@ void logic_stop_rec_video(void)
             recordFile = NULL;
         }
 
+        lv_obj_remove_state(ui_recCameraBtn, LV_STATE_CHECKED);     // Resetto il pulsante rec
     }
     
 }
@@ -911,7 +909,6 @@ void logic_start_video(void)
         if(strlen(selectedVideoPath) == 0) 
         {
             ERROR_PRINT("Error: No video selected yet.\n");
-            lv_label_set_text(ui_playCameraLabel, "PLAY");
             return;
         }
         //Se esiste un timer lo riattivo
@@ -919,7 +916,6 @@ void logic_start_video(void)
         {
             lv_timer_resume(g_img_timer);
             DEBUG_PRINT("Resuming existing video..\n");
-            lv_label_set_text(ui_playCameraLabel, "PAUSE");
             return;
         }
 
@@ -937,11 +933,9 @@ void logic_start_video(void)
         {
             lv_timer_resume(g_img_timer);
             DEBUG_PRINT("Resuming existing video..\n");
-            lv_label_set_text(ui_playCameraLabel, "PAUSE");
             return;
         }
     }
-    lv_label_set_text(ui_playCameraLabel, "PAUSE");
 }    
 
 void logic_stop_video(void)
@@ -959,8 +953,6 @@ void logic_stop_video(void)
     {
         DEBUG_PRINT("No active video to pause.\n");
     }
-
-    lv_label_set_text(ui_playCameraLabel, "RESUME");
 }
 
 void logic_reset_video(void)
@@ -971,11 +963,10 @@ void logic_reset_video(void)
         DEBUG_PRINT("Closing camera and resetting displayer\n");
 
         // ferma thread prima di cameraClose(resettando il pulsante e quindi chiamando logic_stop_rec_video)
-        lv_obj_remove_state(ui_recCameraBtn, LV_STATE_CHECKED);
-        lv_label_set_text(ui_recCameraLabel, "REC");
+        logic_stop_rec_video();
         cameraClose();
         
-        //Resetto i pulsanti 
+        //Disattivo i pulsanti 
         lv_obj_add_state(ui_playCameraBtn, LV_STATE_DISABLED);
         lv_obj_add_state(ui_resetCameraBtn, LV_STATE_DISABLED);
         lv_obj_add_state(ui_recCameraBtn, LV_STATE_DISABLED);
@@ -994,7 +985,6 @@ void logic_reset_video(void)
 
     INFO_PRINT("Reset completed.\n");
 
-    lv_label_set_text(ui_playCameraLabel, "PLAY");
     lv_obj_remove_state(ui_playCameraBtn, LV_STATE_CHECKED);
 }
 
@@ -1028,8 +1018,6 @@ void logic_deinit_camera_screen(void)
     lv_obj_add_state(ui_recCameraBtn, LV_STATE_DISABLED);
 
     // Reset label PLAY/REC
-    lv_label_set_text(ui_playCameraLabel, "PLAY");
-    lv_label_set_text(ui_recCameraLabel, "REC");
     lv_obj_remove_state(ui_playCameraBtn, LV_STATE_CHECKED);
     lv_obj_remove_state(ui_recCameraBtn, LV_STATE_CHECKED);
 
