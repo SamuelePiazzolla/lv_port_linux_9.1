@@ -332,7 +332,7 @@ void ui_cameraScreen_screen_init(void)
 
     ui_videoCommandBtnContainer = lv_obj_create(ui_panelCamera);
     lv_obj_remove_style_all(ui_videoCommandBtnContainer);
-    lv_obj_set_width(ui_videoCommandBtnContainer, 90);
+    lv_obj_set_width(ui_videoCommandBtnContainer, 92);
     lv_obj_set_height(ui_videoCommandBtnContainer, 480);
     lv_obj_set_align(ui_videoCommandBtnContainer, LV_ALIGN_BOTTOM_MID);
     lv_obj_set_flex_flow(ui_videoCommandBtnContainer, LV_FLEX_FLOW_COLUMN);
