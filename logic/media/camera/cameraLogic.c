@@ -342,6 +342,12 @@ void createFilePicker(void)
     lv_obj_set_style_shadow_color(list, lv_color_hex(0xA0A0A8), 0);
     lv_obj_set_style_shadow_width(list, 8, 0);
     lv_obj_set_style_shadow_offset_y(list, 4, 0);
+
+    // Distanza tra bordo superiore e inferiore
+    lv_obj_set_style_pad_top(list, 3, 0);    
+    lv_obj_set_style_pad_bottom(list, 3, 0);
+
+    // Scrollbar
     lv_obj_set_scroll_dir(list, LV_DIR_VER);
     lv_obj_set_scrollbar_mode(list, LV_SCROLLBAR_MODE_AUTO);
     lv_obj_set_style_pad_row(list, 10, 0);
@@ -358,12 +364,12 @@ void createFilePicker(void)
                 lv_obj_set_user_data(btn, strdup(entry->d_name));
                 lv_obj_add_event_cb(btn, fileSelected, LV_EVENT_CLICKED, NULL);
                 lv_obj_set_style_radius(btn, 100, 0); 
-                lv_obj_set_style_bg_color(btn, lv_color_white(), 0);
+                lv_obj_set_style_bg_color(btn, lv_color_hex(0xFDF3E7), 0);
                 lv_obj_set_style_bg_opa(btn, 255, 0);
                 lv_obj_set_style_border_color(btn, lv_color_hex(0xB8580A), 0);
                 lv_obj_set_style_border_width(btn, 2, 0);
                 lv_obj_set_style_border_side(btn, LV_BORDER_SIDE_FULL, 0);
-                lv_obj_set_style_shadow_color(btn, lv_color_hex(0xA0A0A8), 0);
+                lv_obj_set_style_shadow_color(btn, lv_color_hex(0xB8580A), 0);
                 lv_obj_set_style_shadow_width(btn, 6, 0);
                 lv_obj_set_style_shadow_offset_y(btn, 3, 0);
                 lv_obj_set_style_text_color(btn, lv_color_hex(0x1C1C1E), 0);
