@@ -8,8 +8,10 @@
 lv_obj_t * ui_buzzerScreen = NULL;
 lv_obj_t * ui_headerBuzzerScreen = NULL;
 lv_obj_t * ui_buzzerBodyCtn = NULL;
+lv_obj_t * ui_titleBuzzer = NULL;
 lv_obj_t * ui_buzzerBtn = NULL;
-lv_obj_t * ui_titleBuzzerLabel = NULL;
+lv_obj_t * ui_descriptionBuzzerCtn = NULL;
+lv_obj_t * ui_descriptionBuzzerLabel = NULL;
 // event funtions
 void ui_event_buzzerScreen(lv_event_t * e)
 {
@@ -52,7 +54,11 @@ void ui_buzzerScreen_screen_init(void)
                                            _ui_theme_color_BACKGROUND);
     ui_object_set_themeable_style_property(ui_buzzerScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
                                            _ui_theme_alpha_BACKGROUND);
-    lv_obj_set_style_pad_row(ui_buzzerScreen, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_buzzerScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_buzzerScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_buzzerScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_buzzerScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_buzzerScreen, 50, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_buzzerScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_headerBuzzerScreen = ui_Header_create(ui_buzzerScreen);
@@ -61,15 +67,17 @@ void ui_buzzerScreen_screen_init(void)
 
     ui_buzzerBodyCtn = lv_obj_create(ui_buzzerScreen);
     lv_obj_set_width(ui_buzzerBodyCtn, lv_pct(70));
-    lv_obj_set_height(ui_buzzerBodyCtn, lv_pct(50));
+    lv_obj_set_height(ui_buzzerBodyCtn, lv_pct(70));
     lv_obj_set_align(ui_buzzerBodyCtn, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_buzzerBodyCtn, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_buzzerBodyCtn, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_buzzerBodyCtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_buzzerBodyCtn, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_buzzerBodyCtn, lv_color_hex(0xFDF3E7), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_buzzerBodyCtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_buzzerBodyCtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_buzzerBodyCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_buzzerBodyCtn, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_buzzerBodyCtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_side(ui_buzzerBodyCtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_color(ui_buzzerBodyCtn, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_opa(ui_buzzerBodyCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -77,6 +85,19 @@ void ui_buzzerScreen_screen_init(void)
     lv_obj_set_style_shadow_spread(ui_buzzerBodyCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_offset_x(ui_buzzerBodyCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_offset_y(ui_buzzerBodyCtn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_titleBuzzer = lv_label_create(ui_buzzerBodyCtn);
+    lv_obj_set_width(ui_titleBuzzer, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_titleBuzzer, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_titleBuzzer, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_titleBuzzer, "BUZZER");
+    lv_obj_set_style_text_color(ui_titleBuzzer, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_titleBuzzer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_titleBuzzer, &lv_font_montserrat_30, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_titleBuzzer, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_titleBuzzer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_titleBuzzer, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_titleBuzzer, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_buzzerBtn = lv_button_create(ui_buzzerBodyCtn);
     lv_obj_set_width(ui_buzzerBtn, 120);
@@ -114,17 +135,28 @@ void ui_buzzerScreen_screen_init(void)
     lv_obj_set_style_shadow_offset_x(ui_buzzerBtn, 0, LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_shadow_offset_y(ui_buzzerBtn, 4, LV_PART_MAIN | LV_STATE_CHECKED);
 
-    ui_titleBuzzerLabel = lv_label_create(ui_buzzerBodyCtn);
-    lv_obj_set_width(ui_titleBuzzerLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_titleBuzzerLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_titleBuzzerLabel, 3);
-    lv_obj_set_y(ui_titleBuzzerLabel, -124);
-    lv_obj_set_align(ui_titleBuzzerLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_titleBuzzerLabel, "Premi i pulsanti fisici per cambiare il tono del buzzer");
-    lv_obj_set_style_text_color(ui_titleBuzzerLabel, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_titleBuzzerLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui_titleBuzzerLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_titleBuzzerLabel, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_descriptionBuzzerCtn = lv_obj_create(ui_buzzerBodyCtn);
+    lv_obj_set_width(ui_descriptionBuzzerCtn, LV_SIZE_CONTENT);   /// 100
+    lv_obj_set_height(ui_descriptionBuzzerCtn, LV_SIZE_CONTENT);    /// 50
+    lv_obj_set_align(ui_descriptionBuzzerCtn, LV_ALIGN_CENTER);
+    lv_obj_remove_flag(ui_descriptionBuzzerCtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_descriptionBuzzerCtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_descriptionBuzzerCtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_descriptionBuzzerCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_descriptionBuzzerCtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_descriptionBuzzerCtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_descriptionBuzzerCtn, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_descriptionBuzzerCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_descriptionBuzzerCtn, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_descriptionBuzzerCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_descriptionBuzzerCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_descriptionBuzzerCtn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_descriptionBuzzerLabel = lv_label_create(ui_descriptionBuzzerCtn);
+    lv_obj_set_width(ui_descriptionBuzzerLabel, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_descriptionBuzzerLabel, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_descriptionBuzzerLabel, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_descriptionBuzzerLabel, "Premi i pulsanti fisici per cambiare il tono del buzzer");
 
     lv_obj_add_event_cb(ui_buzzerBtn, ui_event_buzzerBtn, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_buzzerScreen, ui_event_buzzerScreen, LV_EVENT_ALL, NULL);
@@ -139,7 +171,9 @@ void ui_buzzerScreen_screen_destroy(void)
     ui_buzzerScreen = NULL;
     ui_headerBuzzerScreen = NULL;
     ui_buzzerBodyCtn = NULL;
+    ui_titleBuzzer = NULL;
     ui_buzzerBtn = NULL;
-    ui_titleBuzzerLabel = NULL;
+    ui_descriptionBuzzerCtn = NULL;
+    ui_descriptionBuzzerLabel = NULL;
 
 }

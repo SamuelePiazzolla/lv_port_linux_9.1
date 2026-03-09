@@ -17,9 +17,11 @@ extern void ui_event_buzzerScreen(lv_event_t * e);
 extern lv_obj_t * ui_buzzerScreen;
 extern lv_obj_t * ui_headerBuzzerScreen;
 extern lv_obj_t * ui_buzzerBodyCtn;
+extern lv_obj_t * ui_titleBuzzer;
 extern void ui_event_buzzerBtn(lv_event_t * e);
 extern lv_obj_t * ui_buzzerBtn;
-extern lv_obj_t * ui_titleBuzzerLabel;
+extern lv_obj_t * ui_descriptionBuzzerCtn;
+extern lv_obj_t * ui_descriptionBuzzerLabel;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

@@ -259,6 +259,8 @@ void ui_mainCommsScreen_screen_init(void)
     lv_obj_set_style_shadow_offset_y(ui_testCommsBtn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_testCommsBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_testCommsBtn, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_testCommsBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_testCommsBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_testCommsBtnLabel = lv_label_create(ui_testCommsBtn);
     lv_obj_set_width(ui_testCommsBtnLabel, LV_SIZE_CONTENT);   /// 1

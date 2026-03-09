@@ -89,7 +89,6 @@ void ui_nfcScreen_screen_init(void)
     lv_obj_set_width(ui_nfcLed, 100);
     lv_obj_set_height(ui_nfcLed, 100);
     lv_obj_set_align(ui_nfcLed, LV_ALIGN_CENTER);
-    lv_obj_add_state(ui_nfcLed, LV_STATE_CHECKED);       /// States
     lv_obj_add_flag(ui_nfcLed, LV_OBJ_FLAG_CHECKABLE);     /// Flags
     lv_obj_remove_flag(ui_nfcLed, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_nfcLed, 100, LV_PART_MAIN | LV_STATE_DEFAULT);

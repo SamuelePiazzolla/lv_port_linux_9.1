@@ -24,6 +24,10 @@ SET(SOURCES components/ui_comp_header.c
     images/ui_img_reset_audio_png.c
     images/ui_img_volume_down_png.c
     images/ui_img_volume_up_png.c
+    images/ui_img_open_camera_white_png.c
+    images/ui_img_reset_video_png.c
+    images/ui_img_record_white_png.c
+    images/ui_img_stop_white_png.c
     images/ui_img_wifi_blue_png.c
     images/ui_img_wifi_white_png.c
     images/ui_img_bth_blue_png.c

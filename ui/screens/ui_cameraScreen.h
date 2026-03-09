@@ -17,25 +17,24 @@ extern void ui_event_cameraScreen(lv_event_t * e);
 extern lv_obj_t * ui_cameraScreen;
 extern lv_obj_t * ui_headerCameraScreen;
 extern lv_obj_t * ui_cameraContainer;
+extern lv_obj_t * ui_videoLeftCard;
+extern lv_obj_t * ui_videoModeSelectorLabel;
 extern lv_obj_t * ui_videoModeSelectorBtnContainer;
 extern void ui_event_loadVideoBtn(lv_event_t * e);
 extern lv_obj_t * ui_loadVideoBtn;
-extern lv_obj_t * ui_loadVideoLabel;
 extern void ui_event_loadCameraBtn(lv_event_t * e);
 extern lv_obj_t * ui_loadCameraBtn;
-extern lv_obj_t * ui_loadCameraLabel;
+extern lv_obj_t * ui_videoModeSelectorDescriptionCtn;
+extern lv_obj_t * ui_videoModeSelectorDescriptionLabel;
 extern lv_obj_t * ui_panelCamera;
 extern lv_obj_t * ui_videoDisplayer;
 extern lv_obj_t * ui_videoCommandBtnContainer;
 extern void ui_event_playCameraBtn(lv_event_t * e);
 extern lv_obj_t * ui_playCameraBtn;
-extern lv_obj_t * ui_playCameraLabel;
 extern void ui_event_resetCameraBtn(lv_event_t * e);
 extern lv_obj_t * ui_resetCameraBtn;
-extern lv_obj_t * ui_resetCameraLabel;
 extern void ui_event_recCameraBtn(lv_event_t * e);
 extern lv_obj_t * ui_recCameraBtn;
-extern lv_obj_t * ui_recCameraLabel;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

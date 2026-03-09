@@ -49,6 +49,10 @@ LV_IMG_DECLARE(ui_img_pause_white_png);    // assets/pause_white.png
 LV_IMG_DECLARE(ui_img_reset_audio_png);    // assets/reset_audio.png
 LV_IMG_DECLARE(ui_img_volume_down_png);    // assets/volume_down.png
 LV_IMG_DECLARE(ui_img_volume_up_png);    // assets/volume_up.png
+LV_IMG_DECLARE(ui_img_open_camera_white_png);    // assets/open_camera_white.png
+LV_IMG_DECLARE(ui_img_reset_video_png);    // assets/reset_video.png
+LV_IMG_DECLARE(ui_img_record_white_png);    // assets/record_white.png
+LV_IMG_DECLARE(ui_img_stop_white_png);    // assets/stop_white.png
 LV_IMG_DECLARE(ui_img_wifi_blue_png);    // assets/wifi_blue.png
 LV_IMG_DECLARE(ui_img_wifi_white_png);    // assets/wifi_white.png
 LV_IMG_DECLARE(ui_img_bth_blue_png);    // assets/bth_blue.png

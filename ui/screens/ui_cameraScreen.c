@@ -8,20 +8,19 @@
 lv_obj_t * ui_cameraScreen = NULL;
 lv_obj_t * ui_headerCameraScreen = NULL;
 lv_obj_t * ui_cameraContainer = NULL;
+lv_obj_t * ui_videoLeftCard = NULL;
+lv_obj_t * ui_videoModeSelectorLabel = NULL;
 lv_obj_t * ui_videoModeSelectorBtnContainer = NULL;
 lv_obj_t * ui_loadVideoBtn = NULL;
-lv_obj_t * ui_loadVideoLabel = NULL;
 lv_obj_t * ui_loadCameraBtn = NULL;
-lv_obj_t * ui_loadCameraLabel = NULL;
+lv_obj_t * ui_videoModeSelectorDescriptionCtn = NULL;
+lv_obj_t * ui_videoModeSelectorDescriptionLabel = NULL;
 lv_obj_t * ui_panelCamera = NULL;
 lv_obj_t * ui_videoDisplayer = NULL;
 lv_obj_t * ui_videoCommandBtnContainer = NULL;
 lv_obj_t * ui_playCameraBtn = NULL;
-lv_obj_t * ui_playCameraLabel = NULL;
 lv_obj_t * ui_resetCameraBtn = NULL;
-lv_obj_t * ui_resetCameraLabel = NULL;
 lv_obj_t * ui_recCameraBtn = NULL;
-lv_obj_t * ui_recCameraLabel = NULL;
 // event funtions
 void ui_event_cameraScreen(lv_event_t * e)
 {
@@ -102,10 +101,18 @@ void ui_cameraScreen_screen_init(void)
 {
     ui_cameraScreen = lv_obj_create(NULL);
     lv_obj_remove_flag(ui_cameraScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_flex_flow(ui_cameraScreen, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(ui_cameraScreen, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     ui_object_set_themeable_style_property(ui_cameraScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
                                            _ui_theme_color_BACKGROUND);
     ui_object_set_themeable_style_property(ui_cameraScreen, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
                                            _ui_theme_alpha_BACKGROUND);
+    lv_obj_set_style_pad_left(ui_cameraScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_cameraScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_cameraScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_cameraScreen, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_cameraScreen, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_cameraScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_headerCameraScreen = ui_Header_create(ui_cameraScreen);
     lv_obj_set_x(ui_headerCameraScreen, 0);
@@ -113,83 +120,208 @@ void ui_cameraScreen_screen_init(void)
 
     ui_cameraContainer = lv_obj_create(ui_cameraScreen);
     lv_obj_remove_style_all(ui_cameraContainer);
-    lv_obj_set_height(ui_cameraContainer, 529);
     lv_obj_set_width(ui_cameraContainer, lv_pct(100));
+    lv_obj_set_flex_grow(ui_cameraContainer, 1);
     lv_obj_set_align(ui_cameraContainer, LV_ALIGN_BOTTOM_MID);
     lv_obj_set_flex_flow(ui_cameraContainer, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_cameraContainer, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_cameraContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_pad_row(ui_cameraContainer, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_column(ui_cameraContainer, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_cameraContainer, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_cameraContainer, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_cameraContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_cameraContainer, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_cameraContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_cameraContainer, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_videoModeSelectorBtnContainer = lv_obj_create(ui_cameraContainer);
+    ui_videoLeftCard = lv_obj_create(ui_cameraContainer);
+    lv_obj_remove_style_all(ui_videoLeftCard);
+    lv_obj_set_width(ui_videoLeftCard, lv_pct(25));
+    lv_obj_set_height(ui_videoLeftCard, lv_pct(100));
+    lv_obj_set_x(ui_videoLeftCard, 1);
+    lv_obj_set_y(ui_videoLeftCard, 0);
+    lv_obj_set_align(ui_videoLeftCard, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_videoLeftCard, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(ui_videoLeftCard, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_remove_flag(ui_videoLeftCard, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_videoLeftCard, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_videoLeftCard, lv_color_hex(0xFDF3E7), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_videoLeftCard, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_videoLeftCard, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_videoLeftCard, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_videoLeftCard, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_videoLeftCard, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_videoLeftCard, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_videoLeftCard, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_videoLeftCard, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_videoLeftCard, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_videoLeftCard, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_videoLeftCard, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_videoLeftCard, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_videoLeftCard, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_videoLeftCard, 20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_videoLeftCard, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_videoLeftCard, 40, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_videoLeftCard, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_videoModeSelectorLabel = lv_label_create(ui_videoLeftCard);
+    lv_obj_set_width(ui_videoModeSelectorLabel, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_videoModeSelectorLabel, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_videoModeSelectorLabel, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_videoModeSelectorLabel, "MODE SELECTOR");
+    lv_obj_set_style_text_color(ui_videoModeSelectorLabel, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_videoModeSelectorLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_videoModeSelectorLabel, &lv_font_montserrat_24, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_videoModeSelectorLabel, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_videoModeSelectorLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_videoModeSelectorLabel, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_videoModeSelectorLabel, LV_BORDER_SIDE_BOTTOM, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_videoModeSelectorBtnContainer = lv_obj_create(ui_videoLeftCard);
     lv_obj_remove_style_all(ui_videoModeSelectorBtnContainer);
-    lv_obj_set_height(ui_videoModeSelectorBtnContainer, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_flex_grow(ui_videoModeSelectorBtnContainer, 1);
+    lv_obj_set_width(ui_videoModeSelectorBtnContainer, lv_pct(95));
+    lv_obj_set_height(ui_videoModeSelectorBtnContainer, lv_pct(25));
     lv_obj_set_align(ui_videoModeSelectorBtnContainer, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_videoModeSelectorBtnContainer, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_flow(ui_videoModeSelectorBtnContainer, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_videoModeSelectorBtnContainer, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER,
                           LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_videoModeSelectorBtnContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_pad_row(ui_videoModeSelectorBtnContainer, 30, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_column(ui_videoModeSelectorBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_videoModeSelectorBtnContainer, 20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_videoModeSelectorBtnContainer, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_videoModeSelectorBtnContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_videoModeSelectorBtnContainer, lv_color_hex(0xB8580A),
+                                  LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_videoModeSelectorBtnContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_videoModeSelectorBtnContainer, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_videoModeSelectorBtnContainer, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_videoModeSelectorBtnContainer, lv_color_hex(0xA0A0A8),
+                                  LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_videoModeSelectorBtnContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_videoModeSelectorBtnContainer, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_videoModeSelectorBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_videoModeSelectorBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_videoModeSelectorBtnContainer, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_videoModeSelectorBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_videoModeSelectorBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_videoModeSelectorBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_videoModeSelectorBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_videoModeSelectorBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_videoModeSelectorBtnContainer, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_loadVideoBtn = lv_button_create(ui_videoModeSelectorBtnContainer);
-    lv_obj_set_width(ui_loadVideoBtn, lv_pct(90));
-    lv_obj_set_height(ui_loadVideoBtn, LV_SIZE_CONTENT);    /// 90
+    lv_obj_set_width(ui_loadVideoBtn, 100);
+    lv_obj_set_height(ui_loadVideoBtn, 100);
     lv_obj_set_x(ui_loadVideoBtn, 19);
     lv_obj_set_y(ui_loadVideoBtn, -97);
     lv_obj_set_align(ui_loadVideoBtn, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_loadVideoBtn, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_loadVideoBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    ui_object_set_themeable_style_property(ui_loadVideoBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
-                                           _ui_theme_color_BTN);
-    ui_object_set_themeable_style_property(ui_loadVideoBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
-                                           _ui_theme_alpha_BTN);
-
-    ui_loadVideoLabel = lv_label_create(ui_loadVideoBtn);
-    lv_obj_set_width(ui_loadVideoLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_loadVideoLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_loadVideoLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_loadVideoLabel, "SELECT VIDEO");
-    lv_obj_set_style_text_color(ui_loadVideoLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_loadVideoLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_loadVideoBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_loadVideoBtn, lv_color_hex(0xFDF3E7), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_loadVideoBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_loadVideoBtn, &ui_img_add_file_white_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor(ui_loadVideoBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor_opa(ui_loadVideoBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_loadVideoBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_loadVideoBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_loadVideoBtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_loadVideoBtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_loadVideoBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_loadVideoBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_loadVideoBtn, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_loadVideoBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_loadVideoBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_loadVideoBtn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_loadVideoBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_opa(ui_loadVideoBtn, 255, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_image_recolor(ui_loadVideoBtn, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_image_recolor_opa(ui_loadVideoBtn, 255, LV_PART_MAIN | LV_STATE_PRESSED);
 
     ui_loadCameraBtn = lv_button_create(ui_videoModeSelectorBtnContainer);
-    lv_obj_set_width(ui_loadCameraBtn, lv_pct(90));
-    lv_obj_set_height(ui_loadCameraBtn, LV_SIZE_CONTENT);    /// 90
+    lv_obj_set_width(ui_loadCameraBtn, 100);
+    lv_obj_set_height(ui_loadCameraBtn, 100);
     lv_obj_set_x(ui_loadCameraBtn, 19);
     lv_obj_set_y(ui_loadCameraBtn, -97);
     lv_obj_set_align(ui_loadCameraBtn, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_loadCameraBtn, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_loadCameraBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    ui_object_set_themeable_style_property(ui_loadCameraBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
-                                           _ui_theme_color_BTN);
-    ui_object_set_themeable_style_property(ui_loadCameraBtn, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
-                                           _ui_theme_alpha_BTN);
+    lv_obj_set_style_radius(ui_loadCameraBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_loadCameraBtn, lv_color_hex(0xFDF3E7), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_loadCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_loadCameraBtn, &ui_img_open_camera_white_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor(ui_loadCameraBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor_opa(ui_loadCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_loadCameraBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_loadCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_loadCameraBtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_loadCameraBtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_loadCameraBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_loadCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_loadCameraBtn, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_loadCameraBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_loadCameraBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_loadCameraBtn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_loadCameraBtn, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_opa(ui_loadCameraBtn, 255, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_image_recolor(ui_loadCameraBtn, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_image_recolor_opa(ui_loadCameraBtn, 255, LV_PART_MAIN | LV_STATE_PRESSED);
 
-    ui_loadCameraLabel = lv_label_create(ui_loadCameraBtn);
-    lv_obj_set_width(ui_loadCameraLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_loadCameraLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_loadCameraLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_loadCameraLabel, "OPEN CAMERA");
-    lv_obj_set_style_text_color(ui_loadCameraLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_loadCameraLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_videoModeSelectorDescriptionCtn = lv_obj_create(ui_videoLeftCard);
+    lv_obj_remove_style_all(ui_videoModeSelectorDescriptionCtn);
+    lv_obj_set_width(ui_videoModeSelectorDescriptionCtn, lv_pct(90));
+    lv_obj_set_height(ui_videoModeSelectorDescriptionCtn, lv_pct(18));
+    lv_obj_set_align(ui_videoModeSelectorDescriptionCtn, LV_ALIGN_CENTER);
+    lv_obj_remove_flag(ui_videoModeSelectorDescriptionCtn, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_videoModeSelectorDescriptionCtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_videoModeSelectorDescriptionCtn, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_videoModeSelectorDescriptionCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_videoModeSelectorDescriptionCtn, lv_color_hex(0xB8580A),
+                                  LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_videoModeSelectorDescriptionCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_videoModeSelectorDescriptionCtn, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_videoModeSelectorDescriptionCtn, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_videoModeSelectorDescriptionCtn, lv_color_hex(0xA0A0A8),
+                                  LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_videoModeSelectorDescriptionCtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_videoModeSelectorDescriptionCtn, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_videoModeSelectorDescriptionCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_videoModeSelectorDescriptionCtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_videoModeSelectorDescriptionCtn, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_videoModeSelectorDescriptionLabel = lv_label_create(ui_videoModeSelectorDescriptionCtn);
+    lv_obj_set_width(ui_videoModeSelectorDescriptionLabel, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_videoModeSelectorDescriptionLabel, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_videoModeSelectorDescriptionLabel, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_videoModeSelectorDescriptionLabel,
+                      "Premi su uno dei \ndue pulsanti per \nselezionare la sorgente");
 
     ui_panelCamera = lv_obj_create(ui_cameraContainer);
-    lv_obj_set_width(ui_panelCamera, LV_SIZE_CONTENT);   /// 645
-    lv_obj_set_height(ui_panelCamera, LV_SIZE_CONTENT);    /// 485
+    lv_obj_set_height(ui_panelCamera, lv_pct(100));
+    lv_obj_set_flex_grow(ui_panelCamera, 1);
     lv_obj_set_x(ui_panelCamera, 0);
     lv_obj_set_y(ui_panelCamera, -10);
     lv_obj_set_align(ui_panelCamera, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_panelCamera, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_panelCamera, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_panelCamera, LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_radius(ui_panelCamera, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_panelCamera, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_panelCamera, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_panelCamera, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_panelCamera, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_panelCamera, lv_color_hex(0xFDF3E7), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_panelCamera, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_panelCamera, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_panelCamera, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_panelCamera, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_panelCamera, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_panelCamera, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_panelCamera, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_panelCamera, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_panelCamera, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_panelCamera, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_panelCamera, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_panelCamera, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_panelCamera, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_panelCamera, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(ui_panelCamera, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_panelCamera, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_panelCamera, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_videoDisplayer = lv_image_create(ui_panelCamera);
     lv_obj_set_width(ui_videoDisplayer, 640);
@@ -198,76 +330,102 @@ void ui_cameraScreen_screen_init(void)
     lv_obj_add_flag(ui_videoDisplayer, LV_OBJ_FLAG_CLICKABLE);     /// Flags
     lv_obj_remove_flag(ui_videoDisplayer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_videoCommandBtnContainer = lv_obj_create(ui_cameraContainer);
+    ui_videoCommandBtnContainer = lv_obj_create(ui_panelCamera);
     lv_obj_remove_style_all(ui_videoCommandBtnContainer);
-    lv_obj_set_height(ui_videoCommandBtnContainer, LV_SIZE_CONTENT);    /// 50
-    lv_obj_set_flex_grow(ui_videoCommandBtnContainer, 1);
-    lv_obj_set_align(ui_videoCommandBtnContainer, LV_ALIGN_CENTER);
+    lv_obj_set_width(ui_videoCommandBtnContainer, 90);
+    lv_obj_set_height(ui_videoCommandBtnContainer, 480);
+    lv_obj_set_align(ui_videoCommandBtnContainer, LV_ALIGN_BOTTOM_MID);
     lv_obj_set_flex_flow(ui_videoCommandBtnContainer, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_videoCommandBtnContainer, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_videoCommandBtnContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_videoCommandBtnContainer, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_videoCommandBtnContainer, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_videoCommandBtnContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_videoCommandBtnContainer, lv_color_hex(0xB8580A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_videoCommandBtnContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_videoCommandBtnContainer, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_side(ui_videoCommandBtnContainer, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_videoCommandBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_videoCommandBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_videoCommandBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_videoCommandBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_videoCommandBtnContainer, 30, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_videoCommandBtnContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_playCameraBtn = lv_button_create(ui_videoCommandBtnContainer);
-    lv_obj_set_width(ui_playCameraBtn, lv_pct(90));
-    lv_obj_set_height(ui_playCameraBtn, LV_SIZE_CONTENT);    /// 90
+    lv_obj_set_width(ui_playCameraBtn, 80);
+    lv_obj_set_height(ui_playCameraBtn, 80);
     lv_obj_set_x(ui_playCameraBtn, 19);
     lv_obj_set_y(ui_playCameraBtn, -97);
     lv_obj_set_align(ui_playCameraBtn, LV_ALIGN_CENTER);
     lv_obj_add_state(ui_playCameraBtn, LV_STATE_DISABLED);       /// States
     lv_obj_add_flag(ui_playCameraBtn, LV_OBJ_FLAG_CHECKABLE | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_playCameraBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_playCameraBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_playCameraBtn, lv_color_hex(0x34C759), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_playCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_playCameraBtn, &ui_img_play_white_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_playCameraBtn, lv_color_hex(0x1C1C1E), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_playCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_playCameraBtn, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_playCameraBtn, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_playCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_playCameraBtn, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_playCameraBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_playCameraBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_playCameraBtn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_playCameraBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_playCameraBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
-
-    ui_playCameraLabel = lv_label_create(ui_playCameraBtn);
-    lv_obj_set_width(ui_playCameraLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_playCameraLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_playCameraLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_playCameraLabel, "PLAY");
-    lv_obj_set_style_text_color(ui_playCameraLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_playCameraLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_playCameraBtn, &ui_img_pause_white_png, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_resetCameraBtn = lv_button_create(ui_videoCommandBtnContainer);
-    lv_obj_set_width(ui_resetCameraBtn, lv_pct(90));
-    lv_obj_set_height(ui_resetCameraBtn, LV_SIZE_CONTENT);    /// 100
+    lv_obj_set_width(ui_resetCameraBtn, 80);
+    lv_obj_set_height(ui_resetCameraBtn, 80);
     lv_obj_set_align(ui_resetCameraBtn, LV_ALIGN_CENTER);
     lv_obj_add_state(ui_resetCameraBtn, LV_STATE_DISABLED);       /// States
     lv_obj_add_flag(ui_resetCameraBtn, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_resetCameraBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_resetCameraBtn, lv_color_hex(0xF57305), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_resetCameraBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_resetCameraBtn, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_resetCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_resetCameraLabel = lv_label_create(ui_resetCameraBtn);
-    lv_obj_set_width(ui_resetCameraLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_resetCameraLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_resetCameraLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_resetCameraLabel, "RESET");
-    lv_obj_set_style_text_color(ui_resetCameraLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_resetCameraLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_resetCameraBtn, &ui_img_reset_video_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor(ui_resetCameraBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor_opa(ui_resetCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_resetCameraBtn, lv_color_hex(0x1C1C1E), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_resetCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_resetCameraBtn, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_resetCameraBtn, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_resetCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_resetCameraBtn, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_resetCameraBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_resetCameraBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_resetCameraBtn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_recCameraBtn = lv_button_create(ui_videoCommandBtnContainer);
-    lv_obj_set_width(ui_recCameraBtn, lv_pct(90));
-    lv_obj_set_height(ui_recCameraBtn, LV_SIZE_CONTENT);    /// 100
+    lv_obj_set_width(ui_recCameraBtn, 80);
+    lv_obj_set_height(ui_recCameraBtn, 80);
     lv_obj_set_align(ui_recCameraBtn, LV_ALIGN_CENTER);
     lv_obj_add_state(ui_recCameraBtn, LV_STATE_DISABLED);       /// States
     lv_obj_add_flag(ui_recCameraBtn, LV_OBJ_FLAG_CHECKABLE | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_remove_flag(ui_recCameraBtn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_recCameraBtn, lv_color_hex(0xA06D00), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_recCameraBtn, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_recCameraBtn, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_recCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_recCameraBtn, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_image_src(ui_recCameraBtn, &ui_img_record_white_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor(ui_recCameraBtn, lv_color_hex(0xFF3B30), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_recolor_opa(ui_recCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_recCameraBtn, lv_color_hex(0x1C1C1E), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_recCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui_recCameraBtn, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(ui_recCameraBtn, lv_color_hex(0xA0A0A8), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_opa(ui_recCameraBtn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui_recCameraBtn, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_spread(ui_recCameraBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_x(ui_recCameraBtn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_offset_y(ui_recCameraBtn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_recCameraBtn, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_recCameraBtn, 255, LV_PART_MAIN | LV_STATE_CHECKED);
-
-    ui_recCameraLabel = lv_label_create(ui_recCameraBtn);
-    lv_obj_set_width(ui_recCameraLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_recCameraLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_recCameraLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_recCameraLabel, "REC");
-    lv_obj_set_style_text_color(ui_recCameraLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_recCameraLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_recCameraBtn, &ui_img_stop_white_png, LV_PART_MAIN | LV_STATE_CHECKED);
 
     lv_obj_add_event_cb(ui_loadVideoBtn, ui_event_loadVideoBtn, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_loadCameraBtn, ui_event_loadCameraBtn, LV_EVENT_ALL, NULL);
@@ -286,19 +444,18 @@ void ui_cameraScreen_screen_destroy(void)
     ui_cameraScreen = NULL;
     ui_headerCameraScreen = NULL;
     ui_cameraContainer = NULL;
+    ui_videoLeftCard = NULL;
+    ui_videoModeSelectorLabel = NULL;
     ui_videoModeSelectorBtnContainer = NULL;
     ui_loadVideoBtn = NULL;
-    ui_loadVideoLabel = NULL;
     ui_loadCameraBtn = NULL;
-    ui_loadCameraLabel = NULL;
+    ui_videoModeSelectorDescriptionCtn = NULL;
+    ui_videoModeSelectorDescriptionLabel = NULL;
     ui_panelCamera = NULL;
     ui_videoDisplayer = NULL;
     ui_videoCommandBtnContainer = NULL;
     ui_playCameraBtn = NULL;
-    ui_playCameraLabel = NULL;
     ui_resetCameraBtn = NULL;
-    ui_resetCameraLabel = NULL;
     ui_recCameraBtn = NULL;
-    ui_recCameraLabel = NULL;
 
 }
