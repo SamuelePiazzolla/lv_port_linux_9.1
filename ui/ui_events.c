@@ -6,6 +6,7 @@
 #include "ui.h"
 #include "../logic/media/mediaLogic.h"
 #include "../logic/connectivity/connectivityLogic.h"
+#include "../logic/connectivity/nfc/nfcLogic.h"
 #include "../logic/communications/communicationsLogic.h"
 
 /*
