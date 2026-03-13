@@ -557,10 +557,6 @@ int bth_connect_to(NetDevice device)
             g_strdup(device.address)
         );
 
-        // Avviamo il timer UI, il tempo max in cui ci aspettiamo che BlueZ chiami RequestConfirmation dopo Pair()
-        // bt_pairing_timer = lv_timer_create(bt_pairing_timeout_cb, BT_PAIRING_UI_TIMEOUT_MS, NULL);
-        // lv_timer_set_repeat_count(bt_pairing_timer, 1);
-
         // Aggiorno la logica per indicare che siamo in pairing 
         pairing_in_progress = TRUE;
 
