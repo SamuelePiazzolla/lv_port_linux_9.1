@@ -100,7 +100,7 @@ static void rs_stop_slave(void)
     // Polling non bloccante: aspettiamo che lo slave termini dopo SIGINT.
     for (int i = 0; i < RS_SIGINT_TIMEOUT_TICKS; i++) 
     {
-        usleep(10 * 1000);     // usleep(10ms) × RS_SIGINT_TIMEOUT_TICKS = 1s di timeout totale.
+        usleep(10 * 1000);     // usleep(10ms) x RS_SIGINT_TIMEOUT_TICKS = 1s di timeout totale.
         int status;
         if (waitpid(slave_pid, &status, WNOHANG) == slave_pid) 
         {
@@ -111,7 +111,7 @@ static void rs_stop_slave(void)
         }
     }
 
-    // Timeout scaduto: il processo non ha risposto a SIGINT → SIGKILL.
+    // Timeout scaduto: il processo non ha risposto a SIGINT --> SIGKILL.
     ERROR_PRINT("rs_stop_slave: timeout SIGINT, invio SIGKILL a PID %d\n", slave_pid);
     ui_comms_log_async("[RS-485] Timeout: invio SIGKILL allo slave");
 
